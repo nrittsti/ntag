@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This file is part of NTag (audio file tag editor).
+NTag is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+NTag is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+Copyright 2016, Nico Rittstieg
+-->	
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.input.*?>
+<?import javafx.collections.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import toolbox.fx.control.*?>
+<?import ntag.fx.scene.control.*?>
+<?import ntag.fx.scene.control.tableview.*?>
+<?import ntag.fx.scene.control.editor.*?>
+<?import javafx.scene.control.Separator?>
+	
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntag.fx.scene.NTagWindowController">
+	<top>			
+		<ToolBar>
+			<Button id="open-button" fx:id="openButton" onAction="#handleOpenAction" text="%mnu_open" />				
+			<Button id="save-button" fx:id="saveButton" onAction="#handleSaveAction" text="%mnu_save" disable="true" />
+			<Separator />
+			<Button styleClass="toolbar-button" fx:id="adjustArtworkButton" onAction="#handleAdjustArtworkAction" text="%mnu_adjust_artwork" disable="true" />
+			<Button styleClass="toolbar-button" fx:id="numberTracksButton" onAction="#handleNumberTracksAction" text="%mnu_number_Tracks" disable="true" />
+			<Button styleClass="toolbar-button" fx:id="renameButton" onAction="#handleRenameAction" text="%mnu_rename" disable="true" />
+			<Separator />
+			<Button id="settings-button" fx:id="settingsButton" onAction="#handleSettingsAction" text="%mnu_settings" />
+			<Button id="info-button" onAction="#handleAboutAction" />
+		</ToolBar>		
+	</top>
+	<center>
+		<SplitPane fx:id="splitPane">			
+			<TagFileTableView fx:id="tagFileTableView" />
+			<TagEditorControl fx:id="tagEditorControl" />			
+		</SplitPane>
+	</center>
+	<bottom>
+		<HBox styleClass="statusbar" spacing="4" alignment="CENTER_LEFT">
+		<padding><Insets top="0" right="5" bottom="0" left="5"/></padding>			
+			<ButtonLink styleClass="statusbar-label" minWidth="40" text="%tb_filter" onAction="#handleRefreshFilter" />
+			<ButtonLink styleClass="statusbar-label" fx:id="filterLink" text="All" onAction="#handleChangeFilter" focusTraversable="false" minWidth="100" />
+			<Label styleClass="statusbar-label" text="|" />	
+			<Label styleClass="statusbar-label" text="%tb_files" minWidth="45" />
+			<Label styleClass="statusbar-label" fx:id="fileCountToolbar" minWidth="40" />
+			<Label styleClass="statusbar-label" fx:id="playtimeToolbar" minWidth="60" />
+			<Label styleClass="statusbar-label" fx:id="fileSizeToolbar" minWidth="60" />	
+			<Label styleClass="statusbar-label" text="|" />
+			<Label styleClass="statusbar-label" text="%tb_selection" minWidth="50" />
+			<Label styleClass="statusbar-label" fx:id="selFileCountToolbar" minWidth="40" />
+			<Label styleClass="statusbar-label" fx:id="selPlaytimeToolbar" minWidth="60" />
+			<Label styleClass="statusbar-label" fx:id="selFileSizeToolbar" minWidth="60" />
+			<Label styleClass="statusbar-label" text="|" />
+			<ButtonLink styleClass="statusbar-label" fx:id="directoryLink" onAction="#handleOpenDirectory" focusTraversable="false" />			
+		</HBox>
+	</bottom>
+</BorderPane>

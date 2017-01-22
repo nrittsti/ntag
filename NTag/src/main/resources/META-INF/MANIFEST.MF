@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: NTag
+Implementation-Version: 0.9
+JavaFX-Feature-Proxy: None
+JavaFX-Version: 8.0
+Class-Path: .
+Created-By: JavaFX Packager
+Implementation-Vendor: Nico Rittstieg
+Main-Class: ntag.NTag
+

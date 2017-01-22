@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This file is part of NTag (audio file tag editor).
+NTag is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+NTag is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+Copyright 2016, Nico Rittstieg
+-->	
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.geometry.*?>
+<?import toolbox.fx.control.*?>
+<?import ntag.fx.scene.control.editor.*?>
+<?import ntag.fx.scene.control.rating.*?>
+<?import ntag.fx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="javafx.scene.control.TabPane">	
+	<tabs>
+		<Tab fx:id="editorTab" text="%lbl_editor" closable="false">
+			<ScrollPane fx:id="editorScrollPane">
+				<GridPane hgap="10" vgap="1">
+					<padding><Insets top="5" right="5" bottom="5" left="5"/></padding>
+					<columnConstraints>
+						<ColumnConstraints hgrow="ALWAYS" />	
+				        <ColumnConstraints hgrow="ALWAYS" maxWidth="180" />			       				        
+				    </columnConstraints>												      				    			
+					<!-- INPUTS -->
+					<ArtworkControl fx:id="artworkControl" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" />
+					<HBox GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2" alignment="CENTER">
+						<padding><Insets top="5" right="0" bottom="0" left="0"/></padding>
+						<RatingControl fx:id="ratingControl" />
+					</HBox>
+					<HBox GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2">
+						<Label text="%lbl_filename"  />
+						<Label id="file-info-label" fx:id="fileInfoLabel" />
+					</HBox>					
+					<HBox GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2" spacing="3">
+						<TextField fx:id="filenameTextField" HBox.hgrow="ALWAYS" />
+						<Button fx:id="showFileButton" text="..." onAction="#handleShowFileAction" />
+					</HBox>
+					<Label text="%lbl_title" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2" />
+					<ETextField fx:id="titleTextField" GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="2" />
+					
+					<Label text="%lbl_artist" GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.columnSpan="2" />
+					<EComboBox fx:id="artistComboBox" GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.columnSpan="2" />
+					
+					<Label text="%lbl_album" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+					<Label text="%lbl_track" GridPane.columnIndex="1" GridPane.rowIndex="8"  />	
+					
+					<EComboBox fx:id="albumComboBox"  GridPane.columnIndex="0" GridPane.rowIndex="9" />
+					<HBox GridPane.columnIndex="1" GridPane.rowIndex="9" spacing="2" alignment="CENTER">
+						<EComboBox fx:id="trackComboBox"  />
+						<Label text="/" />					
+						<EComboBox fx:id="trackTotalComboBox"  />
+					</HBox>				
+					
+					<Label text="%lbl_album_artist" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+					<Label text="%lbl_disc" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+								
+					<EComboBox fx:id="albumArtistComboBox"  GridPane.columnIndex="0" GridPane.rowIndex="11" />
+					<HBox GridPane.columnIndex="1" GridPane.rowIndex="11" spacing="2" alignment="CENTER">			
+						<EComboBox fx:id="discComboBox"  />
+						<Label text="/" />
+						<EComboBox fx:id="discTotalComboBox"  />
+					</HBox>
+					
+					<Label text="%lbl_composer" GridPane.columnIndex="0" GridPane.rowIndex="12" />
+					<Label text="%lbl_language" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+					
+					<EComboBox fx:id="composerComboBox"  GridPane.columnIndex="0" GridPane.rowIndex="13" />				
+					<EComboBox fx:id="languageComboBox"  GridPane.columnIndex="1" GridPane.rowIndex="13" />
+					
+					<Label text="%lbl_comment" GridPane.columnIndex="0" GridPane.rowIndex="14" GridPane.columnSpan="2" />
+					<ETextField fx:id="commentTextField" GridPane.columnIndex="0" GridPane.rowIndex="15" GridPane.columnSpan="2" />
+							
+					<Label text="%lbl_year" GridPane.columnIndex="0" GridPane.rowIndex="16" />
+					<HBox GridPane.columnIndex="1" GridPane.rowIndex="16">
+						<Label text="%lbl_date" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+						<Label fx:id="dateFormatLabel" />
+					</HBox>
+									
+					<EComboBox fx:id="yearComboBox"  GridPane.columnIndex="0" GridPane.rowIndex="17" />				
+					<EComboBox fx:id="dateComboBox"  GridPane.columnIndex="1" GridPane.rowIndex="17" />
+					
+					
+					<Label text="%lbl_genre" GridPane.columnIndex="0" GridPane.rowIndex="18" />
+							
+					<HBox GridPane.columnIndex="0" GridPane.rowIndex="19" spacing="3" GridPane.columnSpan="2">	
+						<Button styleClass="edit-button" fx:id="selectGenreButton" onAction="#handleSelectGenreButton" focusTraversable="false" />						
+						<EComboBox fx:id="genreComboBox" HBox.hgrow="ALWAYS" />
+					</HBox>
+				
+					<CheckBox fx:id="compilationCheckBox" text="%lbl_compilation" GridPane.columnIndex="0" GridPane.rowIndex="20" />	
+				</GridPane>
+			</ScrollPane>				
+		</Tab>
+		<Tab fx:id="lyricsTab" text="%lbl_lyrics" closable="false">
+			<VBox fx:id="lyricsVBox">
+				<TextArea fx:id="lyricsTextArea" prefHeight="10000" />
+			</VBox>			
+		</Tab>
+		<Tab fx:id="infoTab" text="%lbl_infos" closable="false">
+			<TextArea fx:id="infosTextArea" styleClass="textarea-infos" editable="false" />
+		</Tab>
+		<Tab fx:id="logTab" text="%lbl_logging" closable="false">
+			<TextArea fx:id="loggingTextArea" styleClass="textarea-infos" editable="false" />
+		</Tab>		
+	</tabs>
+</fx:root>

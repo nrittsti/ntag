@@ -1,0 +1,112 @@
+/**
+ * This file is part of NTag (audio file tag editor).
+ *
+ * NTag is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * NTag is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2016, Nico Rittstieg
+ */
+package ntag.task;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+import javafx.concurrent.Task;
+import ntag.fx.scene.RenameFilesViewModel;
+import ntag.model.TagFile;
+import toolbox.io.FileUtil;
+import toolbox.util.StringBuilderUtil;
+
+public class RenameFilesTask extends Task<List<TagFile>> {
+
+	private List<String> errors = new ArrayList<>();
+
+	private final RenameFilesViewModel viewModel;
+	private int maxDisc = 9;
+	private int maxTrack = 99;
+
+	public RenameFilesTask(RenameFilesViewModel viewModel) {
+		super();
+		if (viewModel == null) {
+			throw new IllegalArgumentException("viewModel cannot be null");
+		}
+		this.viewModel = viewModel;
+		for (TagFile tagFile : viewModel.getFiles()) {
+			if (tagFile.getTrack() > maxTrack) {
+				maxTrack = tagFile.getTrack();
+			}
+			if (tagFile.getDisc() > maxDisc) {
+				maxDisc = tagFile.getDisc();
+			}
+		}
+	}
+
+	@Override
+	protected List<TagFile> call() throws Exception {
+		for (int i = 0; i < viewModel.getFiles().size(); i++) {
+			if (isCancelled()) {
+				updateMessage("Cancelled");
+				break;
+			}
+			try {
+				updateMessage(toolbox.io.Resources.format("ntag", "msg_rename_file", i, viewModel.getFiles().size()));
+				rename(viewModel.getFiles().get(i), viewModel.getFormat());
+			} catch (Exception e) {
+				errors.add(String.format("%s\n%s", viewModel.getFiles().get(i).getPath(), e.getMessage()));
+			}
+			updateProgress(i + 1, viewModel.getFiles().size());
+		}
+		return viewModel.getFiles();
+	}
+
+	private void rename(TagFile tagFile, String format) throws IOException {
+		StringBuilder sb = new StringBuilder(50);
+		sb.append(format);
+		sb.append(tagFile.getExtension());
+		if (maxDisc == 0) {
+			StringBuilderUtil.replace(sb, "%disc", "");
+		} else {
+			StringBuilderUtil.replace(sb, "%disc", String.format("%0" + String.valueOf(maxDisc).length() + "d", tagFile.getDisc()));
+		}
+		if (maxTrack == 0) {
+			StringBuilderUtil.replace(sb, "%track", "");
+		} else {
+			StringBuilderUtil.replace(sb, "%track", String.format("%0" + String.valueOf(maxTrack).length() + "d", tagFile.getTrack()));
+		}
+		StringBuilderUtil.replace(sb, "%title", tagFile.getTitle());
+		StringBuilderUtil.replace(sb, "%album", tagFile.getAlbum());
+		StringBuilderUtil.replace(sb, "%artist", tagFile.getArtist());
+		StringBuilderUtil.replace(sb, "%year", tagFile.getYear() > 0 ? "" + tagFile.getYear() : "");
+		String fileName;
+		if (viewModel.isStripUnsafeChars()) {
+			fileName = FileUtil.removeInvalidChars(sb.toString());
+		} else {
+			fileName = sb.toString();
+		}
+		Path path = tagFile.getPath();
+		Files.move(path, path.resolveSibling(fileName));
+		tagFile.setName(fileName);
+		viewModel.getUpdatedFiles().add(tagFile);
+	}
+
+	public boolean hasErrors() {
+		return !errors.isEmpty();
+	}
+
+	public List<String> getErrors() {
+		return errors;
+	}
+}
