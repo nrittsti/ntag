@@ -15,7 +15,7 @@
 		    <artifactId>jaudiotagger</artifactId>
 		    <version>2.2.4</version>
 		    <scope>system</scope>
-		    <systemPath>D:/Projekte/Git/NTag/NTag/libs/jaudiotagger-2.2.4.jar</systemPath>
+		    <systemPath>${basedir}/libs/jaudiotagger-2.2.4.jar</systemPath>
 		</dependency>			 
 	</dependencies>
 	<build>
