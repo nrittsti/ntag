@@ -22,6 +22,7 @@ Copyright 2016, Nico Rittstieg
 <?import ntag.fx.scene.control.rating.*?>
 <?import ntag.fx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.MenuItem?>
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="javafx.scene.control.TabPane">	
 	<tabs>
@@ -108,7 +109,30 @@ Copyright 2016, Nico Rittstieg
 				<TextArea fx:id="lyricsTextArea" prefHeight="10000" />
 			</VBox>			
 		</Tab>
-		<Tab fx:id="infoTab" text="%lbl_infos" closable="false">
+		<Tab fx:id="tagTab" text="%lbl_tags" closable="false">				
+			<TableView fx:id="tagTableView" VBox.vgrow="ALWAYS">
+				<columns>
+          			<TableColumn fx:id="tagIdColumn" editable="false" minWidth="100.0" maxWidth="200.0" text="ID" />
+          			<TableColumn fx:id="tagValueColumn" editable="false" text="Value" />          		
+          		</columns>
+          		<contextMenu>
+          			<fx:define>
+					  <ToggleGroup fx:id="id3ToggleGroup"/>  
+					</fx:define>
+					<ContextMenu>
+						<items>
+							<MenuItem fx:id="newTagMenuItem" text="%mnu_new_tag" onAction="#handleNewTagAction" accelerator="ADD" />
+							<MenuItem fx:id="editTagMenuItem" text="%mnu_edit_tag" onAction="#handleEditTagAction" accelerator="ENTER" />
+							<MenuItem fx:id="removeTagMenuItem" text="%mnu_delete_tag" onAction="#handleRemoveTagAction" accelerator="DEL" />
+							<SeparatorMenuItem />
+							<RadioMenuItem fx:id="id3v23MenuItem" text="ID3v23" onAction="#handleChangeID3Version" toggleGroup="$id3ToggleGroup"/>
+							<RadioMenuItem fx:id="id3v24MenuItem" text="ID3v24" onAction="#handleChangeID3Version" toggleGroup="$id3ToggleGroup"/>																
+						</items>
+					</ContextMenu>
+				</contextMenu>						
+			</TableView>						
+		</Tab>
+		<Tab fx:id="headerTab" text="%lbl_header" closable="false">
 			<TextArea fx:id="infosTextArea" styleClass="textarea-infos" editable="false" />
 		</Tab>
 		<Tab fx:id="logTab" text="%lbl_logging" closable="false">

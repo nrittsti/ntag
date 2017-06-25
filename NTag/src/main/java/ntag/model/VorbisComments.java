@@ -48,7 +48,6 @@ public enum VorbisComments {
 	LOCATION("location of recording", false),
 	LYRICIST("the person who wrote the lyrics", false),
 	LYRICS("full lyrics for the track", true),
-	METADATA_BLOCK_PICTURE("Artwork", true),
 	OPUS("the number of the work", false),
 	PART("a division within a work", false),
 	PARTNUMBER("Numeric part number", false),

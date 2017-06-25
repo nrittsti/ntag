@@ -34,28 +34,48 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.jaudiotagger.audio.mp3.MP3File;
+import org.jaudiotagger.tag.TagField;
+import org.jaudiotagger.tag.id3.ID3v23Tag;
+import org.jaudiotagger.tag.id3.ID3v24Tag;
+import org.jaudiotagger.tag.reference.ID3V2Version;
+
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener.Change;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LocalDateStringConverter;
+import ntag.NTagException;
 import ntag.fx.scene.NTagViewModel;
 import ntag.fx.scene.control.ArtworkControl;
 import ntag.fx.scene.control.rating.RatingControl;
+import ntag.fx.util.TagFieldInputDialogs;
 import ntag.io.NTagProperties;
+import ntag.io.TagFileReader;
 import ntag.model.Genre;
 import ntag.model.TagFile;
 import toolbox.fx.FxUtil;
@@ -118,7 +138,9 @@ public class TagEditorControl extends TabPane implements Initializable {
 	private ScrollPane editorScrollPane;
 
 	@FXML
-	private Tab infoTab;
+	private Tab headerTab;
+	@FXML
+	private Tab tagTab;
 	@FXML
 	private Tab lyricsTab;
 	@FXML
@@ -169,6 +191,20 @@ public class TagEditorControl extends TabPane implements Initializable {
 
 	@FXML
 	private TextArea lyricsTextArea;
+	@FXML
+	private TableView<TagField> tagTableView;
+	@FXML
+	private MenuItem removeTagMenuItem;
+	@FXML
+	private MenuItem editTagMenuItem;
+	@FXML
+	private RadioMenuItem id3v23MenuItem;
+	@FXML
+	private RadioMenuItem id3v24MenuItem;
+	@FXML
+	private TableColumn<TagField, String> tagIdColumn;
+	@FXML
+	private TableColumn<TagField, String> tagValueColumn;
 	@FXML
 	private VBox lyricsVBox;
 	@FXML
@@ -241,10 +277,22 @@ public class TagEditorControl extends TabPane implements Initializable {
 				titleTextField.setMinWidth(newValue.doubleValue() - showFileButton.getWidth());
 			}
 		});
+		this.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) -> {
+			if (viewModel.getSelectedFileCount() == 1) {
+				try {
+					tagTableView.getItems().setAll(viewModel.getSelectedFiles().get(0).getTags());
+				} catch (Exception e) {
+					LOGGER.log(Level.SEVERE, "Error on updating TagTable", e);
+				}
+			} else {
+				tagTableView.getItems().clear();
+			}
+		});
 		// Tabs
 		lyricsTab.setDisable(true);
 		editorTab.setDisable(true);
-		infoTab.setDisable(true);
+		headerTab.setDisable(true);
+		tagTab.setDisable(true);
 		// Filename
 		filenameTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			if (!newValue && !filenameTextField.isDisabled()) {
@@ -289,7 +337,7 @@ public class TagEditorControl extends TabPane implements Initializable {
 		initialize(yearComboBox, yearEditorProperty, new IntegerStringConverter());
 		new SimpleTextFieldValidator(yearComboBox.getComboBox().getEditor(), ValidationMode.UInteger, 4);
 		// Date
-		dateFormatLabel.setText("  (" + ((SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault())).toPattern() + ")");
+		dateFormatLabel.setText("  (" + ((SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault())).toPattern() + ")");
 		initialize(dateComboBox, dateEditorProperty, new LocalDateStringConverter());
 		new SimpleTextFieldValidator(dateComboBox.getComboBox().getEditor(), ValidationMode.LocalDate, 10);
 		// Genre
@@ -310,6 +358,26 @@ public class TagEditorControl extends TabPane implements Initializable {
 			});
 			lyricsVBox.getChildren().add(button);
 		}
+		// Tag TableView
+		tagTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		tagIdColumn.setCellValueFactory(new PropertyValueFactory<TagField, String>("id"));
+		tagValueColumn.setCellValueFactory(new TagFieldCellFactory());
+		removeTagMenuItem.disableProperty().bind(tagTableView.getSelectionModel().selectedItemProperty().isNull());
+		editTagMenuItem.disableProperty().bind(tagTableView.getSelectionModel().selectedItemProperty().isNull());
+		tagTableView.setOnMouseClicked((MouseEvent event) -> {
+			if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2 && !tagTableView.getSelectionModel().isEmpty()) {
+				handleEditTagAction(null);
+			}
+		});
+		tagTableView.setOnKeyPressed((KeyEvent event) -> {
+			if ((event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.SUBTRACT) && !tagTableView.getSelectionModel().isEmpty()) {
+				handleRemoveTagAction(null);
+			} else if (event.getCode() == KeyCode.ENTER && !tagTableView.getSelectionModel().isEmpty()) {
+				handleEditTagAction(null);
+			} else if (event.getCode() == KeyCode.N && event.isControlDown()) {
+				handleNewTagAction(null);
+			}
+		});
 	}
 
 	private static <T> void initialize(CheckBox checkBox, EditorProperty<Boolean> editorProp) {
@@ -435,6 +503,88 @@ public class TagEditorControl extends TabPane implements Initializable {
 		}
 	}
 
+	@FXML
+	private void handleRemoveTagAction(final ActionEvent event) {
+		TagFile selectedFile = viewModel.getSelectedFiles().get(0);
+		TagField tagField = tagTableView.getSelectionModel().getSelectedItem();
+		try {
+			selectedFile.removeTag(tagField);
+			new TagFileReader().updateTagFile(selectedFile, false);
+			viewModel.getSelectedFiles().clear();
+			viewModel.getSelectedFiles().add(selectedFile);
+		} catch (Exception e) {
+			FxUtil.showException("Delete Tag has failed", e);
+		}
+	}
+
+	@FXML
+	private void handleEditTagAction(final ActionEvent event) {
+		TagFile selectedFile = viewModel.getSelectedFiles().get(0);
+		TagField tagField = tagTableView.getSelectionModel().getSelectedItem();
+		try {
+			if (!TagFieldInputDialogs.showTagFieldEditor(tagField, selectedFile.getAudioFile().getTag())) {
+				return;
+			}
+		} catch (NTagException e) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Tag Editor Error");
+			alert.setHeaderText(e.getMessage());
+			alert.showAndWait();
+			return;
+		}
+		try {
+			selectedFile.getAudioFile().commit();
+			new TagFileReader().updateTagFile(selectedFile, false);
+			viewModel.getSelectedFiles().clear();
+			viewModel.getSelectedFiles().add(selectedFile);
+			if (LOGGER.isLoggable(Level.INFO)) {
+				LOGGER.info(String.format("Updated %s Tag from file '%s'", tagField.getId(), selectedFile.getName()));
+			}
+		} catch (Exception e) {
+			FxUtil.showException("Edit Tag has failed", e);
+		}
+	}
+
+	@FXML
+	private void handleNewTagAction(final ActionEvent event) {
+		TagFile selectedFile = viewModel.getSelectedFiles().get(0);
+		try {
+			if (!TagFieldInputDialogs.showNewTagFieldWizard(selectedFile.getAudioFile())) {
+				return;
+			}
+			selectedFile.getAudioFile().commit();
+			new TagFileReader().updateTagFile(selectedFile, false);
+			viewModel.getSelectedFiles().clear();
+			viewModel.getSelectedFiles().add(selectedFile);
+		} catch (Exception e) {
+			FxUtil.showException("New Tag has failed", e);
+		}
+	}
+
+	@FXML
+	private void handleChangeID3Version(final ActionEvent event) {
+		TagFile selectedFile = viewModel.getSelectedFiles().get(0);
+		MP3File mp3 = (MP3File) selectedFile.getAudioFile();
+		boolean changed = false;
+		if (id3v23MenuItem.isSelected() && !selectedFile.getTaggingSystem().equals(ID3v23Tag.class.getSimpleName())) {
+			mp3.setTag(mp3.convertTag(mp3.getTagOrCreateDefault(), ID3V2Version.ID3_V23));
+			changed = true;
+		} else if (id3v24MenuItem.isSelected() && !selectedFile.getTaggingSystem().equals(ID3v24Tag.class.getSimpleName())) {
+			mp3.setTag(mp3.convertTag(mp3.getTagOrCreateDefault(), ID3V2Version.ID3_V24));
+			changed = true;
+		}
+		if (changed) {
+			try {
+				mp3.commit();
+				new TagFileReader().updateTagFile(selectedFile, false);
+				viewModel.getSelectedFiles().clear();
+				viewModel.getSelectedFiles().add(selectedFile);
+			} catch (Exception e) {
+				FxUtil.showException("Can't convert tag", e);
+			}
+		}
+	}
+
 	// ***
 	//
 	// hidden implementation
@@ -456,27 +606,44 @@ public class TagEditorControl extends TabPane implements Initializable {
 		}
 		if (viewModel.getSelectedFiles().size() == 1) {
 			TagFile selectedFile = viewModel.getSelectedFiles().get(0);
-			infoTab.setDisable(false);
+			headerTab.setDisable(false);
+			tagTab.setDisable(false);
 			lyricsTab.setDisable(false);
 			try {
 				lyricsEditorProperty.setObjects(viewModel.getSelectedFiles());
 			} catch (Exception e) {
 				LOGGER.log(Level.SEVERE, "Error on updating Editor Property " + lyricsEditorProperty.getName(), e);
 			}
-			infosTextArea.setText(viewModel.getSelectedFiles().get(0).getInfos());
+			infosTextArea.setText(selectedFile.getInfos());
+			if (getSelectionModel().getSelectedItem() == tagTab) {
+				try {
+					tagTableView.getItems().setAll(selectedFile.getTags());
+				} catch (Exception e) {
+					LOGGER.log(Level.SEVERE, "Error on updating TagTable", e);
+				}
+			}
 			filenameTextField.setDisable(false);
 			showFileButton.setDisable(false);
 			filenameTextField.setText(viewModel.getSelectedFiles().get(0).getName());
 			fileInfoLabel.setText(selectedFile.isReadOnly() ? //
 					String.format(" (%s)", Resources.get("ntag", "lbl_read_only")) : "");
+			id3v23MenuItem.setVisible(selectedFile.getTaggingSystem().startsWith("ID3v2"));
+			id3v24MenuItem.setVisible(selectedFile.getTaggingSystem().startsWith("ID3v2"));
+			if (selectedFile.getTaggingSystem().startsWith(ID3v23Tag.class.getSimpleName())) {
+				id3v23MenuItem.setSelected(true);
+			} else if (selectedFile.getTaggingSystem().startsWith(ID3v24Tag.class.getSimpleName())) {
+				id3v24MenuItem.setSelected(true);
+			}
 		} else {
-			infoTab.setDisable(true);
+			tagTab.setDisable(true);
 			lyricsTab.setDisable(true);
 			filenameTextField.setText("");
 			filenameTextField.setDisable(true);
 			showFileButton.setDisable(true);
 			fileInfoLabel.setText("");
-
+			tagTableView.getItems().clear();
+			id3v23MenuItem.setVisible(false);
+			id3v24MenuItem.setVisible(false);
 		}
 	}
 

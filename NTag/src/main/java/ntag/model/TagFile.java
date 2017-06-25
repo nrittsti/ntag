@@ -18,10 +18,23 @@
  */
 package ntag.model;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.exceptions.CannotWriteException;
+import org.jaudiotagger.audio.mp3.MP3File;
+import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.TagField;
+import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -29,8 +42,24 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import ntag.NTagException;
+import ntag.io.JAudiotaggerHelper;
 
 public class TagFile {
+
+	public static final Logger LOGGER = Logger.getLogger(TagFile.class.getName());
+
+	// *** jaudiotagger AudioFile representation
+
+	private AudioFile audioFile;
+
+	public AudioFile getAudioFile() {
+		return audioFile;
+	}
+
+	public void setAudioFile(AudioFile audioFile) {
+		this.audioFile = audioFile;
+	}
 
 	// ***
 	//
@@ -568,6 +597,7 @@ public class TagFile {
 
 	public final void setRating(final java.lang.Integer rating) {
 		this.ratingProperty().set(rating);
+		updateStatus();
 	}
 
 	// *** Lyrics
@@ -742,6 +772,60 @@ public class TagFile {
 			buffer.append('R');
 		}
 		setStatus(buffer.toString());
+	}
+
+	/**
+	 * Returns all native Tags
+	 *
+	 * @return List<TagField>
+	 * @throws NTagException
+	 * @throws IOException
+	 */
+	public List<TagField> getTags() {
+		final AudioFile audioFile = getAudioFile();
+		Iterator<TagField> iterator = null;
+		if (audioFile instanceof MP3File) {
+			MP3File mp3File = (MP3File) audioFile;
+			if (mp3File.hasID3v2Tag()) {
+				AbstractID3v2Tag tag = mp3File.getID3v2Tag();
+				if (tag != null) {
+					iterator = tag.getFields();
+				}
+			}
+		}
+		if (iterator == null) {
+			Tag tag = audioFile.getTag();
+			if (tag != null) {
+				iterator = tag.getFields();
+			}
+		}
+		List<TagField> result = new ArrayList<>();
+		while (iterator.hasNext()) {
+			result.add(iterator.next());
+		}
+		return result;
+	}
+
+	/**
+	 * Removes the given Tag from AudioFile and saves changes to disk
+	 *
+	 * @param tagField
+	 *            Tag to remove
+	 * @throws NTagException
+	 */
+	public void removeTag(final TagField tagField) throws NTagException {
+		final AudioFile audioFile = getAudioFile();
+		final Tag tag = audioFile.getTag();
+		JAudiotaggerHelper.removeTagField(tag, tagField);
+		try {
+			audioFile.commit();
+		} catch (CannotWriteException e) {
+			LOGGER.log(Level.SEVERE, "cannot write to audiofile " + originPath, e);
+			throw new NTagException("cannot write to audiofile", e);
+		}
+		if (LOGGER.isLoggable(Level.INFO)) {
+			LOGGER.info(String.format("Deleted %s Tag from file '%s'", tagField.getId(), name));
+		}
 	}
 
 	@Override

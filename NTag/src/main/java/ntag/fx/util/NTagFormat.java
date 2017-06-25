@@ -100,5 +100,4 @@ public final class NTagFormat {
 		double result = Math.round(value * Math.pow(10d, digits));
 		return result / Math.pow(10d, digits);
 	}
-
 }

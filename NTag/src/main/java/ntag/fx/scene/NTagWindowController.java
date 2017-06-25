@@ -54,8 +54,6 @@ import ntag.fx.scene.control.editor.EditorProperty;
 import ntag.fx.scene.control.editor.TagEditorControl;
 import ntag.fx.scene.control.tableview.TagFileTableView;
 import ntag.io.NTagProperties;
-import ntag.io.TagFileReader;
-import ntag.io.TagFileWriter;
 import ntag.model.TagFile;
 import ntag.task.AdjustArtworkTask;
 import ntag.task.ReadTagFilesTask;
@@ -68,7 +66,6 @@ import toolbox.fx.dialog.DialogResponse;
 import toolbox.fx.dialog.DialogResult;
 import toolbox.fx.dialog.ProgressDialog;
 import toolbox.io.Resources;
-import toolbox.io.log.LoggingUtil;
 
 
 
@@ -228,7 +225,6 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
 	public void readFiles(List<Path> pathList) {
 		// Register special LogHandler
 		appProperties.getActionLogHandler().clear();
-		LoggingUtil.registerHandler(TagFileReader.LOGGER, appProperties.getActionLogHandler());
 
 		ReadTagFilesTask task = new ReadTagFilesTask(pathList, appProperties.getMaxFiles(), appProperties.getMaxDepth());
 		ProgressDialog<List<TagFile>> dialog = new ProgressDialog<List<TagFile>>(task);
@@ -301,7 +297,6 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
 	private void handleSaveAction(final ActionEvent event) {
 		// Register special LogHandler
 		appProperties.getActionLogHandler().clear();
-		LoggingUtil.registerHandler(TagFileWriter.LOGGER, appProperties.getActionLogHandler());
 
 		WriteTagFilesTask task = new WriteTagFilesTask(EditorProperty.getChangedObjects());
 		ProgressDialog<Integer> dialog = new ProgressDialog<Integer>(task);
@@ -327,7 +322,6 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
 	private void handleAdjustArtworkAction(final ActionEvent event) {
 		// Register special LogHandler
 		appProperties.getActionLogHandler().clear();
-		LoggingUtil.registerHandler(TagFileWriter.LOGGER, appProperties.getActionLogHandler());
 
 		if (viewModel.getFiles().isEmpty()) {
 			return;

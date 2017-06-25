@@ -23,10 +23,28 @@ import java.util.Locale;
 
 public final class TagFileConst {
 
-	public static final String TXXX_MEDIA_KIND = "Emmi Media Kind";
-	public static final String TXXX_INSTRUMENTAL = "Emmi Instrumental";
-	public static final String TXXX_MONITORING = "Emmi Monitoring";
-	public static final String TXXX_GENRES = "Emmi Genres";
+	public static final String[] ID3_PIC_TYPES = { //
+			"Other", //
+			"32x32 pixels 'file icon' (PNG only)", //
+			"Other file icon", //
+			"Cover (front)", //
+			"Cover (back)", //
+			"Leaflet page", //
+			"Media (e.g. lable side of CD)", //
+			"Lead artist/lead performer/soloist", //
+			"Artist/performer", //
+			"Conductor", //
+			"Band/Orchestra", //
+			"Composer", //
+			"Lyricist/text writer", //
+			"Recording Location", //
+			"During recording", //
+			"During performance", //
+			"Movie/video screen capture", //
+			"A bright coloured fish", //
+			"Illustration", //
+			"Band/artist logotype", //
+			"Publisher/Studio logotype" };
 
 	public static final DateTimeFormatter ISO_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.UK);
 

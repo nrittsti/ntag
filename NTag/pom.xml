@@ -5,7 +5,7 @@
 	<artifactId>NTag</artifactId>
 	<version>1.0.0</version>
 	<properties>		
-		<ntag.version>0.9.5</ntag.version>
+		<ntag.version>1.0.0</ntag.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	

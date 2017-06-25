@@ -18,7 +18,6 @@
  */
 package ntag.io;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -50,7 +49,6 @@ import org.jaudiotagger.tag.id3.framebody.FrameBodyAPIC;
 import org.jaudiotagger.tag.id3.framebody.FrameBodyPOPM;
 import org.jaudiotagger.tag.id3.framebody.FrameBodyTCON;
 import org.jaudiotagger.tag.id3.framebody.FrameBodyTDAT;
-import org.jaudiotagger.tag.id3.framebody.FrameBodyTXXX;
 import org.jaudiotagger.tag.images.Artwork;
 import org.jaudiotagger.tag.images.ArtworkFactory;
 
@@ -241,7 +239,7 @@ public final class TagFileWriter {
 
 		infos.append("Writing: '").append(path.getFileName()).append("' from Directory: ").append(path.getParent());
 
-		AudioFile audioFile = read(tagFile.getPath());
+		AudioFile audioFile = tagFile.getAudioFile();
 
 		// UPDATE METADATA FRAMES
 		try {
@@ -272,44 +270,6 @@ public final class TagFileWriter {
 		tagFile.setDirty(false);
 		if (LOGGER.isLoggable(Level.INFO)) {
 			LOGGER.info(infos.toString());
-		}
-	}
-
-	public void updateRating(int rating, Path path) throws NTagException {
-		this.infos = new StringBuilder(1000);
-		AudioFile audioFile = read(path);
-		String name = path.toString();
-		AudioFormat audioFormat = AudioFormat.getTypeByExtension(name.substring(name.lastIndexOf('.')));
-		if (audioFile instanceof MP3File) {
-			MP3File mp3 = (MP3File) audioFile;
-			updateID3v2Rating(audioFormat, rating, mp3.getID3v2Tag());
-		} else {
-			updateTextField(audioFile.getTag(), FieldKey.RATING, "" + RatingConverter.out(audioFormat, rating));
-		}
-		try {
-			audioFile.commit();
-		} catch (CannotWriteException e) {
-			LOGGER.log(Level.SEVERE, "cannot write to audiofile " + fullPath, e);
-			throw new NTagException("cannot write to audiofile", e);
-		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "An API error occured while updating the audiofile " + fullPath, e);
-			throw new NTagException("An API error occured while updating the audiofile.", e);
-		}
-	}
-
-	private AudioFile read(Path path) throws NTagException {
-		// READ AUDIO FILE
-		if (!Files.exists(path)) {
-			LOGGER.severe(path.toString() + " does not exists!");
-			throw new NTagException("The file does not exists.");
-		} else {
-			infos.append("Reading: '").append(path.getFileName()).append("' from Directory: ").append(path.getParent());
-		}
-		try {
-			return JAudiotaggerHelper.readAudioFile(path);
-		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "Can't read audio file", e);
-			throw new NTagException("Can't read audio file", e);
 		}
 	}
 
@@ -723,104 +683,6 @@ public final class TagFileWriter {
 			addChange("TCON", genre, null);
 		} catch (FieldDataInvalidException e) {
 			addError("TCON", genre, e.getMessage());
-		}
-	}
-
-	private void updateTXXX(final AbstractID3v2Tag tag, final String description, final String value) {
-		if (description == null || description.length() == 0) {
-			return;
-		}
-		// Zuerst schauen ob es schon so ein freitextfeld gibt
-		List<TagField> list = null;
-		try {
-			list = tag.getFields("TXXX");
-		} catch (KeyNotFoundException e) {
-			return;
-		}
-		if (list != null && !list.isEmpty()) {
-			for (TagField tagField : list) {
-				if (tagField instanceof AbstractID3v2Frame) {
-					FrameBodyTXXX frameTXXX = (FrameBodyTXXX) ((AbstractID3v2Frame) tagField).getBody();
-					if (description.equalsIgnoreCase(frameTXXX.getDescription())) {
-						if (value.equals(frameTXXX.getText()) == false) {
-							addChange("TXXX:" + description, value, frameTXXX.getText());
-							frameTXXX.setObjectValue(DataTypes.OBJ_TEXT, value);
-						}
-						return;
-					}
-				}
-			}
-		}
-		// nichts gefunden, neuen Frame anlegen
-
-		AbstractID3v2Frame frame = tag.createFrame("TXXX");
-		FrameBodyTXXX body = (FrameBodyTXXX) frame.getBody();
-		body.setDescription(description);
-		body.setObjectValue(DataTypes.OBJ_TEXT, value);
-		try {
-			tag.addField(frame);
-			addChange("TXXX:" + description, "" + value, null);
-		} catch (FieldDataInvalidException e) {
-			addError("TXXX:" + description, value, e.getMessage());
-		}
-	}
-
-	private void updateTXXX(final AbstractID3v2Tag tag, final String description, final List<String> values) {
-		if (description == null || description.length() == 0) {
-			return;
-		}
-		// Zuerst schauen ob es schon so ein freitextfeld gibt
-		List<TagField> list = null;
-		try {
-			list = tag.getFields("TXXX");
-		} catch (KeyNotFoundException e) {
-			return;
-		}
-		if (list != null && !list.isEmpty()) {
-			for (TagField tagField : list) {
-				if (tagField instanceof AbstractID3v2Frame) {
-					FrameBodyTXXX body = (FrameBodyTXXX) ((AbstractID3v2Frame) tagField).getBody();
-					if (description.equalsIgnoreCase(body.getDescription())) {
-						String oldValuesStr = body.getValues().toString();
-						// workaround for comparing list values, fist empty list
-						// element looks strange
-						if (oldValuesStr.length() > 4) {
-							oldValuesStr = "[" + oldValuesStr.substring(3);
-						}
-						final String newValuesStr = (values == null || values.size() == 0) ? "" : values.toString();
-						if (oldValuesStr.equals(newValuesStr) == false) {
-							addChange("TXXX:" + description, newValuesStr, oldValuesStr);
-							body.setText("");
-							if (values != null) {
-								for (String value : values) {
-									if (value.trim().length() > 0) {
-										body.addTextValue(value.trim());
-									}
-								}
-							}
-						}
-						return;
-					}
-				}
-			}
-		}
-		// nichts gefunden, neuen Frame anlegen
-
-		AbstractID3v2Frame frame = tag.createFrame("TXXX");
-		FrameBodyTXXX body = (FrameBodyTXXX) frame.getBody();
-		body.setDescription(description);
-		body.setText("");
-		for (String value : values) {
-			if (value.trim().length() > 0) {
-				body.addTextValue(value.trim());
-			}
-		}
-		try {
-			tag.addField(frame);
-			addChange("TXXX:" + description, values.toString(), null);
-		} catch (FieldDataInvalidException e) {
-			LOGGER.log(Level.SEVERE, "can't set TXXX:" + description + " in file " + fullPath, e);
-			addError("TXXX:" + description, values.toString(), e.getMessage());
 		}
 	}
 

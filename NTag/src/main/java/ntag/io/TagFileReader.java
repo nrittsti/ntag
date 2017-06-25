@@ -28,7 +28,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -161,40 +160,6 @@ public class TagFileReader {
 	// ***
 
 	/**
-	 * Reads the artwork tag from the given audio file.
-	 *
-	 * @param filePath
-	 *            Audio File Path
-	 * @return ArtworkTag
-	 * @throws NTagException
-	 * @throws IOException
-	 */
-	public ArtworkTag readArtwork(Path filePath) throws NTagException, IOException {
-		// call jaudiotagger API
-
-		final AudioFile audioFile = JAudiotaggerHelper.readAudioFile(filePath);
-		Tag tag = audioFile.getTag();
-		if (tag == null) {
-			return null;
-		}
-		List<Artwork> artworkList = tag.getArtworkList();
-		if (artworkList != null && !artworkList.isEmpty()) {
-			for (Artwork artwork : artworkList) {
-				if (artwork.getPictureType() == 3 && artwork.getBinaryData() != null && artwork.getBinaryData().length > 0) {
-					return new ArtworkTag(artwork);
-				}
-			}
-			// Fallback
-			for (Artwork artwork : artworkList) {
-				if (artwork.getBinaryData() != null && artwork.getBinaryData().length > 0) {
-					return new ArtworkTag(artwork);
-				}
-			}
-		}
-		return null;
-	}
-
-	/**
 	 * Erstellt ein vollständig gefülltest <code>TagFile</code> Objekt aus dem
 	 * Metadaten einer Audio-Datei. Unterstützt werden die Dateiformate MP3,
 	 * MP4, AAC, FLAC, WMA oder OGG. Die volle Bandbreite an Metadaten steht
@@ -212,13 +177,32 @@ public class TagFileReader {
 		// call jaudiotagger API
 		final AudioFile audioFile = JAudiotaggerHelper.readAudioFile(filePath);
 		final TagFile tagFile = new TagFile();
-		// file properties
-		fillFileInformation(filePath, tagFile);
+		tagFile.setOriginPath(filePath);
+		tagFile.setAudioFile(audioFile);
 
+		updateTagFile(tagFile, false);
+
+		if (LOGGER.isLoggable(Level.INFO)) {
+			LOGGER.info(infos.toString());
+		}
+		return tagFile;
+	}
+
+	public void updateTagFile(final TagFile tagFile, boolean reload) throws IOException, NTagException {
+		if (infos == null) {
+			infos = new StringBuilder(1000);
+		}
+		final AudioFile audioFile;
+		if (reload) {
+			audioFile = JAudiotaggerHelper.readAudioFile(tagFile.getOriginPath());
+		} else {
+			audioFile = tagFile.getAudioFile();
+		}
+		fillFileInformation(tagFile);
 		if (audioFile instanceof MP3File) {
 			MP3File mp3File = (MP3File) audioFile;
 			// header
-			fillHeaderInformation(filePath, tagFile, mp3File);
+			fillHeaderInformation(tagFile, mp3File);
 			// metadata
 			if (mp3File.hasID3v2Tag()) {
 				AbstractID3v2Tag tag = mp3File.getID3v2Tag();
@@ -231,16 +215,12 @@ public class TagFileReader {
 			tagFile.setInfos(createInfoString(mp3File).toString());
 		} else {
 			// header
-			fillHeaderInformation(filePath, tagFile, audioFile);
+			fillHeaderInformation(tagFile, audioFile);
 			// metadata
 			fillCommonMetaInformationen(tagFile, audioFile.getTag(), true);
 			// create Info String
 			tagFile.setInfos(createInfoString(audioFile).toString());
 		}
-		if (LOGGER.isLoggable(Level.INFO)) {
-			LOGGER.info(infos.toString());
-		}
-		return tagFile;
 	}
 
 	// ***
@@ -249,19 +229,18 @@ public class TagFileReader {
 	//
 	// ***
 
-	private void fillFileInformation(Path filePath, TagFile tagFile) throws IOException {
-		tagFile.setOriginPath(filePath);
-		tagFile.setName(filePath.getFileName().toString());
+	private void fillFileInformation(TagFile tagFile) throws IOException {
+		tagFile.setName(tagFile.getOriginPath().getFileName().toString());
 		tagFile.setExtension(tagFile.getName().substring(tagFile.getName().lastIndexOf('.')));
-		tagFile.setDirectory(filePath.getParent().toString());
-		BasicFileAttributes fileAttr = Files.readAttributes(filePath, BasicFileAttributes.class);
+		tagFile.setDirectory(tagFile.getOriginPath().getParent().toString());
+		BasicFileAttributes fileAttr = Files.readAttributes(tagFile.getOriginPath(), BasicFileAttributes.class);
 		tagFile.setSize(fileAttr.size());
 		tagFile.setCreated(LocalDateTime.ofInstant(fileAttr.creationTime().toInstant(), ZoneId.systemDefault()));
 		tagFile.setModified(LocalDateTime.ofInstant(fileAttr.lastModifiedTime().toInstant(), ZoneId.systemDefault()));
-		tagFile.setReadOnly(!Files.isWritable(filePath));
+		tagFile.setReadOnly(!Files.isWritable(tagFile.getOriginPath()));
 	}
 
-	private void fillHeaderInformation(Path filePath, TagFile tagFile, MP3File audioFile) throws NTagException {
+	private void fillHeaderInformation(TagFile tagFile, MP3File audioFile) throws NTagException {
 		MP3AudioHeader header = audioFile.getMP3AudioHeader();
 		tagFile.setVbr(header.isVariableBitRate());
 		tagFile.setLossless(header.isLossless());
@@ -274,7 +253,7 @@ public class TagFileReader {
 		tagFile.setPlaytime(header.getTrackLength());
 	}
 
-	private void fillHeaderInformation(Path filePath, TagFile tagFile, AudioFile audioFile) throws NTagException {
+	private void fillHeaderInformation(TagFile tagFile, AudioFile audioFile) throws NTagException {
 		AudioHeader header = audioFile.getAudioHeader();
 		tagFile.setVbr(header.isVariableBitRate());
 		tagFile.setLossless(header.isLossless());
@@ -579,7 +558,6 @@ public class TagFileReader {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		Iterator<TagField> it = tag.getFields();
 		sb.append(String.format("%s\n-----------------------------------\n", header.getClass().getSimpleName()));
 		sb.append(String.format("\n%-14s%s", "Encoding", header.getEncodingType()));
 		sb.append(String.format("\n%-14s%6s Hz", "Samplerate", header.getSampleRate().trim()));
@@ -593,18 +571,6 @@ public class TagFileReader {
 		sb.append(String.format("\n%-14s%6s", "Channels", header.getChannels().trim()));
 		sb.append(String.format("\n%-14s%6s seconds", "Lenghts", header.getTrackLength()));
 		sb.append(String.format("\n\n%s\n-----------------------------------\n", tag.getClass().getSimpleName()));
-		while (it.hasNext()) {
-			TagField tagField = it.next();
-			sb.append(String.format("%-26s", tagField.getId()));
-			String value = tagField.toString().replace('\n', ' ');
-			if (value.length() > 100) {
-				sb.append(value.substring(0, 100));
-				sb.append("...");
-			} else {
-				sb.append(value);
-			}
-			sb.append('\n');
-		}
 		return sb;
 	}
 
@@ -642,25 +608,12 @@ public class TagFileReader {
 			} catch (Exception e) {
 			}
 		}
-
 		if (audioFile.getID3v2Tag() == null) {
 			sb.append(String.format("\n\n%s\n-----------------------------------\n", "ID3v2Tag"));
 			sb.append("not provided");
 		} else {
-			Iterator<TagField> it = audioFile.getID3v2Tag().getFields();
-			sb.append(String.format("\n\n%s\n-----------------------------------\n", audioFile.getID3v2Tag().getClass().getSimpleName()));
-			while (it.hasNext()) {
-				TagField tagField = it.next();
-				sb.append(String.format("%-10s", tagField.getId()));
-				String value = tagField.toString().replace('\n', ' ');
-				if (value.length() > 100) {
-					sb.append(value.substring(0, 100));
-					sb.append("...");
-				} else {
-					sb.append(value);
-				}
-				sb.append('\n');
-			}
+			sb.append(String.format("\n\n%s%d%s\n-----------------------------------\n", "ID3v", audioFile.getID3v2Tag().getMajorVersion(), "Tag"));
+			sb.append("provided");
 		}
 		return sb;
 	}

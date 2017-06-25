@@ -18,7 +18,6 @@
  */
 package ntag.fx.util;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -36,13 +35,11 @@ import org.jaudiotagger.tag.TagField;
 import org.jaudiotagger.tag.TagTextField;
 import org.jaudiotagger.tag.asf.AsfFieldKey;
 import org.jaudiotagger.tag.asf.AsfTag;
-import org.jaudiotagger.tag.asf.AsfTagCoverField;
 import org.jaudiotagger.tag.id3.AbstractID3v2Frame;
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
 import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
 import org.jaudiotagger.tag.id3.TyerTdatAggregatedFrame;
 import org.jaudiotagger.tag.id3.framebody.AbstractFrameBodyTextInfo;
-import org.jaudiotagger.tag.id3.framebody.FrameBodyAPIC;
 import org.jaudiotagger.tag.id3.framebody.FrameBodyCOMM;
 import org.jaudiotagger.tag.id3.framebody.FrameBodyPCNT;
 import org.jaudiotagger.tag.id3.framebody.FrameBodyPOPM;
@@ -57,10 +54,8 @@ import org.jaudiotagger.tag.mp4.Mp4Tag;
 import org.jaudiotagger.tag.mp4.field.Mp4DiscNoField;
 import org.jaudiotagger.tag.mp4.field.Mp4GenreField;
 import org.jaudiotagger.tag.mp4.field.Mp4TagByteField;
-import org.jaudiotagger.tag.mp4.field.Mp4TagCoverField;
 import org.jaudiotagger.tag.mp4.field.Mp4TrackField;
 import org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag;
-import org.jaudiotagger.tag.vorbiscomment.util.Base64Coder;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -69,7 +64,6 @@ import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -83,17 +77,12 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 import ntag.NTagException;
-import ntag.fx.scene.control.ArtworkControl;
-import ntag.io.JAudiotaggerHelper;
-import ntag.io.TagFileConst;
 import ntag.model.ASF;
-import ntag.model.ArtworkTag;
 import ntag.model.Atoms;
 import ntag.model.ID3v2Frames;
 import ntag.model.VorbisComments;
 import toolbox.fx.FxUtil;
 import toolbox.fx.control.RegexTextfield;
-import toolbox.io.ImageUtil.ImageType;
 import toolbox.io.Resources;
 
 public final class TagFieldInputDialogs {
@@ -245,36 +234,12 @@ public final class TagFieldInputDialogs {
 				} else {
 					return false;
 				}
-			} else if (body instanceof FrameBodyAPIC) {
-				FrameBodyAPIC apic = (FrameBodyAPIC) body;
-				return showApicInputDialog(apic);
 			} else if (body instanceof FrameBodyTPOS) {
 				FrameBodyTPOS tpos = (FrameBodyTPOS) body;
 				return showDiscInputDialog(tpos);
 			} else if (body instanceof FrameBodyTRCK) {
 				FrameBodyTRCK tpos = (FrameBodyTRCK) body;
 				return showTrackInputDialog(tpos);
-			}
-		} else if ("METADATA_BLOCK_PICTURE".equalsIgnoreCase(tagField.getId())) {
-			TagTextField textField = (TagTextField) tagField;
-			return showArtworkInputDialog(textField);
-		} else if (tagField instanceof AsfTagCoverField) {
-			AsfTagCoverField coverField = (AsfTagCoverField) tagField;
-			coverField = showArtworkInputDialog(coverField);
-			if (coverField != null) {
-				JAudiotaggerHelper.replaceTagField(tag, coverField);
-				return true;
-			} else {
-				return false;
-			}
-		} else if (tagField instanceof Mp4TagCoverField) {
-			Mp4TagCoverField coverField = (Mp4TagCoverField) tagField;
-			coverField = showArtworkInputDialog(coverField);
-			if (coverField != null) {
-				JAudiotaggerHelper.replaceTagField(tag, coverField);
-				return true;
-			} else {
-				return false;
 			}
 		} else if (tagField instanceof Mp4DiscNoField) {
 			Mp4DiscNoField disc = (Mp4DiscNoField) tagField;
@@ -656,147 +621,6 @@ public final class TagFieldInputDialogs {
 		return result.isPresent();
 	}
 
-	private static boolean showApicInputDialog(FrameBodyAPIC apic) {
-		Dialog<FrameBodyAPIC> dialog = new Dialog<>();
-		dialog.initOwner(FxUtil.getPrimaryStage());
-		dialog.setTitle("Tag Editor APIC");
-		dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-		dialog.getDialogPane().setPrefSize(200, 140);
-
-		GridPane gridPane = new GridPane();
-		dialog.getDialogPane().setContent(gridPane);
-		gridPane.setHgap(10);
-		gridPane.setVgap(10);
-		gridPane.setPadding(new Insets(20, 10, 10, 10));
-		ArtworkControl artworkControl = new ArtworkControl();
-		if (apic.getImageData() != null && apic.getImageData().length > 0) {
-			try {
-				artworkControl.setArtwork(new ArtworkTag(apic));
-			} catch (IOException e) {
-				FxUtil.showException("Can't read embedded image data", e);
-				return false;
-			}
-		}
-		gridPane.add(artworkControl, 0, 0, 2, 1);
-		ComboBox<String> picTypeCombo = new ComboBox<>();
-		picTypeCombo.getItems().addAll(TagFileConst.ID3_PIC_TYPES);
-		picTypeCombo.getSelectionModel().select(apic.getPictureType() & (0xff));
-		gridPane.add(new Label("Picture type"), 0, 1);
-		gridPane.add(picTypeCombo, 1, 1);
-
-		dialog.setResultConverter(dialogButton -> {
-			if (dialogButton == ButtonType.OK) {
-				apic.setMimeType(artworkControl.getArtwork().getImageType().getMimeTypes()[0]);
-				apic.setImageData(artworkControl.getArtwork().getImageData());
-				apic.setPictureType((byte) (picTypeCombo.getSelectionModel().getSelectedIndex() & (0xff)));
-				apic.setDescription(picTypeCombo.getSelectionModel().getSelectedItem());
-				return apic;
-			}
-			return null;
-		});
-		Optional<FrameBodyAPIC> result = dialog.showAndWait();
-		return result.isPresent();
-	}
-
-	private static boolean showArtworkInputDialog(TagTextField base64TagField) {
-		Dialog<TagTextField> dialog = new Dialog<>();
-		dialog.initOwner(FxUtil.getPrimaryStage());
-		dialog.setTitle("Artwork Editor");
-		dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-		dialog.getDialogPane().setPrefSize(200, 140);
-
-		GridPane gridPane = new GridPane();
-		dialog.getDialogPane().setContent(gridPane);
-		gridPane.setHgap(10);
-		gridPane.setVgap(10);
-		gridPane.setPadding(new Insets(20, 10, 10, 10));
-		ArtworkControl artworkControl = new ArtworkControl();
-		if (base64TagField.getContent().length() > 0) {
-			try {
-				artworkControl.setArtwork(new ArtworkTag(base64TagField));
-			} catch (IOException e) {
-				FxUtil.showException("Can't read embedded image data", e);
-				return false;
-			}
-		}
-		gridPane.add(artworkControl, 0, 0, 2, 1);
-
-		dialog.setResultConverter(dialogButton -> {
-			if (dialogButton == ButtonType.OK) {
-				char[] imageData = Base64Coder.encode(artworkControl.getArtwork().getImageData());
-				base64TagField.setContent(new String(imageData));
-				return base64TagField;
-			}
-			return null;
-		});
-		Optional<TagTextField> result = dialog.showAndWait();
-		return result.isPresent();
-	}
-
-	private static AsfTagCoverField showArtworkInputDialog(AsfTagCoverField coverField) {
-		Dialog<AsfTagCoverField> dialog = new Dialog<>();
-		dialog.initOwner(FxUtil.getPrimaryStage());
-		dialog.setTitle("Artwork Editor");
-		dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-		dialog.getDialogPane().setPrefSize(200, 140);
-
-		GridPane gridPane = new GridPane();
-		dialog.getDialogPane().setContent(gridPane);
-		gridPane.setHgap(10);
-		gridPane.setVgap(10);
-		gridPane.setPadding(new Insets(20, 10, 10, 10));
-		ArtworkControl artworkControl = new ArtworkControl();
-		if (coverField.getRawImageData().length > 0) {
-			try {
-				artworkControl.setArtwork(new ArtworkTag(coverField));
-			} catch (IOException e) {
-				FxUtil.showException("Can't read embedded image data", e);
-				return null;
-			}
-		}
-		gridPane.add(artworkControl, 0, 0, 2, 1);
-		dialog.setResultConverter(dialogButton -> {
-			if (dialogButton == ButtonType.OK) {
-				return new AsfTagCoverField(artworkControl.getArtwork().getImageData(), 3, "", artworkControl.getArtwork().getImageType().getMimeTypes()[0]);
-			}
-			return null;
-		});
-		Optional<AsfTagCoverField> result = dialog.showAndWait();
-		return result.isPresent() ? result.get() : null;
-	}
-
-	private static Mp4TagCoverField showArtworkInputDialog(Mp4TagCoverField coverField) {
-		Dialog<Mp4TagCoverField> dialog = new Dialog<>();
-		dialog.initOwner(FxUtil.getPrimaryStage());
-		dialog.setTitle("Artwork Editor");
-		dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-		dialog.getDialogPane().setPrefSize(200, 140);
-
-		GridPane gridPane = new GridPane();
-		dialog.getDialogPane().setContent(gridPane);
-		gridPane.setHgap(10);
-		gridPane.setVgap(10);
-		gridPane.setPadding(new Insets(20, 10, 10, 10));
-		ArtworkControl artworkControl = new ArtworkControl();
-		if (coverField.getData().length > 0) {
-			try {
-				artworkControl.setArtwork(new ArtworkTag(coverField));
-			} catch (IOException e) {
-				FxUtil.showException("Can't read embedded image data", e);
-				return null;
-			}
-		}
-		gridPane.add(artworkControl, 0, 0, 2, 1);
-		dialog.setResultConverter(dialogButton -> {
-			if (dialogButton == ButtonType.OK) {
-				return new Mp4TagCoverField(artworkControl.getArtwork().getImageData());
-			}
-			return null;
-		});
-		Optional<Mp4TagCoverField> result = dialog.showAndWait();
-		return result.isPresent() ? result.get() : null;
-	}
-
 	private static boolean showTxxxInputDialog(FrameBodyTXXX txxx) {
 		Dialog<FrameBodyTXXX> dialog = new Dialog<>();
 		dialog.initOwner(FxUtil.getPrimaryStage());
@@ -855,11 +679,7 @@ public final class TagFieldInputDialogs {
 		} else if (tag instanceof AsfTag) {
 			AsfTag asfTag = (AsfTag) tag;
 			for (ASF asf : ASF.values()) {
-				if (asf == ASF.Artwork) {
-					tagFields.add(new AsfTagCoverField(new byte[] {}, 0, "", ImageType.JPG.getMimeTypes()[0]));
-				} else {
-					tagFields.add(asfTag.createField(AsfFieldKey.getAsfFieldKey(asf.getCode()), ""));
-				}
+				tagFields.add(asfTag.createField(AsfFieldKey.getAsfFieldKey(asf.getCode()), ""));
 			}
 		} else if (tag instanceof Mp4Tag) {
 			Mp4Tag mp4Tag = (Mp4Tag) tag;
@@ -870,8 +690,6 @@ public final class TagFieldInputDialogs {
 					tagFields.add(new Mp4TrackField(0));
 				} else if (atom == Atoms.Disc) {
 					tagFields.add(new Mp4DiscNoField(0));
-				} else if (atom == Atoms.Artwork) {
-					tagFields.add(new Mp4TagCoverField());
 				} else if (atom == Atoms.BPM) {
 					try {
 						tagFields.add(new Mp4TagByteField(Mp4FieldKey.BPM, "0"));
