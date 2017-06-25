@@ -161,6 +161,10 @@ public class ArtworkTag implements Comparable<ArtworkTag> {
 		}
 	}
 
+	public String getImageHash() {
+		return imageHash;
+	}
+
 	public ImageType getImageType() {
 		return imageType;
 	}
@@ -169,30 +173,26 @@ public class ArtworkTag implements Comparable<ArtworkTag> {
 		this.imageType = imageType;
 	}
 
-	public String getImageHash() {
-		return imageHash;
-	}
-
-	protected void setImageHash(String imageHash) {
-		this.imageHash = imageHash;
-	}
-
 	public int getWidth() throws IOException {
-		if (width <= 0) {
+		if (width <= 0 && imageData.length > 0) {
 			ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
 			BufferedImage image = ImageIO.read(bis);
-			width = image.getWidth();
-			height = image.getHeight();
+			if (image != null) {
+				width = image.getWidth();
+				height = image.getHeight();
+			}
 		}
 		return width;
 	}
 
 	public int getHeight() throws IOException {
-		if (height <= 0) {
+		if (height <= 0 && imageData.length > 0) {
 			ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
 			BufferedImage image = ImageIO.read(bis);
-			width = image.getWidth();
-			height = image.getHeight();
+			if (image != null) {
+				width = image.getWidth();
+				height = image.getHeight();
+			}
 		}
 		return height;
 	}

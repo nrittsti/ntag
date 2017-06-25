@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -33,6 +34,8 @@ import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.audio.mp3.MP3File;
+import org.jaudiotagger.tag.FieldDataInvalidException;
+import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 import org.jaudiotagger.tag.TagField;
 import org.jaudiotagger.tag.TagTextField;
@@ -43,6 +46,7 @@ import org.jaudiotagger.tag.id3.ID3v24Tag;
 
 import ntag.NTagException;
 import ntag.model.Genre;
+import toolbox.fx.FxUtil;
 
 public final class JAudiotaggerHelper {
 
@@ -234,5 +238,28 @@ public final class JAudiotaggerHelper {
 
 	public static long parseLong(String value) {
 		return parseLong(value, -1);
+	}
+
+	public static void removeTagField(Tag tag, TagField tagField) {
+		if (tag.getFields(tagField.getId()).size() == 1) {
+			tag.deleteField(tagField.getId());
+		} else {
+			Iterator<TagField> iterator = tag.getFields();
+			while (iterator.hasNext()) {
+				if (iterator.next() == tagField) {
+					iterator.remove();
+					break;
+				}
+			}
+		}
+	}
+
+	public static void replaceTagField(Tag tag, TagField tagField) {
+		removeTagField(tag, tagField);
+		try {
+			tag.addField(tagField);
+		} catch (FieldDataInvalidException e) {
+			FxUtil.showException("Can't add TagField", e);
+		}
 	}
 }

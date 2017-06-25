@@ -42,7 +42,10 @@ import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import ntag.fx.scene.NTagViewModel;
 import ntag.fx.scene.NTagWindowController;
+import ntag.fx.util.TagFieldInputDialogs;
 import ntag.io.NTagProperties;
+import ntag.io.TagFileReader;
+import ntag.io.TagFileWriter;
 import ntag.model.TagFile;
 import toolbox.fx.FxUtil;
 import toolbox.fx.dialog.DialogResponse;
@@ -56,6 +59,10 @@ public class NTag extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+		Thread.currentThread().setUncaughtExceptionHandler((thread, throwable) -> {
+			LOGGER.log(Level.SEVERE, "Uncaught Exception", throwable);
+			FxUtil.showException("Uncaught Exception", throwable);
+		});
 		try {
 			// first init FXUtil bevor any API calls
 			FxUtil.setPrimaryStage(primaryStage);
@@ -115,6 +122,11 @@ public class NTag extends Application {
 		LoggingUtil.setup("ntag_logging.properties");
 		// read app propperties
 		NTagProperties appProps = new NTagProperties();
+		// register logging handler
+		LoggingUtil.registerHandler(TagFileWriter.LOGGER, appProps.getActionLogHandler());
+		LoggingUtil.registerHandler(TagFileReader.LOGGER, appProps.getActionLogHandler());
+		LoggingUtil.registerHandler(TagFile.LOGGER, appProps.getActionLogHandler());
+		LoggingUtil.registerHandler(TagFieldInputDialogs.LOGGER, appProps.getActionLogHandler());
 		// change app language
 		Resources.setLocale(appProps.getLanguage());
 		// log hello world

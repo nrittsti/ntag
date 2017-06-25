@@ -175,6 +175,7 @@ public final class FxUtil {
 	}
 
 	public static void showException(String msg, Throwable e) {
+		LOGGER.log(Level.SEVERE, msg, e);
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setHeaderText(Resources.get("toolbox", "msg_exception"));
 		alert.setContentText(msg);

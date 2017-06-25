@@ -29,3 +29,7 @@ NTag Version History
 -------------------------
 - removed NTagDB (database feature)
 - fixed rename function with 'Strip unsafe characters' feature --> filename in table view has not been correctly updated 
+
+1.0.0          2017-06-25
+-------------------------
+ - added extended tag field editor (create, edit, delete)

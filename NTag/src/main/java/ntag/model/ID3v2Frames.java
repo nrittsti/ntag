@@ -24,7 +24,6 @@ public enum ID3v2Frames {
 
 	// @formatter:off
 
-	APIC("Artwork", true, 3, 4),
 	COMM("Comments", true, 3, 4),
 	PCNT("Play counter", true, 3, 4),
 	POPM("Popularimeter", true, 3, 4),
@@ -78,14 +77,14 @@ public enum ID3v2Frames {
 	TXXX("User defined text information", false, 3, 4),
 	TYER("Year", true, 3),
 	USLT("Unsychronised lyrics", true, 3, 4);
-	
+
 	// @formatter:on
 
 	private ID3v2Frames(String label, boolean common, int ... versions) {
 		this.label = label;
 		this.common = common;
 		this.versions = versions;
-	}	
+	}
 
 	private final String label;
 	private final boolean common;

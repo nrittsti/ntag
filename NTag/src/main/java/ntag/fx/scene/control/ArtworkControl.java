@@ -26,6 +26,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.util.ResourceBundle;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -90,19 +91,23 @@ public class ArtworkControl extends HBox implements Initializable {
 
 	// *** Clear Artwork EventHandler
 
-	private EventHandler<ActionEvent> clearEventHandler = null;
+	private ObjectProperty<EventHandler<ActionEvent>> clearEventHandlerProp = new SimpleObjectProperty<>(this, "clearEventHandler", null);
+
+	public ObjectProperty<EventHandler<ActionEvent>> clearEventHandlerProperty() {
+		return clearEventHandlerProp;
+	}
 
 	public EventHandler<ActionEvent> getClearEventHandler() {
-		return clearEventHandler;
+		return clearEventHandlerProp.getValue();
 	}
 
 	public void setClearEventHandler(EventHandler<ActionEvent> clearEventHandler) {
-		this.clearEventHandler = clearEventHandler;
+		clearEventHandlerProp.setValue(clearEventHandler);
 	}
 
 	// *** Artwork
 
-	private ObjectProperty<ArtworkTag> artworkProp = new SimpleObjectProperty<ArtworkTag>(this, "artwork", null);
+	private ObjectProperty<ArtworkTag> artworkProp = new SimpleObjectProperty<>(this, "artwork", null);
 
 	public ObjectProperty<ArtworkTag> artworkProperty() {
 		return artworkProp;
@@ -158,7 +163,7 @@ public class ArtworkControl extends HBox implements Initializable {
 		});
 		tooltipLabel.textProperty().bind(tooltipProp);
 		saveImageButtonLink.disableProperty().bind(artworkProp.isNull());
-		removeImageButtonLink.disableProperty().bind(artworkProp.isNull());
+		removeImageButtonLink.disableProperty().bind(Bindings.or(artworkProp.isNull(), clearEventHandlerProp.isNull()));
 	}
 
 	// ***
@@ -235,9 +240,7 @@ public class ArtworkControl extends HBox implements Initializable {
 
 	@FXML
 	private void handleRemoveImageAction(final ActionEvent event) {
-		if (clearEventHandler != null) {
-			clearEventHandler.handle(event);
-		}
+		getClearEventHandler().handle(event);
 	}
 
 	private void changeArtwork(ArtworkTag artwork) {

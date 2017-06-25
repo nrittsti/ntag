@@ -27,7 +27,6 @@ public enum Atoms {
 	AlbumArtist("aART", "Album Artist", true),
 	ALBUM_ARTIST_SORT("soaa", "Album Artist Sorting", false),
 	Artist("©ART", "Artist", true),
-	Artwork("covr", "Artwork", true),
 	BPM("tmpo", "Beats per minute", true),
 	Comment("©cmt", "Comment", true),
 	Compilation("cpil", "Compilation Flag", true),

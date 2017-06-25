@@ -25,7 +25,6 @@ public enum ASF {
 	Album("WM/AlbumTitle", "Album", true),
 	AlbumArtist("WM/AlbumArtist", "Album Artist", true),
 	Artist("AUTHOR", "Artist", true),
-	Artwork("WM/Picture", "Artwork", true),
 	BPM("WM/BeatsPerMinute", "Beats per minute", true),
 	Comment("DESCRIPTION", "Comment", true),
 	Compilation("WM/IsCompilation", "Compilation Flag", true),
