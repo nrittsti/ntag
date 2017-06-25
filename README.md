@@ -7,8 +7,9 @@ Main features:
   - Viewing and editing tags in audio files
   - Supported tag fields: title, artist, album, track, disc, year, date, comment, composer, album artist, language, lyrics, genre, compilation
   - Supported audio formats: MP3, MP4 (M4A, M4B), FLAC, OGG and WMA
-  - Supported tag formats: ID3v1.1, ID3v2.3, ID3v2.4, MP4, ASF, APE and Vorbis Comment
-  - Batch editing of multiple files  
+  - Supported tag formats: ID3v1.1, ID3v2.3, ID3v2.4, MP4, ASF and Vorbis Comment
+  - Batch editing of multiple files
+  - Extended tag field editor (create, edit, delete)
   - Supported cover artwork formats : JPG, PNG 
   - Resize/Shrink cover artwork
   - Rename files based on the tag information
