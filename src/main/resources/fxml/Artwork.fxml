@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This file is part of NTag (audio file tag editor).
+NTag is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+NTag is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+Copyright 2016, Nico Rittstieg
+-->
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import toolbox.fx.control.ButtonLink?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="HBox" spacing="4" alignment="CENTER">
+	<VBox alignment="CENTER_LEFT">
+		<Label fx:id="tooltipLabel" minWidth="60" />		
+	</VBox>	
+	<ImageView fx:id="imageView" />
+	<VBox alignment="CENTER_LEFT">
+		<ButtonLink fx:id="openImageButtonLink" text="%btn_open" onAction="#handleOpenImageAction" focusTraversable="false" minWidth="60" />
+		<ButtonLink fx:id="pasteImageButtonLink" text="%btn_paste" onAction="#handlePasteImageAction" focusTraversable="false" />
+		<ButtonLink fx:id="saveImageButtonLink" text="%btn_save" onAction="#handleSaveImageAction" focusTraversable="false" />
+		<ButtonLink fx:id="removeImageButtonLink" text="%btn_remove" onAction="#handleRemoveImageAction" focusTraversable="false" />
+	</VBox>
+</fx:root>
+

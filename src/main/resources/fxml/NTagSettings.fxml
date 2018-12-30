@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This file is part of NTag (audio file tag editor).
+NTag is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+NTag is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+Copyright 2016, Nico Rittstieg
+-->
+<!--
+ *
+ * Settings Dialog
+ *
+-->
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import toolbox.fx.control.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntag.fx.scene.NTagSettingsController">
+	<padding><Insets top="5" right="5" bottom="5" left="5"/></padding>
+	<center>
+		<TabPane>
+			<tabs>
+				<Tab text="%lbl_general" closable="false">
+					<VBox>
+						<padding><Insets top="15" right="5" bottom="5" left="5"/></padding>
+						<!-- 
+						* 
+						* General Language
+						* 
+						-->
+						<Label text="%lbl_language">
+							<VBox.margin><Insets><top>5</top></Insets></VBox.margin>						
+						</Label>
+						<Separator />
+						<ComboBox fx:id="languageComboBox" minWidth="200">
+							<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
+						</ComboBox>			
+						<!-- 
+						* 
+						* General File Size Unit
+						* 
+						-->
+						<Label text="%lbl_file_size_units">
+							<VBox.margin><Insets><top>10</top></Insets></VBox.margin>						
+						</Label>
+						<Separator />						
+						<HBox spacing="5">
+							<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
+							<fx:define>
+						        <ToggleGroup fx:id="sizeToggleGroup" />
+						    </fx:define>
+						    <RadioButton fx:id="binaryRadioButton" toggleGroup="$sizeToggleGroup" text="%lbl_binary" />
+							<RadioButton fx:id="decimalRadioButton" toggleGroup="$sizeToggleGroup" text="%lbl_decimal" />							
+						</HBox>
+						<!-- 
+						* 
+						* General Filename Format
+						* 
+						-->
+						<Label text="%lbl_filename_format">
+							<VBox.margin><Insets><top>10</top></Insets></VBox.margin>
+						</Label>
+						<Separator />
+						<RegexTextfield maxLength="100" fx:id="filenameFormatTextField" minWidth="300">
+							<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
+						</RegexTextfield>
+						<CheckBox fx:id="filenameStripUnsafeCharsCheckBox" text="%lbl_strip_unsafe_chars">
+							<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
+						</CheckBox>
+						<!-- 
+						* 
+						* General Favorites
+						* 
+						-->	
+						<Label text="%lbl_genre_fav">
+							<VBox.margin><Insets><top>10</top></Insets></VBox.margin>
+						</Label>
+						<Separator />
+						<TextField fx:id="genreFavTextField" minWidth="300">
+							<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
+						</TextField>										
+					</VBox>
+				</Tab>
+				<Tab text="MP3" closable="false">
+					<VBox>
+						<padding><Insets top="15" right="5" bottom="5" left="5"/></padding>
+						<!-- 
+						* 
+						* ID3 Version
+						* 
+						-->
+						<Label text="Version" />
+						<Separator />							
+						<HBox spacing="5">
+							<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
+							<fx:define>
+						        <ToggleGroup fx:id="id3ToggleGroup" />
+						    </fx:define>
+						    <CheckBox fx:id="id3v1CheckBox" text="ID3v1.1" />
+							<RadioButton fx:id="id3v23RadioButton" toggleGroup="$id3ToggleGroup" text="ID3v2.3">
+								<HBox.margin><Insets><left>20</left></Insets></HBox.margin>
+							</RadioButton>
+							<RadioButton fx:id="id3v24RadioButton" toggleGroup="$id3ToggleGroup" text="ID3v2.4" />
+						</HBox>
+						<!-- 
+						* 
+						* ID3 Rating
+						* 
+						-->
+						<HBox spacing="5" alignment="CENTER_LEFT">
+							<VBox.margin><Insets><top>10</top></Insets></VBox.margin>
+							<Label text="%lbl_rating" />
+							<Label text="(POPM)" />
+						</HBox>					
+						<Separator />
+						<HBox spacing="5" alignment="CENTER_LEFT">
+							<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
+							<Label text="EMail" minWidth="80" />							
+							<RegexTextfield maxLength="30" fx:id="id3RatingMailTextField" minWidth="200" />
+							<CheckBox fx:id="id3RatingEnforceSingleFrameCheckBox" text="%lbl_enforce_single_frame" />							
+						</HBox>
+						<HBox spacing="5" alignment="CENTER_LEFT">
+							<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
+							<Label text="%lbl_conversion" minWidth="80" />
+              <RegexTextfield maxLength="50" regex="[ ,0-9]" fx:id="id3RatingConversionTextField" minWidth="350"/>
+							<Label text="(1-10)"/>												
+						</HBox>
+						<!-- 
+						* 
+						* ID3 Auto Delete Unwanted Frames
+						* 
+						-->
+						<Label text="%lbl_blacklist">
+							<VBox.margin><Insets><top>10</top></Insets></VBox.margin>
+						</Label>									
+						<Separator />
+						<TextField fx:id="id3FrameBlackListTextField" minWidth="300">
+							<VBox.margin><Insets><top>5</top></Insets></VBox.margin>
+						</TextField>
+						<!-- 
+						* 
+						* ID3 Release Date Mapping
+						* 
+						-->
+						<Label text="%lbl_release_date_mapping">
+							<VBox.margin><Insets><top>10</top></Insets></VBox.margin>							
+						</Label>
+						<Separator />
+						<Label text="ID3v2.3 Frames">
+							<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
+						</Label>					
+						<CheckBox text="TDAT + TYER" selected="true" disable="true">
+							<VBox.margin><Insets><top>5</top><left>30</left></Insets></VBox.margin>
+						</CheckBox>
+						<Label text="ID3v2.4 Frames">
+							<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
+						</Label>
+
+            <CheckBox fx:id="tdrlCheckBox" text="TDRL (Release time)">
+              <VBox.margin>
+                <Insets>
+                  <top>5</top>
+                  <left>30</left>
+                </Insets>
+              </VBox.margin>
+            </CheckBox>
+            <CheckBox fx:id="tdorCheckBox" text="TDOR (Original release time)">
+							<VBox.margin><Insets><top>5</top><left>30</left></Insets></VBox.margin>
+            </CheckBox>
+            <CheckBox fx:id="tdrcCheckBox" text="TDRC (Recording time)">
+              <VBox.margin>
+                <Insets>
+                  <top>5</top>
+                  <left>30</left>
+                </Insets>
+              </VBox.margin>
+            </CheckBox>
+					</VBox>
+				</Tab>
+				<Tab text="MP4" closable="false">
+					<VBox>
+						<padding><Insets top="15" right="5" bottom="5" left="5"/></padding>
+						<HBox spacing="5" alignment="CENTER_LEFT">
+								<VBox.margin><Insets><top>10</top></Insets></VBox.margin>
+								<Label text="%lbl_rating" />							
+							</HBox>					
+							<Separator />						
+							<HBox spacing="5" alignment="CENTER_LEFT">
+								<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
+								<Label text="%lbl_conversion" minWidth="80" />													
+								<RegexTextfield maxLength="50" regex="[ ,0-9]" fx:id="mp4RatingConversionTextField" minWidth="300" />
+								<Label text="(1-10)"/>													
+						</HBox>
+					</VBox>
+				</Tab>				
+				<Tab text="FLAC" closable="false">
+					<VBox>
+						<padding><Insets top="15" right="5" bottom="5" left="5"/></padding>
+						<HBox spacing="5" alignment="CENTER_LEFT">
+								<VBox.margin><Insets><top>10</top></Insets></VBox.margin>
+								<Label text="%lbl_rating" />							
+							</HBox>					
+							<Separator />						
+							<HBox spacing="5" alignment="CENTER_LEFT">
+								<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
+								<Label text="%lbl_conversion" minWidth="80" />													
+								<RegexTextfield maxLength="50" regex="[ ,0-9]" fx:id="flacRatingConversionTextField" minWidth="300" />
+								<Label text="(1-10)"/>													
+						</HBox>
+					</VBox>
+				</Tab>
+				<Tab text="OGG" closable="false">
+					<VBox>
+						<padding><Insets top="15" right="5" bottom="5" left="5"/></padding>
+						<HBox spacing="5" alignment="CENTER_LEFT">
+								<VBox.margin><Insets><top>10</top></Insets></VBox.margin>
+								<Label text="%lbl_rating" />							
+							</HBox>					
+							<Separator />						
+							<HBox spacing="5" alignment="CENTER_LEFT">
+								<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
+								<Label text="%lbl_conversion" minWidth="80" />													
+								<RegexTextfield maxLength="50" regex="[ ,0-9]" fx:id="oggRatingConversionTextField" minWidth="300" />
+								<Label text="(1-10)"/>													
+						</HBox>
+					</VBox>
+				</Tab>
+				<Tab text="WMA" closable="false">
+					<VBox>
+						<padding><Insets top="15" right="5" bottom="5" left="5"/></padding>
+						<HBox spacing="5" alignment="CENTER_LEFT">
+								<VBox.margin><Insets><top>10</top></Insets></VBox.margin>
+								<Label text="%lbl_rating" />							
+							</HBox>					
+							<Separator />						
+							<HBox spacing="5" alignment="CENTER_LEFT">
+								<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
+								<Label text="%lbl_conversion" minWidth="80" />													
+								<RegexTextfield maxLength="50" regex="[ ,0-9]" fx:id="wmaRatingConversionTextField" minWidth="300" />
+								<Label text="(1-10)"/>													
+						</HBox>
+					</VBox>
+				</Tab>
+				<Tab text="%lbl_artwork" closable="false">
+					<GridPane hgap="10" vgap="5">
+						<padding><Insets top="10" right="5" bottom="5" left="5"/></padding>
+						<columnConstraints>
+							<ColumnConstraints hgrow="NEVER" />	
+					        <ColumnConstraints hgrow="ALWAYS" />
+					        <ColumnConstraints hgrow="NEVER" maxWidth="50" />				        
+					    </columnConstraints>	    
+					    <Label text="%lbl_format" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+					    <ComboBox fx:id="artworkImageFormatComboBox" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+					    
+					    <CheckBox fx:id="artworkEnforceImageTypeCheckBox" text="%lbl_enforce_image_format" GridPane.columnIndex="1" GridPane.rowIndex="1" />	    
+					    
+					    <Label text="%lbl_quality" GridPane.columnIndex="0" GridPane.rowIndex="2" />	    
+					    <Slider fx:id="artworkQualitySlider" GridPane.columnIndex="1" GridPane.rowIndex="2" showTickLabels="true" showTickMarks="true" min="0.5" max="1.0" majorTickUnit="0.1" minorTickCount="5" />
+					    <RegexTextfield fx:id="artworkQualityTextField" GridPane.columnIndex="2" GridPane.rowIndex="2" maxLength="4" regex="[.,0-9]" />
+					    
+					    <Label text="%lbl_max_size" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+						<Slider fx:id="artworkKilobytesSlider" GridPane.columnIndex="1" GridPane.rowIndex="3" showTickLabels="true" showTickMarks="true" min="32" max="512" majorTickUnit="96" minorTickCount="3" />
+						<RegexTextfield fx:id="artworkKilobytesTextField" GridPane.columnIndex="2" GridPane.rowIndex="3" maxLength="3" regex="[0-9]" />
+						
+						<Label text="%lbl_max_resolution" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+						<Slider fx:id="artworkResolutionSlider" GridPane.columnIndex="1" GridPane.rowIndex="4" showTickLabels="true" showTickMarks="true" min="200" max="1000" majorTickUnit="100" minorTickCount="1" />
+						<RegexTextfield fx:id="artworkResolutionTextField" GridPane.columnIndex="2" GridPane.rowIndex="4" maxLength="3" regex="[0-9]" />
+						
+						<CheckBox fx:id="artworkEnforceSingleArtworkCheckBox" text="%lbl_enforce_single_artwork" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+					</GridPane>
+				</Tab>
+				<Tab text="%lbl_lyrics" closable="false">
+					<VBox spacing="5">
+						<padding><Insets top="10" right="5" bottom="5" left="5"/></padding>
+						<Label text="Provider" />
+						<TextArea fx:id="lyricProviderTextArea" />						
+					</VBox>
+				</Tab>
+			</tabs>
+		</TabPane>
+	</center>
+	<bottom>
+		<VBox spacing="3">
+			<Label fx:id="errorLabel" styleClass="label-error" />
+			<Separator />
+			<HBox spacing="10" alignment="BOTTOM_CENTER">
+        <Button prefWidth="120" text="%btn_cancel" onAction="#handleCancelAction"/>
+        <Button prefWidth="120" text="%btn_ok" onAction="#handleOKAction"/>
+			</HBox>
+		</VBox>
+	</bottom>
+</BorderPane>

@@ -1,6 +1,7 @@
-# NTag (audio file tag editor)
-
-![ScreenShot](https://raw.github.com/nrittsti/ntag/master/ntag.png)
+                                   README
+--------------------------------------------------------------------------------
+                       NTag (audio file tag editor)
+--------------------------------------------------------------------------------
 
 Main features: 
 -------------------
@@ -25,7 +26,6 @@ System Requirements :
 This distribution contains the following files:
 -------------------------------------------------
 
-```
    history.txt                - History of NTag
    license.txt                - License information
    readme.txt                 - This file
@@ -35,26 +35,21 @@ This distribution contains the following files:
    
 Tag-Editor
 
-   ntag.desktop               - Linux Launcher
-   ntag.exe                   - Windows executable (jar wrapper)   
-   ntag.ini                   - Configuration file
+   ntag.desktop								- Linux Launcher
+   ntag.exe                   - Windows executable (jar wrapper)
+   ntag.ini				            - Configuration file
    ntag_logging.properties    - Logging and Debug settings
-```
 
 Launch from command line:
 --------------------------
 
-```
 java --module-path .libs --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.xml.bind -jar ntag.jar
-```
+
 
 Options:
 
-```
 -h --home         custom home directory
 -p --portable     use working directory as home
-```
-
 
 Project Web site :
 --------------------
@@ -65,17 +60,17 @@ https://github.com/nrittsti/ntag/
 Licence:
 --------------------------------------------------------------------------------
 
-NTag is free software: you can redistribute it and/or modify  
-it under the terms of the GNU General Public License as published by  
-the Free Software Foundation, either version 3 of the License, or  
+NTag is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-NTag is distributed in the hope that it will be useful,  
-but WITHOUT ANY WARRANTY; without even the implied warranty of  
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the  
-GNU General Public License for more details.  
+NTag is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License  
+You should have received a copy of the GNU General Public License
 along with NTag.  If not, see <http://www.gnu.org/licenses/>.
 
 Copyright 2018, Nico Rittstieg
@@ -84,12 +79,12 @@ Copyright 2018, Nico Rittstieg
 Third party libraries used by NTag
 --------------------------------------------------------------------------------
 
-Nuvola Icon Theme  
-Autor:   David Vignoni  
+Nuvola Icon Theme
+Autor:   David Vignoni
 Licence: LGPL
 
-JAudiotagger Library 2.2.4  
-Autor:   http://www.jthink.net/jaudiotagger/  
+JAudiotagger Library 2.2.4
+Autor:   http://www.jthink.net/jaudiotagger/
 Licence: LGPL
 
 --------------------------------------------------------------------------------

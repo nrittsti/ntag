@@ -1,0 +1,12 @@
+/.idea/
+/bin/
+/build/
+/.classpath
+/.gitignore
+/.project
+/ntag_logging.properties
+/home/
+/release/
+/target/
+/logs/
+/ntag.ini
