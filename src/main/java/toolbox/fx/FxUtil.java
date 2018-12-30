@@ -246,7 +246,13 @@ public final class FxUtil {
 			if (licenceUrl != null && licenceUrl.length() > 0) {
 				licenceLink.setOnAction((ActionEvent e) -> {
 					try {
-						java.awt.Desktop.getDesktop().browse(new URI(licenceUrl));
+						new Thread(() -> {
+							try {
+								java.awt.Desktop.getDesktop().browse(new URI(licenceUrl));
+							} catch (Exception ex) {
+								FxUtil.showException("Failed to launch this URL", ex);
+							}
+						}).start();
 					} catch (Exception ex) {
 						FxUtil.showException("Failed to launch this URL", ex);
 					}
@@ -261,11 +267,13 @@ public final class FxUtil {
 			grid.add(new Label("Home:"), 0, 2);
 			ButtonLink homeLink = new ButtonLink();
 			homeLink.setOnAction((ActionEvent e) -> {
-				try {
-					java.awt.Desktop.getDesktop().browse(new URI(home));
-				} catch (Exception ex) {
-					FxUtil.showException("Failed to launch this URL", ex);
-				}
+				new Thread(() -> {
+					try {
+						java.awt.Desktop.getDesktop().browse(new URI(home));
+					} catch (Exception ex) {
+						FxUtil.showException("Failed to launch this URL", ex);
+					}
+				}).start();
 			});
 			homeLink.setText(home);
 			grid.add(homeLink, 1, 2);

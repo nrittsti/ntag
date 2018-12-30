@@ -436,7 +436,7 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
 				appProperties.getVersion(), //
 				"GNU General Public License", //
 				"http://www.gnu.org/licenses/gpl-3.0.html", //
-				"https://ntag.codeplex.com", //
+						"https://github.com/nrittsti/ntag", //
 				NTagProperties.getCredits());
 	}
 

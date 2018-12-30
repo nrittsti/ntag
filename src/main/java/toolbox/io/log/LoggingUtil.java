@@ -18,6 +18,8 @@
  */
 package toolbox.io.log;
 
+import toolbox.fx.FxUtil;
+
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -64,7 +66,13 @@ public final class LoggingUtil {
 			throw new IOException(String.format("Directory %s is empty!", logDirPath.toString()));
 		} else {
 			Collections.sort(files, new LogFileComparator());
-			java.awt.Desktop.getDesktop().browse(files.get(0).toUri());
+			new Thread(() -> {
+				try {
+					java.awt.Desktop.getDesktop().browse(files.get(0).toUri());
+				} catch (Exception ex) {
+					FxUtil.showException("Failed to launch this URL", ex);
+				}
+			}).start();
 		}
 	}
 

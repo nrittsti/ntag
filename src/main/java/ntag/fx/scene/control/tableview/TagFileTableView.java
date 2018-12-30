@@ -79,7 +79,13 @@ public class TagFileTableView extends EnhancedTableView<TagFile> {
 				TagFile tagFile = getSelectionModel().getSelectedItem();
 				if (tagFile != null) {
 					try {
-						java.awt.Desktop.getDesktop().browse(tagFile.getPath().toUri());
+						new Thread(() -> {
+							try {
+								java.awt.Desktop.getDesktop().browse(tagFile.getPath().toUri());
+							} catch (Exception e) {
+								FxUtil.showException("Failed to launch this URL", e);
+							}
+						}).start();
 					} catch (Exception e) {
 						FxUtil.showException(e.getMessage(), e);
 					}

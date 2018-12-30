@@ -439,8 +439,18 @@ public class TagEditorControl extends TabPane implements Initializable {
 			return;
 		}
 		try {
-			Runtime.getRuntime().exec(String.format("explorer.exe /select,%s", //
-					viewModel.getSelectedFiles().get(0).getPath().toString()));
+			if (System.getProperty("os.name").toLowerCase().contains("win")) {
+				Runtime.getRuntime().exec(String.format("explorer.exe /select,%s", //
+								viewModel.getSelectedFiles().get(0).getPath().toString()));
+			} else {
+				new Thread(() -> {
+					try {
+						java.awt.Desktop.getDesktop().browse(viewModel.getSelectedFiles().get(0).getPath().getParent().toUri());
+					} catch (Exception e) {
+						FxUtil.showException("Failed to launch this URL", e);
+					}
+				}).start();
+			}
 		} catch (Exception e) {
 			FxUtil.showException(e.getClass().getSimpleName(), e);
 		}
@@ -482,8 +492,14 @@ public class TagEditorControl extends TabPane implements Initializable {
 			sb.append(tagFile.getArtist());
 		}
 		try {
-			provider = provider.replace("input", URLEncoder.encode(sb.toString(), "UTF-8"));
-			java.awt.Desktop.getDesktop().browse(new URI(provider));
+			final String encodedProvider = provider.replace("input", URLEncoder.encode(sb.toString(), "UTF-8"));
+			new Thread(() -> {
+				try {
+					java.awt.Desktop.getDesktop().browse(new URI(encodedProvider));
+				} catch (Exception e) {
+					FxUtil.showException("Failed to launch this URL", e);
+				}
+			}).start();
 		} catch (Exception ex) {
 			FxUtil.showException("Failed to launch this URL", ex);
 		}
