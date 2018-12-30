@@ -6,5 +6,5 @@ Icon=/opt/ntag/ntag.png
 Terminal=false
 Type=Application
 StartupNotify=true
-Categories=Audio;
+Categories=AudioVideo
 Keywords=java;id3;tag;editor

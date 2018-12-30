@@ -41,6 +41,13 @@ Tag-Editor
    ntag_logging.properties    - Logging and Debug settings
 ```
 
+Build with Maven:
+-------------------------------
+
+```
+mvn clean package exec:java
+```
+
 Launch from command line:
 --------------------------
 

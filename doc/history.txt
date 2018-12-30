@@ -33,3 +33,7 @@ NTag Version History
 1.0.0          2017-06-25
 -------------------------
  - added extended tag field editor (create, edit, delete)
+
+1.1.0          2018-12-30
+-------------------------
+- Migration to Java 11
