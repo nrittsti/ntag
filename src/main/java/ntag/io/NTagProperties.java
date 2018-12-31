@@ -41,10 +41,12 @@ import toolbox.io.log.StringPropertyHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 import java.util.jar.Attributes;
@@ -74,10 +76,21 @@ public class NTagProperties {
 
 	public NTagProperties() {
 		if (attributes == null) {
-			try (InputStream inputStream = NTagProperties.class.getResourceAsStream("/META-INF/MANIFEST.MF");) {
-				Manifest manifest = new Manifest(inputStream);
-				attributes = manifest.getMainAttributes();
-			} catch (Exception e) {
+			try {
+				// https://stackoverflow.com/a/1273196
+				Enumeration<URL> resources = getClass().getClassLoader().getResources("META-INF/MANIFEST.MF");
+				while (resources.hasMoreElements()) {
+					try (InputStream inputStream = resources.nextElement().openStream()) {
+						Manifest manifest = new Manifest(inputStream);
+						attributes = manifest.getMainAttributes();
+						if ("NTag".equals(attributes.getValue("Implementation-Title"))) {
+							break;
+						}
+					} catch (Exception e) {
+						LOGGER.log(Level.CONFIG, "Can't read Manifest", e);
+					}
+				}
+			} catch (IOException e) {
 				LOGGER.log(Level.CONFIG, "Can't read Manifest", e);
 			}
 		}

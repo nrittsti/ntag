@@ -41,7 +41,7 @@
 			<outputDirectory>/libs</outputDirectory>
 			<useProjectArtifact>false</useProjectArtifact>
 			<excludes>
-				<exclude>**win*</exclude>
+				<exclude>**win.jar</exclude>
 			</excludes>
 			<scope>runtime</scope>
 		</dependencySet>

@@ -42,13 +42,24 @@ Tag-Editor
 ```
 
 Build with Maven:
--------------------------------
+--------------------------
 
 ```
 mvn clean package exec:java -p profile
 ```
 
 profiles: windows, linux
+
+Download & Installation:
+--------------------------
+
+Arch Linux AUR package:
+
+https://aur.archlinux.org/packages/ntag
+
+Others:
+
+https://github.com/nrittsti/ntag/releases
 
 Launch from command line:
 --------------------------

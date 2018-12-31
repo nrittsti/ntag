@@ -40,7 +40,7 @@
 			<outputDirectory>/libs</outputDirectory>
 			<useProjectArtifact>false</useProjectArtifact>
 			<excludes>
-				<exclude>**linux*</exclude>
+				<exclude>**linux.jar</exclude>
 			</excludes>
 			<scope>runtime</scope>
 		</dependencySet>
