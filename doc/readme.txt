@@ -43,7 +43,9 @@ Tag-Editor
 Build with Maven:
 -----------------
 
-mvn clean package exec:java
+mvn clean package exec:java p profile
+
+profiles: windows, linux
 
 Launch from command line:
 --------------------------
