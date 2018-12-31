@@ -21,7 +21,6 @@
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-base</artifactId>
 			<version>11.0.1</version>
-			<classifier>linux</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.openjfx</groupId>
@@ -90,6 +89,7 @@
 						<manifestEntries>
 							<Implementation-Title>NTag</Implementation-Title>
 							<Implementation-Version>${project.version}</Implementation-Version>
+							<Class-Path>libs/jaudiotagger-2.2.4.jar</Class-Path>
 						</manifestEntries>
 					</archive>
 				</configuration>
