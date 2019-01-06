@@ -24,6 +24,12 @@ import javafx.collections.ObservableList;
 import ntag.model.TagFile;
 import toolbox.io.ImageUtil.ImageType;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
+import java.io.StringReader;
+
 public class AdjustArtworkViewModel {
 
 	// ***
@@ -152,6 +158,23 @@ public class AdjustArtworkViewModel {
 		enforceImageTypeProp.set(value);
 	}
 
+	// Profile
+
+	private StringProperty profileProp = new SimpleStringProperty(this, "profile", "default");
+
+	public StringProperty profileProperty() {
+		return profileProp;
+	}
+
+	public String getProfile() {
+		return profileProp.get();
+	}
+
+	public void setProfile(String value) {
+		profileProp.set(value);
+	}
+
+
 	// ***
 	//
 	// Construction
@@ -160,5 +183,61 @@ public class AdjustArtworkViewModel {
 
 	public AdjustArtworkViewModel() {
 
+	}
+
+	public AdjustArtworkViewModel(String json) {
+		fromJSON(json);
+	}
+
+	// ***
+	//
+	// Public API
+	//
+	// ***
+
+	public void update(AdjustArtworkViewModel other) {
+		setProfile(other.getProfile());
+		setQuality(other.getQuality());
+		setMaxResolution(other.getMaxResolution());
+		setMaxKilobytes(other.getMaxKilobytes());
+		setImageType(other.getImageType());
+		setEnforceSingle(other.isEnforceSingle());
+		setEnforceImageType(other.isEnforceImageType());
+	}
+
+	public String toJSON() {
+		JsonObjectBuilder builder = Json.createObjectBuilder();
+		builder.add("name", getProfile());
+		builder.add("format", getImageType().getFormat());
+		builder.add("forceFormat", isEnforceImageType());
+		builder.add("resolution", getMaxResolution());
+		if (getImageType() == ImageType.JPG) {
+			builder.add("quality", getQuality());
+		}
+		builder.add("naxSize", getMaxKilobytes());
+		builder.add("forceSingle", isEnforceSingle());
+		return builder.build().toString();
+	}
+
+	public void fromJSON(String json) {
+		JsonReader jsonReader = Json.createReader(new StringReader(json));
+		JsonObject object = jsonReader.readObject();
+
+		setProfile(object.getString("name"));
+		setImageType(ImageType.getByFormat(object.getString("format")));
+		setEnforceImageType(object.getBoolean("forceFormat"));
+		setMaxResolution(object.getInt("resolution"));
+		if (getImageType() == ImageType.JPG) {
+			setQuality(object.getJsonNumber("quality").bigDecimalValue().floatValue());
+		}
+		setMaxKilobytes(object.getInt("naxSize"));
+		setEnforceSingle(object.getBoolean("forceSingle"));
+
+		jsonReader.close();
+	}
+
+	@Override
+	public String toString() {
+		return getProfile();
 	}
 }

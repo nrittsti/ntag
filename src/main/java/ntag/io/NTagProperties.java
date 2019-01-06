@@ -23,6 +23,7 @@ import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.stage.Stage;
+import ntag.fx.scene.AdjustArtworkViewModel;
 import ntag.fx.scene.NTagWindowController;
 import ntag.fx.scene.control.converter.FileSizeConverter;
 import ntag.fx.scene.control.editor.ArtworkEditorProperty;
@@ -410,6 +411,27 @@ public class NTagProperties {
 			columnList.add(ColumnType.FILENAME);
 		}
 		return columnList;
+	}
+
+	public void setAdjustArtworkProfiles(List<AdjustArtworkViewModel> profiles) {
+		List<String> jsonList = new ArrayList<>();
+		for (AdjustArtworkViewModel profile : profiles) {
+			jsonList.add(profile.toJSON());
+		}
+		preferences.setValues("Artwork", "Profile", jsonList, false);
+	}
+
+	public List<AdjustArtworkViewModel> getAdjustArtworkProfiles() {
+		List<String> strList = preferences.getValues("Artwork", "Profile");
+		List<AdjustArtworkViewModel> result = new ArrayList<>();
+		for (String json : strList) {
+			try {
+				result.add(new AdjustArtworkViewModel(json));
+			} catch (Exception e) {
+				LOGGER.log(Level.SEVERE, String.format("Could not load Artwork profile: %s", json), e);
+			}
+		}
+		return result;
 	}
 
 	// ***

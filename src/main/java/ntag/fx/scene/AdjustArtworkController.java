@@ -27,12 +27,16 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.util.converter.NumberStringConverter;
+import ntag.io.NTagProperties;
+import toolbox.fx.FxUtil;
 import toolbox.fx.control.RegexTextfield;
 import toolbox.fx.dialog.AbstractDialogController;
 import toolbox.fx.dialog.DialogResponse;
 import toolbox.io.ImageUtil.ImageType;
+import toolbox.io.Resources;
 
 import java.net.URL;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
@@ -74,9 +78,19 @@ public class AdjustArtworkController extends AbstractDialogController<AdjustArtw
 	private CheckBox enforceSingleArtworkCheckBox;
 
 	@FXML
+	private ComboBox<AdjustArtworkViewModel> profileComboBox;
+
+	@FXML
 	private Button allButton;
+
 	@FXML
 	private Button selectedButton;
+
+	@FXML
+	private Button removeProfileButton;
+
+	@FXML
+	private Button saveProfileButton;
 
 	// ***
 	//
@@ -90,6 +104,7 @@ public class AdjustArtworkController extends AbstractDialogController<AdjustArtw
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		NTagProperties props = new NTagProperties();
 		imageFormatComboBox.getItems().addAll(ImageType.values());
 		Bindings.bindBidirectional(qualityTextField.textProperty(), qualitySlider.valueProperty(), new NumberStringConverter("0.00"));
 		Bindings.bindBidirectional(kilobytesTextField.textProperty(), kilobytesSlider.valueProperty(), new NumberStringConverter("###"));
@@ -101,8 +116,24 @@ public class AdjustArtworkController extends AbstractDialogController<AdjustArtw
 					if (newValue != ImageType.JPG) {
 						qualitySlider.setDisable(true);
 						qualityTextField.setDisable(true);
+					} else {
+						qualitySlider.setDisable(false);
+						qualityTextField.setDisable(false);
 					}
 				});
+		profileComboBox.getItems().addAll(props.getAdjustArtworkProfiles());
+		saveProfileButton.disableProperty().bind(Bindings.createBooleanBinding(() ->
+										profileComboBox.getEditor().getText().trim().isEmpty(),
+						profileComboBox.getEditor().textProperty()));
+		removeProfileButton.disableProperty().bind(Bindings.createBooleanBinding(() -> {
+			String name = profileComboBox.getEditor().getText().trim();
+			for (AdjustArtworkViewModel item : profileComboBox.getItems()) {
+				if (item.getProfile().equalsIgnoreCase(name)) {
+					return false;
+				}
+			}
+			return true;
+		}, profileComboBox.getEditor().textProperty()));
 	}
 
 	// ***
@@ -152,5 +183,63 @@ public class AdjustArtworkController extends AbstractDialogController<AdjustArtw
 		this.dialogResponse = DialogResponse.SELECTION;
 		this.getStage().close();
 		unbindViewModel();
+	}
+
+	@FXML
+	private void handleSaveProfileAction(final ActionEvent event) {
+		String name = profileComboBox.getEditor().getText().trim();
+		if (name.length() == 0) {
+			return;
+		}
+		AdjustArtworkViewModel vm = null;
+		for (AdjustArtworkViewModel item : profileComboBox.getItems()) {
+			if (item.getProfile().equalsIgnoreCase(name)) {
+				vm = item;
+				item.update(getViewModel());
+				break;
+			}
+		}
+		if (vm == null) {
+			getViewModel().setProfile(name);
+			profileComboBox.getItems().add(getViewModel());
+		}
+		profileComboBox.getItems().sort(Comparator.comparing(AdjustArtworkViewModel::getProfile));
+		NTagProperties props = new NTagProperties();
+		props.setAdjustArtworkProfiles(profileComboBox.getItems());
+		props.savePreferences();
+		FxUtil.showNotification(Resources.get("ntag", "msg_saved"), FxUtil.getPrimaryStage());
+	}
+
+	@FXML
+	private void handleRemoveProfileAction(final ActionEvent event) {
+		String name = profileComboBox.getEditor().getText().trim();
+		if (name.length() == 0) {
+			return;
+		}
+		AdjustArtworkViewModel selection = null;
+		for (AdjustArtworkViewModel item : profileComboBox.getItems()) {
+			if (item.getProfile().equalsIgnoreCase(name)) {
+				selection = item;
+				break;
+			}
+		}
+		if (selection != null) {
+			profileComboBox.getItems().remove(selection);
+			profileComboBox.getEditor().setText("");
+			NTagProperties props = new NTagProperties();
+			props.setAdjustArtworkProfiles(profileComboBox.getItems());
+			props.savePreferences();
+			FxUtil.showNotification(Resources.get("ntag", "msg_removed"), FxUtil.getPrimaryStage());
+		}
+	}
+
+	@FXML
+	private void handleChangeProfileAction(final ActionEvent event) {
+		if (!profileComboBox.getSelectionModel().isEmpty()) {
+			AdjustArtworkViewModel selection = profileComboBox.getSelectionModel().getSelectedItem();
+			if (selection != null) {
+				getViewModel().update(selection);
+			}
+		}
 	}
 }

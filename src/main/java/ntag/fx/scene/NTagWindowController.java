@@ -340,7 +340,7 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
 		adjArtworkViewModel.setEmptySelection(viewModel.getSelectedFiles().isEmpty());
 
 		DialogResult<AdjustArtworkViewModel> dresult = FxUtil.showDialog("ntag", "Adjust Artwork", //
-						adjArtworkViewModel, getClass().getResource("/fxml/AdjustArtwork.fxml"), getStage(), 500, 350);
+						adjArtworkViewModel, getClass().getResource("/fxml/AdjustArtwork.fxml"), getStage(), 550, 380);
 		if (dresult.getRespone() == DialogResponse.SELECTION) {
 			adjArtworkViewModel.getFiles().addAll(viewModel.getSelectedFiles());
 		} else if (dresult.getRespone() == DialogResponse.ALL) {
@@ -349,7 +349,7 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
 			return;
 		}
 		AdjustArtworkTask task = new AdjustArtworkTask(adjArtworkViewModel);
-		ProgressDialog<List<TagFile>> dialog = new ProgressDialog<List<TagFile>>(task);
+		ProgressDialog<List<TagFile>> dialog = new ProgressDialog<>(task);
 		Thread th = new Thread(task);
 		th.start();
 		dialog.showAndWait();

@@ -6,6 +6,7 @@ module ntag {
 	requires jaudiotagger;
 	requires java.desktop;
 	requires java.xml.bind;
+	requires java.json;
 
 	opens ntag to javafx.fxml;
 	exports ntag;

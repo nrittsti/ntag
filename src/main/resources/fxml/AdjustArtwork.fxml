@@ -46,6 +46,20 @@ Copyright 2016, Nico Rittstieg
 			<RegexTextfield fx:id="resolutionTextField" GridPane.columnIndex="2" GridPane.rowIndex="4" maxLength="3" regex="[0-9]" />
 			
 			<CheckBox fx:id="enforceSingleArtworkCheckBox" text="%lbl_enforce_single_artwork" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+			<Label text="%lbl_profile" GridPane.columnIndex="0" GridPane.rowIndex="6">
+				<GridPane.margin>
+					<Insets top="30" right="0" bottom="0" left="0"/>
+				</GridPane.margin>
+			</Label>
+			<HBox GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.columnSpan="2" spacing="5">
+				<GridPane.margin>
+					<Insets top="30" right="0" bottom="0" left="0"/>
+				</GridPane.margin>
+				<ComboBox fx:id="profileComboBox" editable="true" maxWidth="200" onAction="#handleChangeProfileAction"/>
+				<Button fx:id="saveProfileButton" text="%btn_save" onAction="#handleSaveProfileAction"/>
+				<Button fx:id="removeProfileButton" text="%btn_remove" onAction="#handleRemoveProfileAction"/>
+			</HBox>
 		</GridPane>
 	</center>
 	<bottom>
