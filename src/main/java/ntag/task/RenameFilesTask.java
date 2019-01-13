@@ -97,8 +97,10 @@ public class RenameFilesTask extends Task<List<TagFile>> {
 			fileName = sb.toString();
 		}
 		Path path = tagFile.getPath();
-		Files.move(path, path.resolveSibling(fileName));
+		Path newPath = path.resolveSibling(fileName);
+		Files.move(path, newPath);
 		tagFile.setName(fileName);
+		tagFile.setPath(newPath);
 		viewModel.getUpdatedFiles().add(tagFile);
 	}
 

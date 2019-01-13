@@ -28,6 +28,7 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagField;
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -110,21 +111,29 @@ public class TagFile {
 
 	// *** Origin Path
 
-	private String originPath;
+	private String path;
 
-	public Path getOriginPath() {
-		if (originPath != null) {
-			return Paths.get(originPath);
+	/**
+	 * Returns the Path of this audiofile
+	 *
+	 * @return the Path of this AudioFile
+	 */
+	public Path getPath() {
+		if (path != null) {
+			return Paths.get(path);
 		} else {
 			return null;
 		}
 	}
 
-	public void setOriginPath(Path originPath) {
-		if (originPath == null) {
-			this.originPath = null;
+	public void setPath(Path path) {
+		if (path == null) {
+			this.path = null;
 		} else {
-			this.originPath = originPath.toString();
+			this.path = path.toString();
+			if (this.audioFile != null) {
+				this.audioFile.setFile(new File(this.path));
+			}
 		}
 	}
 
@@ -711,15 +720,6 @@ public class TagFile {
 	// ***
 
 	/**
-	 * Returns the Path of this audiofile
-	 *
-	 * @return the Path of this AudioFile
-	 */
-	public Path getPath() {
-		return Paths.get(getDirectory(), getName());
-	}
-
-	/**
 	 * Returns true, if artwork data is present.
 	 *
 	 * @return true, if artwork data is present.
@@ -794,8 +794,10 @@ public class TagFile {
 			}
 		}
 		List<TagField> result = new ArrayList<>();
-		while (iterator.hasNext()) {
-			result.add(iterator.next());
+		if (iterator != null) {
+			while (iterator.hasNext()) {
+				result.add(iterator.next());
+			}
 		}
 		return result;
 	}
@@ -814,7 +816,7 @@ public class TagFile {
 		try {
 			audioFile.commit();
 		} catch (CannotWriteException e) {
-			LOGGER.log(Level.SEVERE, "cannot write to audiofile " + originPath, e);
+			LOGGER.log(Level.SEVERE, "cannot write to audiofile " + path, e);
 			throw new NTagException("cannot write to audiofile", e);
 		}
 		if (LOGGER.isLoggable(Level.INFO)) {

@@ -659,8 +659,10 @@ public class TagEditorControl extends TabPane implements Initializable {
 		if (!fileName.equals(oldName)) {
 			Path path = tagFile.getPath();
 			try {
-				Files.move(path, path.resolveSibling(fileName));
+				Path newPath = path.resolveSibling(fileName);
+				Files.move(path, newPath);
 				tagFile.setName(fileName);
+				tagFile.setPath(newPath);
 				filenameTextField.setText(fileName);
 				viewModel.getUpdatedFiles().add(tagFile);
 			} catch (IOException e) {

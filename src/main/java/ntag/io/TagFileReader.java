@@ -160,7 +160,7 @@ public class TagFileReader {
 	 * MP4, AAC, FLAC, WMA oder OGG. Die volle Bandbreite an Metadaten steht
 	 * jedoch nur für das MP3 Format zur Verfügung.
 	 *
-	 * @param file
+	 * @param filePath
 	 *            the absolut path of the media file
 	 * @return TagFile
 	 * @throws NTagException
@@ -172,7 +172,7 @@ public class TagFileReader {
 		// call jaudiotagger API
 		final AudioFile audioFile = JAudiotaggerHelper.readAudioFile(filePath);
 		final TagFile tagFile = new TagFile();
-		tagFile.setOriginPath(filePath);
+		tagFile.setPath(filePath);
 		tagFile.setAudioFile(audioFile);
 
 		updateTagFile(tagFile, false);
@@ -189,7 +189,7 @@ public class TagFileReader {
 		}
 		final AudioFile audioFile;
 		if (reload) {
-			audioFile = JAudiotaggerHelper.readAudioFile(tagFile.getOriginPath());
+			audioFile = JAudiotaggerHelper.readAudioFile(tagFile.getPath());
 		} else {
 			audioFile = tagFile.getAudioFile();
 		}
@@ -225,14 +225,14 @@ public class TagFileReader {
 	// ***
 
 	private void fillFileInformation(TagFile tagFile) throws IOException {
-		tagFile.setName(tagFile.getOriginPath().getFileName().toString());
+		tagFile.setName(tagFile.getPath().getFileName().toString());
 		tagFile.setExtension(tagFile.getName().substring(tagFile.getName().lastIndexOf('.')));
-		tagFile.setDirectory(tagFile.getOriginPath().getParent().toString());
-		BasicFileAttributes fileAttr = Files.readAttributes(tagFile.getOriginPath(), BasicFileAttributes.class);
+		tagFile.setDirectory(tagFile.getPath().getParent().toString());
+		BasicFileAttributes fileAttr = Files.readAttributes(tagFile.getPath(), BasicFileAttributes.class);
 		tagFile.setSize(fileAttr.size());
 		tagFile.setCreated(LocalDateTime.ofInstant(fileAttr.creationTime().toInstant(), ZoneId.systemDefault()));
 		tagFile.setModified(LocalDateTime.ofInstant(fileAttr.lastModifiedTime().toInstant(), ZoneId.systemDefault()));
-		tagFile.setReadOnly(!Files.isWritable(tagFile.getOriginPath()));
+		tagFile.setReadOnly(!Files.isWritable(tagFile.getPath()));
 	}
 
 	private void fillHeaderInformation(TagFile tagFile, MP3File audioFile) throws NTagException {
@@ -290,6 +290,8 @@ public class TagFileReader {
 				}
 				createRating(tagFile, JAudiotaggerHelper.parseInt(tag.getFirst(FieldKey.RATING)));
 			}
+		} else {
+			tagFile.setTaggingSystem("None");
 		}
 	}
 

@@ -60,8 +60,10 @@ public class ReadTagFilesTask extends Task<List<TagFile>> {
 
 		AudioFileVisitor visitor = new AudioFileVisitor(maxFiles);
 
+		HashSet<FileVisitOption> options = new HashSet<>();
+		options.add(FileVisitOption.FOLLOW_LINKS);
 		for (Path path : pathList) {
-			Files.walkFileTree(path, new HashSet<FileVisitOption>(), maxDepth, visitor);
+			Files.walkFileTree(path, options, maxDepth, visitor);
 		}
 
 		List<Path> files = visitor.getAudioFiles();
