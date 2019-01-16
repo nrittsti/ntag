@@ -183,6 +183,14 @@ public class NTagProperties {
 		preferences.setValue("GUI", "language", locale.getLanguage());
 	}
 
+	public String getDateFormat() {
+		return preferences.getValue("GUI", "Date_Format", "yyyy-mm-dd");
+	}
+
+	public void setDateFormat(String dateFormat) {
+		preferences.setValue("GUI", "Date_Format", dateFormat);
+	}
+
 	public int getMaxDepth() {
 		return preferences.getInteger("Paths", "depth", 10);
 	}

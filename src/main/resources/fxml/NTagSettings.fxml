@@ -76,7 +76,7 @@ Copyright 2016, Nico Rittstieg
 						</CheckBox>
 						<!-- 
 						* 
-						* General Favorites
+						* Genere Favorites
 						* 
 						-->	
 						<Label text="%lbl_genre_fav">
@@ -85,7 +85,30 @@ Copyright 2016, Nico Rittstieg
 						<Separator />
 						<TextField fx:id="genreFavTextField" minWidth="300">
 							<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
-						</TextField>										
+						</TextField>
+						<!--
+						*
+						* Date Format
+						*
+						-->
+						<Label text="%lbl_date_format">
+							<VBox.margin>
+								<Insets>
+									<top>10</top>
+								</Insets>
+							</VBox.margin>
+						</Label>
+						<Separator/>
+						<HBox spacing="10">
+							<VBox.margin>
+								<Insets>
+									<top>5</top>
+									<left>15</left>
+								</Insets>
+							</VBox.margin>
+							<ComboBox fx:id="dateFormatComboBox" minWidth="200"/>
+							<Label text="%lbl_requires_restart"/>
+						</HBox>
 					</VBox>
 				</Tab>
 				<Tab text="MP3" closable="false">

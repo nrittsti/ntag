@@ -66,12 +66,10 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -323,8 +321,8 @@ public class TagEditorControl extends TabPane implements Initializable {
 		initialize(yearComboBox, yearEditorProperty, new IntegerStringConverter());
 		new SimpleTextFieldValidator(yearComboBox.getComboBox().getEditor(), ValidationMode.UInteger, 4);
 		// Date
-		dateFormatLabel.setText("  (" + ((SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault())).toPattern() + ")");
-		initialize(dateComboBox, dateEditorProperty, new LocalDateStringConverter());
+		dateFormatLabel.setText(" (" + appProps.getDateFormat() + ")");
+		initialize(dateComboBox, dateEditorProperty, new LocalDateStringConverter(DateTimeFormatter.ofPattern(appProps.getDateFormat()), null));
 		new SimpleTextFieldValidator(dateComboBox.getComboBox().getEditor(), ValidationMode.LocalDate, 10);
 		// Genre
 		initialize(genreComboBox, genreEditorProperty);

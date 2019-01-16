@@ -20,12 +20,16 @@ package toolbox.fx.control;
 
 import javafx.scene.control.TableCell;
 import javafx.util.converter.LocalDateTimeStringConverter;
+import ntag.io.NTagProperties;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class LocalDateTimeTableCell extends TableCell<Object, LocalDateTime> {
 
-	private final static LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
+	private final static LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter(
+					DateTimeFormatter.ofPattern(new NTagProperties().getDateFormat() + " hh:mm"),
+					null);
 
 	@Override
 	protected void updateItem(LocalDateTime item, boolean empty) {

@@ -22,10 +22,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
 import javafx.util.converter.LocalDateStringConverter;
+import ntag.io.NTagProperties;
 import toolbox.fx.FxUtil;
 
 import javax.xml.bind.ValidationException;
 import java.lang.ref.WeakReference;
+import java.time.format.DateTimeFormatter;
 
 public class SimpleTextFieldValidator implements ChangeListener<Boolean> {
 
@@ -35,8 +37,10 @@ public class SimpleTextFieldValidator implements ChangeListener<Boolean> {
 	private ValidationMode validationMode;
 	private String lastValue;
 	private int maxLength;
+	private NTagProperties appProps = null;
 
 	public SimpleTextFieldValidator(TextField textField, ValidationMode validationMode, int maxLength) {
+		appProps = new NTagProperties();
 		if (textField == null) {
 			throw new IllegalArgumentException("textField cannot be null");
 		}
@@ -73,7 +77,7 @@ public class SimpleTextFieldValidator implements ChangeListener<Boolean> {
 						Integer.parseUnsignedInt(text);
 						break;
 					case LocalDate:
-						new LocalDateStringConverter().fromString(text);
+						new LocalDateStringConverter(DateTimeFormatter.ofPattern(appProps.getDateFormat()), null).fromString(text);
 						break;
 					default:
 						break;

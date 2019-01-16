@@ -23,6 +23,8 @@ import java.util.TimeZone;
 
 public final class NTagFormat {
 
+	public static String[] DATE_FORMATS = new String[]{"dd.MM.yyyy", "dd-MM-yyyy", "dd/MM/yyyy", "yyyy-MM-dd", "yyyy/MM/dd"};
+
 	private NTagFormat() {
 
 	}

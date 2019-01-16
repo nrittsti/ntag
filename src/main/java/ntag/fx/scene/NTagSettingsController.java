@@ -23,6 +23,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.converter.NumberStringConverter;
+import ntag.fx.util.NTagFormat;
 import ntag.io.NTagProperties;
 import toolbox.fx.control.RegexTextfield;
 import toolbox.fx.dialog.AbstractDialogController;
@@ -69,6 +70,8 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
 	private CheckBox filenameStripUnsafeCharsCheckBox;
 	@FXML
 	private TextField genreFavTextField;
+	@FXML
+	private ComboBox<String> dateFormatComboBox;
 
 	// *** MP3
 
@@ -150,6 +153,7 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
 		languageComboBox.getItems().addAll(Locale.ENGLISH, Locale.GERMAN);
 		languageComboBox.setConverter(new StringLocaleConverter());
 		artworkImageFormatComboBox.getItems().addAll(ImageType.values());
+		dateFormatComboBox.getItems().addAll(NTagFormat.DATE_FORMATS);
 		Bindings.bindBidirectional(artworkQualityTextField.textProperty(), artworkQualitySlider.valueProperty(), new NumberStringConverter("0.00"));
 		Bindings.bindBidirectional(artworkKilobytesTextField.textProperty(), artworkKilobytesSlider.valueProperty(), new NumberStringConverter("###"));
 		Bindings.bindBidirectional(artworkResolutionTextField.textProperty(), artworkResolutionSlider.valueProperty(), new NumberStringConverter("####"));
@@ -227,6 +231,7 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
 		filenameFormatTextField.setText(viewModel.getFilenameFormat());
 		filenameStripUnsafeCharsCheckBox.setSelected(viewModel.isFilenameStripUnsafeChars());
 		genreFavTextField.setText(stringListConverter.toString(viewModel.getGenreFavorites()));
+		dateFormatComboBox.setValue(viewModel.getDateFormat());
 		// ID3 Version
 		id3v1CheckBox.setSelected(viewModel.isID3v11());
 		id3v24RadioButton.setSelected(viewModel.isID3v24());
@@ -283,6 +288,7 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
 		viewModel.setFilenameFormat(filenameFormatTextField.getText());
 		viewModel.setFilenameStripUnsafeChars(filenameStripUnsafeCharsCheckBox.isSelected());
 		viewModel.setGenreFavorites(stringListConverter.fromString(genreFavTextField.getText().trim()));
+		viewModel.setDateFormat(dateFormatComboBox.getValue());
 		// ID3 Version
 		viewModel.setID3v11(id3v1CheckBox.isSelected());
 		viewModel.setID3v24(id3v24RadioButton.isSelected());
