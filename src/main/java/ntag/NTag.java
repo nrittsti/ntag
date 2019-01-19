@@ -85,7 +85,7 @@ public class NTag extends Application {
 			primaryStage.show();
 		} catch(Exception e) {
 			String msg = "Error on loading Application MainWindow";
-			LOGGER.log(Level.SEVERE, "msg", e);
+			LOGGER.log(Level.SEVERE, msg, e);
 			FxUtil.showException(msg, e);
 		}
 	}

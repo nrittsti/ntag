@@ -254,6 +254,7 @@ public final class JAudiotaggerHelper {
 		try {
 			tag.addField(tagField);
 		} catch (FieldDataInvalidException e) {
+			LOGGER.log(Level.SEVERE, "Can't add TagField", e);
 			FxUtil.showException("Can't add TagField", e);
 		}
 	}

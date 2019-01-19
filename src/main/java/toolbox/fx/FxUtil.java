@@ -250,11 +250,13 @@ public final class FxUtil {
 							try {
 								java.awt.Desktop.getDesktop().browse(new URI(licenceUrl));
 							} catch (Exception ex) {
-								FxUtil.showException("Failed to launch this URL", ex);
+								LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", licenceUrl), ex);
+								FxUtil.showException(String.format("Failed to launch this URI='%s'", licenceUrl), ex);
 							}
 						}).start();
 					} catch (Exception ex) {
-						FxUtil.showException("Failed to launch this URL", ex);
+						LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", licenceUrl), ex);
+						FxUtil.showException(String.format("Failed to launch this URI='%s'", licenceUrl), ex);
 					}
 				});
 			}
@@ -271,7 +273,8 @@ public final class FxUtil {
 					try {
 						java.awt.Desktop.getDesktop().browse(new URI(home));
 					} catch (Exception ex) {
-						FxUtil.showException("Failed to launch this URL", ex);
+						LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", home), ex);
+						FxUtil.showException(String.format("Failed to launch this URI='%s'", home), ex);
 					}
 				}).start();
 			});

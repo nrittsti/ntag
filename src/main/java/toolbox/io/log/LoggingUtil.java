@@ -70,7 +70,8 @@ public final class LoggingUtil {
 				try {
 					java.awt.Desktop.getDesktop().browse(files.get(0).toUri());
 				} catch (Exception ex) {
-					FxUtil.showException("Failed to launch this URL", ex);
+					LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", files.get(0).toUri()), ex);
+					FxUtil.showException(String.format("Failed to launch this URI='%s'", files.get(0).toUri()), ex);
 				}
 			}).start();
 		}

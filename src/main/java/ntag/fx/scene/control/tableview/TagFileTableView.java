@@ -31,7 +31,13 @@ import toolbox.fx.FxUtil;
 import toolbox.fx.collections.ObservableListLink;
 import toolbox.fx.control.EnhancedTableView;
 
+import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class TagFileTableView extends EnhancedTableView<TagFile> {
+
+	private static final Logger LOGGER = Logger.getLogger(TagFileTableView.class.getName());
 
 	// ***
 	//
@@ -78,16 +84,19 @@ public class TagFileTableView extends EnhancedTableView<TagFile> {
 			if (mouseEvent.isPrimaryButtonDown() && mouseEvent.getClickCount() == 2) {
 				TagFile tagFile = getSelectionModel().getSelectedItem();
 				if (tagFile != null) {
+					URI uri = tagFile.getPath().toUri();
 					try {
 						new Thread(() -> {
 							try {
-								java.awt.Desktop.getDesktop().browse(tagFile.getPath().toUri());
+								java.awt.Desktop.getDesktop().browse(uri);
 							} catch (Exception e) {
-								FxUtil.showException("Failed to launch this URL", e);
+								LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", uri), e);
+								FxUtil.showException(String.format("Failed to launch this URI='%s'", uri), e);
 							}
 						}).start();
 					} catch (Exception e) {
-						FxUtil.showException(e.getMessage(), e);
+						LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", uri), e);
+						FxUtil.showException(String.format("Failed to launch this URI='%s'", uri), e);
 					}
 				}
 			}

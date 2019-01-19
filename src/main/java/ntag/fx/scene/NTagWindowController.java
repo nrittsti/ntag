@@ -52,6 +52,7 @@ import toolbox.fx.dialog.ProgressDialog;
 import toolbox.io.Resources;
 
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -60,6 +61,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -263,16 +265,18 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
 
 	@FXML
 	private void handleOpenDirectory(final ActionEvent event) {
+		URI uri = Paths.get(appProperties.getLastDirectory()).toUri();
 		try {
 			new Thread(() -> {
 				try {
-					java.awt.Desktop.getDesktop().browse(Paths.get(appProperties.getLastDirectory()).toUri());
+					java.awt.Desktop.getDesktop().browse(uri);
 				} catch (Exception e) {
-					FxUtil.showException("Failed to launch this URL", e);
+					LOGGER.log(Level.SEVERE, String.format("Failed to open URI='%s'", uri), e);
+					FxUtil.showException(String.format("Failed to open URI='%s'", uri), e);
 				}
 			}).start();
 		} catch (Exception ex) {
-			FxUtil.showException("Failed to launch this URL", ex);
+			FxUtil.showException(String.format("Failed to open URI='%s'", uri), ex);
 		}
 	}
 

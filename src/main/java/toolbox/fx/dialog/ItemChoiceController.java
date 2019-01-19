@@ -33,8 +33,12 @@ import toolbox.io.Resources;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ItemChoiceController<T> extends AbstractDialogController<ItemChoiceViewModel<T>> {
+
+	private static final Logger LOGGER = Logger.getLogger(ItemChoiceController.class.getName());
 
 	private ListChangeListener<? super T> selectionListChangeListener;
 
@@ -222,6 +226,7 @@ public class ItemChoiceController<T> extends AbstractDialogController<ItemChoice
 			try {
 				item = getViewModel().getStringConverter().fromString(textValue);
 			} catch (Exception e) {
+				LOGGER.log(Level.SEVERE, Resources.get("toolbox", "msg_string_conversion_error"), e);
 				FxUtil.showException(Resources.get("toolbox", "msg_string_conversion_error"), e);
 				return;
 			}

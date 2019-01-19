@@ -441,15 +441,18 @@ public class TagEditorControl extends TabPane implements Initializable {
 				Runtime.getRuntime().exec(String.format("explorer.exe /select,%s", //
 								viewModel.getSelectedFiles().get(0).getPath().toString()));
 			} else {
+				URI uri = viewModel.getSelectedFiles().get(0).getPath().getParent().toUri();
 				new Thread(() -> {
 					try {
-						java.awt.Desktop.getDesktop().browse(viewModel.getSelectedFiles().get(0).getPath().getParent().toUri());
+						java.awt.Desktop.getDesktop().browse(uri);
 					} catch (Exception e) {
-						FxUtil.showException("Failed to launch this URL", e);
+						LOGGER.log(Level.SEVERE, String.format("Failed to open URI='%s'", uri), e);
+						FxUtil.showException(String.format("Failed to open URI='%s'", uri), e);
 					}
 				}).start();
 			}
 		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Failed to open URI", e);
 			FxUtil.showException(e.getClass().getSimpleName(), e);
 		}
 	}
@@ -491,15 +494,18 @@ public class TagEditorControl extends TabPane implements Initializable {
 		}
 		try {
 			final String encodedProvider = provider.replace("input", URLEncoder.encode(sb.toString(), "UTF-8"));
+			URI uri = new URI(encodedProvider);
 			new Thread(() -> {
 				try {
 					java.awt.Desktop.getDesktop().browse(new URI(encodedProvider));
 				} catch (Exception e) {
+					LOGGER.log(Level.SEVERE, String.format("Failed to open URI='%s'", uri), e);
 					FxUtil.showException("Failed to launch this URL", e);
 				}
 			}).start();
-		} catch (Exception ex) {
-			FxUtil.showException("Failed to launch this URL", ex);
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Failed to open URI", e);
+			FxUtil.showException("Failed to open URI", e);
 		}
 	}
 
@@ -513,6 +519,7 @@ public class TagEditorControl extends TabPane implements Initializable {
 			viewModel.getSelectedFiles().clear();
 			viewModel.getSelectedFiles().add(selectedFile);
 		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Delete Tag has failed", e);
 			FxUtil.showException("Delete Tag has failed", e);
 		}
 	}
@@ -541,6 +548,7 @@ public class TagEditorControl extends TabPane implements Initializable {
 				LOGGER.info(String.format("Updated %s Tag from file '%s'", tagField.getId(), selectedFile.getName()));
 			}
 		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Edit Tag has failed", e);
 			FxUtil.showException("Edit Tag has failed", e);
 		}
 	}
@@ -557,6 +565,7 @@ public class TagEditorControl extends TabPane implements Initializable {
 			viewModel.getSelectedFiles().clear();
 			viewModel.getSelectedFiles().add(selectedFile);
 		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "New Tag has failed", e);
 			FxUtil.showException("New Tag has failed", e);
 		}
 	}
@@ -580,6 +589,7 @@ public class TagEditorControl extends TabPane implements Initializable {
 				viewModel.getSelectedFiles().clear();
 				viewModel.getSelectedFiles().add(selectedFile);
 			} catch (Exception e) {
+				LOGGER.log(Level.SEVERE, "Can't convert tag", e);
 				FxUtil.showException("Can't convert tag", e);
 			}
 		}
@@ -664,6 +674,7 @@ public class TagEditorControl extends TabPane implements Initializable {
 				filenameTextField.setText(fileName);
 				viewModel.getUpdatedFiles().add(tagFile);
 			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE, "Failed to rename selected file: " + e.getMessage(), e);
 				FxUtil.showException("Failed to rename selected file: " + e.getMessage(), e);
 			}
 		}

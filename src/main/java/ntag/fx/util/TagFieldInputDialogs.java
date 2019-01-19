@@ -678,6 +678,7 @@ public final class TagFieldInputDialogs {
 							try {
 								tagFields.add(mp4Tag.createField(fk, ""));
 							} catch (Exception e) {
+								LOGGER.log(Level.SEVERE, "Can't create TagField", e);
 								FxUtil.showException("Can't create TagField", e);
 								break;
 							}

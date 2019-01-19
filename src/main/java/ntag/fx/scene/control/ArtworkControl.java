@@ -51,8 +51,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ArtworkControl extends HBox implements Initializable {
+
+	private static final Logger LOGGER = Logger.getLogger(ArtworkControl.class.getName());
 
 	// ***
 	//
@@ -188,6 +192,7 @@ public class ArtworkControl extends HBox implements Initializable {
 		try {
 			changeArtwork(new ArtworkTag(file));
 		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, "Invalid image file", e);
 			FxUtil.showException("Invalid image file", e);
 		}
 	}
@@ -208,6 +213,7 @@ public class ArtworkControl extends HBox implements Initializable {
 		try {
 			Files.write(file.toPath(), getArtwork().getImageData());
 		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, "IOError writing to file " + file.getAbsolutePath(), e);
 			FxUtil.showException("IOError writing to file " + file.getAbsolutePath(), e);
 		}
 	}
@@ -219,6 +225,7 @@ public class ArtworkControl extends HBox implements Initializable {
 			try {
 				changeArtwork(new ArtworkTag(clipboard.getFiles().get(0)));
 			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE, "Invalid pasted image file", e);
 				FxUtil.showException("Invalid pasted image file", e);
 			}
 		} else if (clipboard.hasImage()) {
@@ -230,6 +237,7 @@ public class ArtworkControl extends HBox implements Initializable {
 				java.awt.Image image = (java.awt.Image) transfer.getTransferData(java.awt.datatransfer.DataFlavor.imageFlavor);
 				changeArtwork(new ArtworkTag(image));
 			} catch (Exception e) {
+				LOGGER.log(Level.SEVERE, "Invalid pasted image data", e);
 				FxUtil.showException("Invalid pasted image data", e);
 			}
 		} else {
@@ -248,6 +256,7 @@ public class ArtworkControl extends HBox implements Initializable {
 		try {
 			artwork = adjuster.adjust(artwork);
 		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, "Error by changing artwork", e);
 			FxUtil.showException("Error by changing artwork", e);
 		}
 		setArtwork(artwork);
