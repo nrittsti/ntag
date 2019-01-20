@@ -42,3 +42,10 @@ NTag Version History
 -------------------------
 - fixed about dialog, display of version number
 - added artwork profiles
+
+1.1.2          2019-01-20
+-------------------------
+- new setting: configurable date format
+- update TagFile path attribute after renaming files
+- open directory now follows symlinks
+- avoid Nullpointer when loading plain files without any tags
