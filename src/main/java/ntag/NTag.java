@@ -22,9 +22,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import ntag.fx.scene.NTagViewModel;
 import ntag.fx.scene.NTagWindowController;
 import ntag.fx.util.TagFieldInputDialogs;
@@ -63,9 +65,12 @@ public class NTag extends Application {
 			// set resource bundle by locale
 			loader.setResources(Resources.getResourceBundle("ntag"));
 			loader.setLocation(getClass().getResource("/fxml/NTagWindow.fxml"));
-			BorderPane root = (BorderPane) loader.load();
+			BorderPane root = loader.load();
 			Scene scene = new Scene(root);
-			scene.getStylesheets().add("ntag.css");
+			// set light or dark css theme
+			scene.getStylesheets().add(appProps.getTheme().getCSS());
+			// register CTRL+Q shorcut for exit
+			scene.getAccelerators().put(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN), primaryStage::close);
 			primaryStage.setTitle(appProps.getTitle());
 			primaryStage.getIcons().add(new Image("icons/ntag.png"));
 			primaryStage.setScene(scene);
@@ -76,9 +81,7 @@ public class NTag extends Application {
 			NTagViewModel viewModel = new NTagViewModel(appProps);
 			controller.setViewModel(viewModel);
 			// auto save window state
-			FxUtil.getPrimaryStage().setOnCloseRequest((WindowEvent event) -> {
-				controller.onCloseRequest(event);
-			});
+			FxUtil.getPrimaryStage().setOnCloseRequest(controller::onCloseRequest);
 			// restore window state
 			appProps.restoreMainWindowState(controller);
 			// show main window

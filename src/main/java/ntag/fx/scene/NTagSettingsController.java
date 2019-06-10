@@ -23,6 +23,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.converter.NumberStringConverter;
+import ntag.fx.scene.control.NTagThemeEnum;
 import ntag.fx.util.NTagFormat;
 import ntag.io.NTagProperties;
 import toolbox.fx.control.RegexTextfield;
@@ -58,6 +59,8 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
 
 	// *** General
 
+	@FXML
+	private ComboBox<NTagThemeEnum> themeComboBox;
 	@FXML
 	private ComboBox<Locale> languageComboBox;
 	@FXML
@@ -150,6 +153,7 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		themeComboBox.getItems().addAll(NTagThemeEnum.ModenaLight, NTagThemeEnum.ModenaDark);
 		languageComboBox.getItems().addAll(Locale.ENGLISH, Locale.GERMAN);
 		languageComboBox.setConverter(new StringLocaleConverter());
 		artworkImageFormatComboBox.getItems().addAll(ImageType.values());
@@ -225,6 +229,7 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
 	public void setViewModel(NTagProperties viewModel) {
 		super.setViewModel(viewModel);
 		// General
+		themeComboBox.setValue(viewModel.getTheme());
 		languageComboBox.setValue(viewModel.getLanguage());
 		binaryRadioButton.setSelected(viewModel.isBinaryUnit());
 		decimalRadioButton.setSelected(!viewModel.isBinaryUnit());
@@ -283,6 +288,7 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
 		}
 		this.dialogResponse = DialogResponse.SELECTION;
 		// General
+		viewModel.setTheme(themeComboBox.getValue());
 		viewModel.setLanguage(languageComboBox.getValue());
 		viewModel.setBinaryUnit(binaryRadioButton.isSelected());
 		viewModel.setFilenameFormat(filenameFormatTextField.getText());

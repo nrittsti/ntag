@@ -49,3 +49,10 @@ NTag Version History
 - update TagFile path attribute after renaming files
 - open directory now follows symlinks
 - avoid Nullpointer when loading plain files without any tags
+
+1.2.0          2019-06-10
+-------------------------
+- new setting: dark and light css theming
+- fixed saving window size and position on close request
+- changed about dialog to modal state
+- added shortcut CTRL+Q for closing NTag

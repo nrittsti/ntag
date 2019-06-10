@@ -436,12 +436,13 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
 
 	@FXML
 	private void handleAboutAction(final ActionEvent event) {
-		FxUtil.showAboutDialog("About NTag", //
-				appProperties.getVersion(), //
-				"GNU General Public License", //
-				"http://www.gnu.org/licenses/gpl-3.0.html", //
-						"https://github.com/nrittsti/ntag", //
-				NTagProperties.getCredits());
+		FxUtil.showAboutDialog("About NTag",
+						getStage(),
+						appProperties.getVersion(),
+						"GNU General Public License",
+						"http://www.gnu.org/licenses/gpl-3.0.html",
+						"https://github.com/nrittsti/ntag",
+						NTagProperties.getCredits());
 	}
 
 	@Override

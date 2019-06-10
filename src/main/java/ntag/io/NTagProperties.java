@@ -25,6 +25,7 @@ import javafx.beans.property.StringProperty;
 import javafx.stage.Stage;
 import ntag.fx.scene.AdjustArtworkViewModel;
 import ntag.fx.scene.NTagWindowController;
+import ntag.fx.scene.control.NTagThemeEnum;
 import ntag.fx.scene.control.converter.FileSizeConverter;
 import ntag.fx.scene.control.editor.ArtworkEditorProperty;
 import ntag.fx.scene.control.tableview.FileSizeTableCell;
@@ -173,6 +174,20 @@ public class NTagProperties {
 	public final void setLastDirectory(String dir) {
 		preferences.setValue("GUI", "last_directory", dir);
 		lastDirectory.set(dir);
+	}
+
+	public NTagThemeEnum getTheme() {
+		String themeStr = preferences.getValue("GUI", "theme", NTagThemeEnum.ModenaLight.name());
+		try {
+			return NTagThemeEnum.valueOf(themeStr);
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, String.format("Can't convert %s to NTagThemeEnum, using default theme!", themeStr), e);
+			return NTagThemeEnum.ModenaLight;
+		}
+	}
+
+	public void setTheme(NTagThemeEnum theme) {
+		preferences.setValue("GUI", "theme", theme.name());
 	}
 
 	public Locale getLanguage() {
@@ -472,6 +487,7 @@ public class NTagProperties {
 			deviderPosList.add(pos);
 		}
 		preferences.setDoubleValues("window", "devider", deviderPosList, false);
+		savePreferences();
 	}
 
 	public void restoreMainWindowState(NTagWindowController controller) {

@@ -30,7 +30,30 @@ Copyright 2016, Nico Rittstieg
 				<Tab text="%lbl_general" closable="false">
 					<VBox>
 						<padding><Insets top="15" right="5" bottom="5" left="5"/></padding>
-						<!-- 
+						<!--
+						*
+						* General Theme
+						*
+						-->
+						<Label text="Theme">
+							<VBox.margin>
+								<Insets>
+									<top>5</top>
+								</Insets>
+							</VBox.margin>
+						</Label>
+						<Separator/>
+						<HBox spacing="10">
+							<VBox.margin>
+								<Insets>
+									<top>5</top>
+									<left>15</left>
+								</Insets>
+							</VBox.margin>
+							<ComboBox fx:id="themeComboBox" minWidth="200"/>
+							<Label text="%lbl_requires_restart"/>
+						</HBox>
+						<!--
 						* 
 						* General Language
 						* 
@@ -39,9 +62,16 @@ Copyright 2016, Nico Rittstieg
 							<VBox.margin><Insets><top>5</top></Insets></VBox.margin>						
 						</Label>
 						<Separator />
-						<ComboBox fx:id="languageComboBox" minWidth="200">
-							<VBox.margin><Insets><top>5</top><left>15</left></Insets></VBox.margin>
-						</ComboBox>			
+						<HBox spacing="10">
+							<VBox.margin>
+								<Insets>
+									<top>5</top>
+									<left>15</left>
+								</Insets>
+							</VBox.margin>
+							<ComboBox fx:id="languageComboBox" minWidth="200"/>
+							<Label text="%lbl_requires_restart"/>
+						</HBox>
 						<!-- 
 						* 
 						* General File Size Unit

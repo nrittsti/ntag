@@ -208,14 +208,17 @@ public final class FxUtil {
 		alert.showAndWait();
 	}
 
-	public static void showAboutDialog(String title, String version, String licenceShortname, String licenceUrl, String home, String credits) {
+	public static void showAboutDialog(String title, Stage parent, String version, String licenceShortname, String licenceUrl, String home, String credits) {
 
 		// Create the custom dialog.
 		Dialog<Boolean> dialog = new Dialog<>();
+		dialog.initOwner(parent);
+		dialog.initModality(Modality.APPLICATION_MODAL);
 		dialog.setResizable(true);
 		dialog.setTitle(title);
 		dialog.setHeaderText(title);
 		dialog.initStyle(StageStyle.UTILITY);
+		dialog.getDialogPane().getScene().getStylesheets().addAll(parent.getScene().getStylesheets());
 
 		// Logo Image
 		if (primaryStage != null && primaryStage.getIcons().size() > 0) {
