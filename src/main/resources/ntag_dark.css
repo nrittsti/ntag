@@ -1,108 +1,108 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 
 .textarea-infos {
-    -fx-font-family: monospace;
+  -fx-font-family: monospace;
 }
 
 .statusbar {
-    -fx-background-color: #1B1D24;
+  -fx-background-color: #1B1D24;
 }
 
 .statusbar-label {
-    -fx-text-fill: white;
+  -fx-text-fill: white;
 }
 
 .label-error {
-    -fx-font-size: 10pt;
-    -fx-text-fill: red;
-    -fx-opacity: 1;
+  -fx-font-size: 10pt;
+  -fx-text-fill: red;
+  -fx-opacity: 1;
 }
 
 .toolbar-button {
-    -fx-padding: 2 4 2 4;
-    -fx-min-height: 24;
+  -fx-padding: 2 4 2 4;
+  -fx-min-height: 24;
 }
 
 #file-info-label {
-    -fx-text-fill: red;
+  -fx-text-fill: red;
 }
 
 #info-button {
-    -fx-graphic: url('icons/toolbar_info.png');
-    -fx-padding: 2 4 2 4;
-    -fx-min-height: 24;
+  -fx-graphic: url('icons/toolbar_info.png');
+  -fx-padding: 2 4 2 4;
+  -fx-min-height: 24;
 }
 
 #open-button {
-    -fx-graphic: url('icons/toolbar_open.png');
-    -fx-padding: 2 4 2 4;
-    -fx-min-height: 24;
+  -fx-graphic: url('icons/toolbar_open.png');
+  -fx-padding: 2 4 2 4;
+  -fx-min-height: 24;
 }
 
 #save-button {
-    -fx-graphic: url('icons/toolbar_save.png');
-    -fx-padding: 2 4 2 4;
-    -fx-min-height: 24;
+  -fx-graphic: url('icons/toolbar_save.png');
+  -fx-padding: 2 4 2 4;
+  -fx-min-height: 24;
 }
 
 #settings-button {
-    -fx-graphic: url('icons/toolbar_settings.png');
-    -fx-padding: 2 4 2 4;
-    -fx-min-height: 24;
+  -fx-graphic: url('icons/toolbar_settings.png');
+  -fx-padding: 2 4 2 4;
+  -fx-min-height: 24;
 }
 
 .edit-button {
-    -fx-graphic: url('icons/edit.png');
+  -fx-graphic: url('icons/edit.png');
 }
 
 /* Redefine base colors for dark theming */
 .root {
-    -fx-base: #1B1D24;
-    -fx-background: #1B1D24;
+  -fx-base: #1B1D24;
+  -fx-background: #1B1D24;
 
-    /* make controls (buttons, thumb, etc.) slightly lighter */
-    -fx-color: derive(-fx-base, 10%);
+  /* make controls (buttons, thumb, etc.) slightly lighter */
+  -fx-color: derive(-fx-base, 10%);
 
-    /* text fields and table rows background */
-    -fx-control-inner-background: #2F333D;
-    /* version of -fx-control-inner-background for alternative rows */
-    -fx-control-inner-background-alt: derive(-fx-control-inner-background, 10%);
+  /* text fields and table rows background */
+  -fx-control-inner-background: #2F333D;
+  /* version of -fx-control-inner-background for alternative rows */
+  -fx-control-inner-background-alt: derive(-fx-control-inner-background, 10%);
 
-    /* text colors depending on background's brightness */
-    -fx-light-text-color: rgb(220, 220, 220);
-    -fx-mid-text-color: rgb(100, 100, 100);
-    -fx-dark-text-color: rgb(20, 20, 20);
+  /* text colors depending on background's brightness */
+  -fx-light-text-color: rgb(220, 220, 220);
+  -fx-mid-text-color: rgb(100, 100, 100);
+  -fx-dark-text-color: rgb(20, 20, 20);
 
-    /* Color for highlighting/accenting objects.  For example: selected
-     * text; selected items in menus, lists, trees, and tables; progress bars */
-    -fx-accent: #3498DB;
+  /* Color for highlighting/accenting objects.  For example: selected
+   * text; selected items in menus, lists, trees, and tables; progress bars */
+  -fx-accent: #3498DB;
 
-    /* color of non-focused yet selected elements */
-    -fx-selection-bar-non-focused: #3498DB;
+  /* color of non-focused yet selected elements */
+  -fx-selection-bar-non-focused: #3498DB;
 }
 
 /* Fix derived prompt color for text fields */
 .text-input {
-    -fx-prompt-text-fill: derive(-fx-control-inner-background, +50%);
+  -fx-prompt-text-fill: derive(-fx-control-inner-background, +50%);
 }
 
 /* Keep prompt invisible when focused (above color fix overrides it) */
 .text-input:focused {
-    -fx-prompt-text-fill: transparent;
+  -fx-prompt-text-fill: transparent;
 }
 
 /* Fix scroll bar buttons arrows colors */
 .scroll-bar > .increment-button > .increment-arrow,
 .scroll-bar > .decrement-button > .decrement-arrow {
-    -fx-background-color: -fx-mark-highlight-color, rgb(220, 220, 220);
+  -fx-background-color: -fx-mark-highlight-color, rgb(220, 220, 220);
 }
 
 .scroll-bar > .increment-button:hover > .increment-arrow,
 .scroll-bar > .decrement-button:hover > .decrement-arrow {
-    -fx-background-color: -fx-mark-highlight-color, rgb(240, 240, 240);
+  -fx-background-color: -fx-mark-highlight-color, rgb(240, 240, 240);
 }
 
 .scroll-bar > .increment-button:pressed > .increment-arrow,
 .scroll-bar > .decrement-button:pressed > .decrement-arrow {
-    -fx-background-color: -fx-mark-highlight-color, rgb(255, 255, 255);
+  -fx-background-color: -fx-mark-highlight-color, rgb(255, 255, 255);
 }

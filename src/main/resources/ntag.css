@@ -1,56 +1,56 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 
-.textarea-infos {      
-    -fx-font-family: monospace;    
+.textarea-infos {
+  -fx-font-family: monospace;
 }
 
 .statusbar {
-	-fx-background-color: #1C85CC;	
+  -fx-background-color: #1C85CC;
 }
 
 .statusbar-label {
-	-fx-text-fill: white;
+  -fx-text-fill: white;
 }
 
 .label-error {
-    -fx-font-size: 10pt;   
-    -fx-text-fill: red;
-    -fx-opacity: 1;
+  -fx-font-size: 10pt;
+  -fx-text-fill: red;
+  -fx-opacity: 1;
 }
 
 .toolbar-button {
-	-fx-padding: 2 4 2 4;
-	-fx-min-height: 24;
+  -fx-padding: 2 4 2 4;
+  -fx-min-height: 24;
 }
 
 #file-info-label {
-	-fx-text-fill: red;
+  -fx-text-fill: red;
 }
 
-#info-button {	
-	-fx-graphic: url('icons/toolbar_info.png');
-	-fx-padding: 2 4 2 4;
-	-fx-min-height: 24;	
+#info-button {
+  -fx-graphic: url('icons/toolbar_info.png');
+  -fx-padding: 2 4 2 4;
+  -fx-min-height: 24;
 }
 
-#open-button {	
-	-fx-graphic: url('icons/toolbar_open.png');
-	-fx-padding: 2 4 2 4;
-	-fx-min-height: 24;	
+#open-button {
+  -fx-graphic: url('icons/toolbar_open.png');
+  -fx-padding: 2 4 2 4;
+  -fx-min-height: 24;
 }
 
-#save-button {	
-	-fx-graphic: url('icons/toolbar_save.png');
-	-fx-padding: 2 4 2 4;
-	-fx-min-height: 24;	
+#save-button {
+  -fx-graphic: url('icons/toolbar_save.png');
+  -fx-padding: 2 4 2 4;
+  -fx-min-height: 24;
 }
 
-#settings-button {	
-	-fx-graphic: url('icons/toolbar_settings.png');
-	-fx-padding: 2 4 2 4;
-	-fx-min-height: 24;	
+#settings-button {
+  -fx-graphic: url('icons/toolbar_settings.png');
+  -fx-padding: 2 4 2 4;
+  -fx-min-height: 24;
 }
 
-.edit-button {	
-	-fx-graphic: url('icons/edit.png');	
+.edit-button {
+  -fx-graphic: url('icons/edit.png');
 }

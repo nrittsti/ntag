@@ -17,11 +17,11 @@ Copyright 2016, Nico Rittstieg
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.TableView?>
 <fx:root type="javafx.scene.control.TableView" minWidth="150" xmlns:fx="http://javafx.com/fxml">
-	<contextMenu>
-	 	<ContextMenu>
-	 		<items>
-	 																		
-			</items>
-		</ContextMenu>
-	 </contextMenu>
+  <contextMenu>
+    <ContextMenu>
+      <items>
+
+      </items>
+    </ContextMenu>
+  </contextMenu>
 </fx:root>

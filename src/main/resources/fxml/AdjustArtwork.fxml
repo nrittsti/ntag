@@ -19,58 +19,70 @@ Copyright 2016, Nico Rittstieg
 <?import javafx.scene.layout.*?>
 <?import toolbox.fx.control.RegexTextfield?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntag.fx.scene.AdjustArtworkController">
-	<padding><Insets top="5" right="5" bottom="5" left="5"/></padding>
-	<center>
-		<GridPane hgap="10" vgap="5">
-			<padding><Insets top="5" right="5" bottom="5" left="5"/></padding>
-			<columnConstraints>
-				<ColumnConstraints hgrow="NEVER" />	
-		        <ColumnConstraints hgrow="ALWAYS" />
-		        <ColumnConstraints hgrow="NEVER" maxWidth="50" />				        
-		    </columnConstraints>	    
-		    <Label text="%lbl_format" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-		    <ComboBox fx:id="imageFormatComboBox" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-		    
-		    <CheckBox fx:id="enforceImageTypeCheckBox" text="%lbl_enforce_image_format" GridPane.columnIndex="1" GridPane.rowIndex="1" />	    
-		    
-		    <Label text="%lbl_quality" GridPane.columnIndex="0" GridPane.rowIndex="2" />	    
-		    <Slider fx:id="qualitySlider" GridPane.columnIndex="1" GridPane.rowIndex="2" showTickLabels="true" showTickMarks="true" min="0.5" max="1.0" majorTickUnit="0.1" minorTickCount="5" />
-		    <RegexTextfield fx:id="qualityTextField" GridPane.columnIndex="2" GridPane.rowIndex="2" maxLength="4" regex="[.,0-9]" />
-		    
-		    <Label text="%lbl_max_size" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-			<Slider fx:id="kilobytesSlider" GridPane.columnIndex="1" GridPane.rowIndex="3" showTickLabels="true" showTickMarks="true" min="32" max="512" majorTickUnit="96" minorTickCount="3" />
-			<RegexTextfield fx:id="kilobytesTextField" GridPane.columnIndex="2" GridPane.rowIndex="3" maxLength="3" regex="[0-9]" />
-			
-			<Label text="%lbl_max_resolution" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-			<Slider fx:id="resolutionSlider" GridPane.columnIndex="1" GridPane.rowIndex="4" showTickLabels="true" showTickMarks="true" min="200" max="1000" majorTickUnit="100" minorTickCount="1" />
-			<RegexTextfield fx:id="resolutionTextField" GridPane.columnIndex="2" GridPane.rowIndex="4" maxLength="3" regex="[0-9]" />
-			
-			<CheckBox fx:id="enforceSingleArtworkCheckBox" text="%lbl_enforce_single_artwork" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+  <padding>
+    <Insets top="5" right="5" bottom="5" left="5"/>
+  </padding>
+  <center>
+    <GridPane hgap="10" vgap="5">
+      <padding>
+        <Insets top="5" right="5" bottom="5" left="5"/>
+      </padding>
+      <columnConstraints>
+        <ColumnConstraints hgrow="NEVER"/>
+        <ColumnConstraints hgrow="ALWAYS"/>
+        <ColumnConstraints hgrow="NEVER" maxWidth="50"/>
+      </columnConstraints>
+      <Label text="%lbl_format" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+      <ComboBox fx:id="imageFormatComboBox" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-			<Label text="%lbl_profile" GridPane.columnIndex="0" GridPane.rowIndex="6">
-				<GridPane.margin>
-					<Insets top="30" right="0" bottom="0" left="0"/>
-				</GridPane.margin>
-			</Label>
-			<HBox GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.columnSpan="2" spacing="5">
-				<GridPane.margin>
-					<Insets top="30" right="0" bottom="0" left="0"/>
-				</GridPane.margin>
-				<ComboBox fx:id="profileComboBox" editable="true" maxWidth="200" onAction="#handleChangeProfileAction"/>
-				<Button fx:id="saveProfileButton" text="%btn_save" onAction="#handleSaveProfileAction"/>
-				<Button fx:id="removeProfileButton" text="%btn_remove" onAction="#handleRemoveProfileAction"/>
-			</HBox>
-		</GridPane>
-	</center>
-	<bottom>
-		<VBox spacing="3">
-			<Separator />
-			<HBox spacing="10" alignment="BOTTOM_CENTER">
+      <CheckBox fx:id="enforceImageTypeCheckBox" text="%lbl_enforce_image_format" GridPane.columnIndex="1"
+                GridPane.rowIndex="1"/>
+
+      <Label text="%lbl_quality" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+      <Slider fx:id="qualitySlider" GridPane.columnIndex="1" GridPane.rowIndex="2" showTickLabels="true"
+              showTickMarks="true" min="0.5" max="1.0" majorTickUnit="0.1" minorTickCount="5"/>
+      <RegexTextfield fx:id="qualityTextField" GridPane.columnIndex="2" GridPane.rowIndex="2" maxLength="4"
+                      regex="[.,0-9]"/>
+
+      <Label text="%lbl_max_size" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+      <Slider fx:id="kilobytesSlider" GridPane.columnIndex="1" GridPane.rowIndex="3" showTickLabels="true"
+              showTickMarks="true" min="32" max="512" majorTickUnit="96" minorTickCount="3"/>
+      <RegexTextfield fx:id="kilobytesTextField" GridPane.columnIndex="2" GridPane.rowIndex="3" maxLength="3"
+                      regex="[0-9]"/>
+
+      <Label text="%lbl_max_resolution" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+      <Slider fx:id="resolutionSlider" GridPane.columnIndex="1" GridPane.rowIndex="4" showTickLabels="true"
+              showTickMarks="true" min="200" max="1000" majorTickUnit="100" minorTickCount="1"/>
+      <RegexTextfield fx:id="resolutionTextField" GridPane.columnIndex="2" GridPane.rowIndex="4" maxLength="3"
+                      regex="[0-9]"/>
+
+      <CheckBox fx:id="enforceSingleArtworkCheckBox" text="%lbl_enforce_single_artwork" GridPane.columnIndex="1"
+                GridPane.rowIndex="5"/>
+
+      <Label text="%lbl_profile" GridPane.columnIndex="0" GridPane.rowIndex="6">
+        <GridPane.margin>
+          <Insets top="30" right="0" bottom="0" left="0"/>
+        </GridPane.margin>
+      </Label>
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.columnSpan="2" spacing="5">
+        <GridPane.margin>
+          <Insets top="30" right="0" bottom="0" left="0"/>
+        </GridPane.margin>
+        <ComboBox fx:id="profileComboBox" editable="true" maxWidth="200" onAction="#handleChangeProfileAction"/>
+        <Button fx:id="saveProfileButton" text="%btn_save" onAction="#handleSaveProfileAction"/>
+        <Button fx:id="removeProfileButton" text="%btn_remove" onAction="#handleRemoveProfileAction"/>
+      </HBox>
+    </GridPane>
+  </center>
+  <bottom>
+    <VBox spacing="3">
+      <Separator/>
+      <HBox spacing="10" alignment="BOTTOM_CENTER">
         <Button fx:id="allButton" defaultButton="true" text="%btn_all_files" onAction="#handleAllAction"/>
         <Button fx:id="selectedButton" text="%btn_selected_files" onAction="#handleSelectionAction"/>
         <Button text="%btn_cancel" onAction="#handleCancelAction"/>
-			</HBox>
-		</VBox>
-	</bottom>
+      </HBox>
+    </VBox>
+  </bottom>
 </BorderPane>
 
