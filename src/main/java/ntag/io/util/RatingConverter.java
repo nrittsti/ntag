@@ -41,10 +41,12 @@ public final class RatingConverter {
 	}
 
 	private RatingConverter() {
-
 	}
 
 	public static List<Integer> getConversion(final AudioFormat fileFormat) {
+        if (fileFormat == null) {
+            throw new IllegalArgumentException("AudioFormat is not given");
+        }
 		switch (fileFormat) {
 			case FLAC:
 				return flacConversion;
@@ -57,11 +59,20 @@ public final class RatingConverter {
 			case WMA:
 				return wmaConversion;
 			default:
-				return oggConversion;
+                throw new IllegalArgumentException(String.format("Format %s is not supported ", fileFormat));
 		}
 	}
 
 	public static void setConversion(final AudioFormat fileFormat, List<Integer> values) {
+        if (fileFormat == null) {
+            throw new IllegalArgumentException("AudioFormat is not given");
+        }
+        if (values == null) {
+            throw new IllegalArgumentException("conversion values are not given");
+        }
+        if (values.size() != 10) {
+            throw new IllegalArgumentException(String.format("invalid conversion values length: %d", values.size()));
+        }
 		switch (fileFormat) {
 			case FLAC:
 				flacConversion = values;
@@ -79,8 +90,7 @@ public final class RatingConverter {
 				wmaConversion = values;
 				break;
 			default:
-				oggConversion = values;
-				break;
+                throw new IllegalArgumentException(String.format("Format %s is not supported ", fileFormat));
 		}
 	}
 
@@ -92,7 +102,7 @@ public final class RatingConverter {
 	 *            audio file rating value
 	 * @return 0 - 10
 	 */
-	public static int in(final AudioFormat fileFormat, final int value) {
+    public static int internalToHalfStars(final AudioFormat fileFormat, final int value) {
 		List<Integer> conversions = getConversion(fileFormat);
 		for (int i = conversions.size() - 1; i >= 0; i--) {
 			if (value >= conversions.get(i)) {
@@ -110,7 +120,7 @@ public final class RatingConverter {
 	 *            rating value (0 - 10)
 	 * @return audio file rating value
 	 */
-	public static int out(final AudioFormat fileFormat, final int value) {
+    public static int halfStarsToInternal(final AudioFormat fileFormat, final int value) {
 		List<Integer> conversions = getConversion(fileFormat);
 		if (value < 1) {
 			return 0;
