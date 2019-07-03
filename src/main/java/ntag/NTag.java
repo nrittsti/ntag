@@ -40,8 +40,9 @@ import toolbox.io.log.LoggingUtil;
 import toolbox.util.CommandLineParser;
 
 import javax.imageio.ImageIO;
+import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,41 +57,45 @@ public class NTag extends Application {
             FxUtil.showException("Uncaught Exception", throwable);
         });
         try {
-            // first init FXUtil bevor any API calls
-            FxUtil.setPrimaryStage(primaryStage);
-            final NTagProperties appProps = new NTagProperties();
-            appProps.distribute();
-            // init MainWindow with fxml
-            final FXMLLoader loader = new FXMLLoader();
-            // set resource bundle by locale
-            loader.setResources(Resources.getResourceBundle("ntag"));
-            loader.setLocation(getClass().getResource("/fxml/NTagWindow.fxml"));
-            BorderPane root = loader.load();
-            Scene scene = new Scene(root);
-            // set light or dark css theme
-            scene.getStylesheets().add(appProps.getTheme().getCSS());
-            // register CTRL+Q shorcut for exit
-            scene.getAccelerators().put(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN), primaryStage::close);
-            primaryStage.setTitle(appProps.getTitle());
-            primaryStage.getIcons().add(new Image("icons/ntag.png"));
-            primaryStage.setScene(scene);
-            // setup fx main controller
-            NTagWindowController controller = loader.getController();
-            controller.setStage(primaryStage);
-            // create ViewModel
-            NTagViewModel viewModel = new NTagViewModel(appProps);
-            controller.setViewModel(viewModel);
-            // auto save window state
-            FxUtil.getPrimaryStage().setOnCloseRequest(controller::onCloseRequest);
-            // restore window state
-            appProps.restoreMainWindowState(controller);
-            // show main window
-            primaryStage.show();
+            initPrimaryStage(primaryStage);
         } catch (Exception e) {
             String msg = "Error on loading Application MainWindow";
             LOGGER.log(Level.SEVERE, msg, e);
             FxUtil.showException(msg, e);
         }
+    }
+
+    void initPrimaryStage(Stage primaryStage) throws IOException {
+        // first init FXUtil bevor any API calls
+        FxUtil.setPrimaryStage(primaryStage);
+        final NTagProperties appProps = new NTagProperties();
+        appProps.distribute();
+        // init MainWindow with fxml
+        final FXMLLoader loader = new FXMLLoader();
+        // set resource bundle by locale
+        loader.setResources(Resources.getResourceBundle("ntag"));
+        loader.setLocation(getClass().getResource("/fxml/NTagWindow.fxml"));
+        BorderPane root = loader.load();
+        Scene scene = new Scene(root);
+        // set light or dark css theme
+        scene.getStylesheets().add(appProps.getTheme().getCSS());
+        // register CTRL+Q shorcut for exit
+        scene.getAccelerators().put(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN), primaryStage::close);
+        primaryStage.setTitle(appProps.getTitle());
+        primaryStage.getIcons().add(new Image("icons/ntag.png"));
+        primaryStage.setScene(scene);
+        // setup fx main controller
+        NTagWindowController controller = loader.getController();
+        controller.setStage(primaryStage);
+        // create ViewModel
+        NTagViewModel viewModel = new NTagViewModel(appProps);
+        controller.setViewModel(viewModel);
+        // auto save window state
+        FxUtil.getPrimaryStage().setOnCloseRequest(controller::onCloseRequest);
+        // restore window state
+        appProps.restoreMainWindowState(controller);
+        // show main window
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
@@ -101,9 +106,9 @@ public class NTag extends Application {
         try {
             clp.parse(args);
             if (clp.hasOption('h')) {
-                NTagProperties.setHomeDir(clp.getOptionValue('h'));
+                NTagProperties.setHomeDir(Path.of(clp.getOptionValue('h')));
             } else if (clp.hasOption('p')) {
-                NTagProperties.setHomeDir(System.getProperty("user.dir"));
+                NTagProperties.setHomeDir(Path.of(System.getProperty("user.dir")));
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -112,7 +117,7 @@ public class NTag extends Application {
         }
         // init Java logging
         try {
-            Files.createDirectories(Paths.get(NTagProperties.getHomeDir(), "logs"));
+            Files.createDirectories(NTagProperties.getHomeDir().resolve("logs"));
         } catch (Exception e) {
         }
         LoggingUtil.setup("ntag_logging.properties");

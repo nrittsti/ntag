@@ -497,8 +497,8 @@ Copyright 2016, Nico Rittstieg
       <Label fx:id="errorLabel" styleClass="label-error"/>
       <Separator/>
       <HBox spacing="10" alignment="BOTTOM_CENTER">
-        <Button prefWidth="120" text="%btn_cancel" onAction="#handleCancelAction"/>
-        <Button prefWidth="120" text="%btn_ok" onAction="#handleOKAction"/>
+        <Button id="cancelButton" prefWidth="120" text="%btn_cancel" onAction="#handleCancelAction"/>
+        <Button id="okButton" prefWidth="120" text="%btn_ok" onAction="#handleOKAction"/>
       </HBox>
     </VBox>
   </bottom>

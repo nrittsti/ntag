@@ -1,20 +1,20 @@
-/**
- * This file is part of NTag (audio file tag editor).
- * <p>
- * NTag is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * NTag is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with NTag.  If not, see <http://www.gnu.org/licenses/>.
- * <p>
- * Copyright 2016, Nico Rittstieg
+/*
+  This file is part of NTag (audio file tag editor).
+  <p>
+  NTag is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  <p>
+  NTag is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  <p>
+  You should have received a copy of the GNU General Public License
+  along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+  <p>
+  Copyright 2016, Nico Rittstieg
  */
 package toolbox.fx;
 
@@ -34,8 +34,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
-import javafx.stage.*;
 import toolbox.fx.control.ButtonLink;
 import toolbox.fx.dialog.AbstractDialogController;
 import toolbox.fx.dialog.DialogResponse;
@@ -96,11 +98,9 @@ public final class FxUtil {
         Runnable r = () -> {
             try {
                 Thread.sleep(duration);
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             }
-            Runnable later = () -> {
-                stage.close();
-            };
+            Runnable later = stage::close;
             Platform.runLater(later);
         };
         stage.show();
@@ -136,17 +136,15 @@ public final class FxUtil {
             controller.setStage(dialogStage);
             controller.setViewModel(model);
             // set handler for OnCloseRequest
-            dialogStage.setOnCloseRequest((WindowEvent event) -> {
-                controller.onCloseRequest(event);
-            });
+            dialogStage.setOnCloseRequest(controller::onCloseRequest);
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
 
-            return new DialogResult<T>(controller.getDialogResponse(), controller.getViewModel());
+            return new DialogResult<>(controller.getDialogResponse(), controller.getViewModel());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, String.format("Loading FXML '%s' failed:", fxml), e);
         }
-        return new DialogResult<T>(DialogResponse.NONE, null);
+        return new DialogResult<>(DialogResponse.NONE, null);
     }
 
     public static void loadControl(String bundle, Object controller, String fxml) {
@@ -163,20 +161,11 @@ public final class FxUtil {
 
     public static void showException(String msg, Throwable e) {
         LOGGER.log(Level.SEVERE, msg, e);
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setHeaderText(Resources.get("toolbox", "msg_exception"));
-        alert.setContentText(msg);
         // Create expandable Exception.
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
-        TextArea textArea = new TextArea(sw.toString());
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
-        textArea.setMaxWidth(Double.MAX_VALUE);
-        textArea.setMaxHeight(Double.MAX_VALUE);
-        alert.getDialogPane().setExpandableContent(textArea);
-        alert.showAndWait();
+        showErrors(msg, new StringBuilder(sw.toString()));
     }
 
     public static void showErrors(String msg, Collection<String> errors) {
@@ -234,26 +223,14 @@ public final class FxUtil {
         grid.setVgap(0);
         // Version
         grid.add(new Label("Version:"), 0, 0);
-        grid.add(new Label(version), 1, 0);
+        Label versionLabel = new Label(version);
+        versionLabel.setId("versionLabel");
+        grid.add(versionLabel, 1, 0);
         // Lincence
         if (licenceShortname != null && licenceShortname.length() > 0) {
             ButtonLink licenceLink = new ButtonLink();
             if (licenceUrl != null && licenceUrl.length() > 0) {
-                licenceLink.setOnAction((ActionEvent e) -> {
-                    try {
-                        new Thread(() -> {
-                            try {
-                                java.awt.Desktop.getDesktop().browse(new URI(licenceUrl));
-                            } catch (Exception ex) {
-                                LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", licenceUrl), ex);
-                                FxUtil.showException(String.format("Failed to launch this URI='%s'", licenceUrl), ex);
-                            }
-                        }).start();
-                    } catch (Exception ex) {
-                        LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", licenceUrl), ex);
-                        FxUtil.showException(String.format("Failed to launch this URI='%s'", licenceUrl), ex);
-                    }
-                });
+                licenceLink.setOnAction((ActionEvent e) -> openURI(licenceUrl));
             }
             licenceLink.setText(licenceShortname);
             grid.add(new Label("Licence:"), 0, 1);
@@ -263,16 +240,7 @@ public final class FxUtil {
         if (home != null && home.length() > 0) {
             grid.add(new Label("Home:"), 0, 2);
             ButtonLink homeLink = new ButtonLink();
-            homeLink.setOnAction((ActionEvent e) -> {
-                new Thread(() -> {
-                    try {
-                        java.awt.Desktop.getDesktop().browse(new URI(home));
-                    } catch (Exception ex) {
-                        LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", home), ex);
-                        FxUtil.showException(String.format("Failed to launch this URI='%s'", home), ex);
-                    }
-                }).start();
-            });
+            homeLink.setOnAction((ActionEvent e) -> openURI(home));
             homeLink.setText(home);
             grid.add(homeLink, 1, 2);
         }
@@ -288,6 +256,17 @@ public final class FxUtil {
         dialog.setHeight(400);
 
         dialog.showAndWait();
+    }
+
+    public static void openURI(String uri) {
+        new Thread(() -> {
+            try {
+                Desktop.getDesktop().browse(new URI(uri));
+            } catch (Exception ex) {
+                LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", uri), ex);
+                FxUtil.showException(String.format("Failed to launch this URI='%s'", uri), ex);
+            }
+        }).start();
     }
 
     public static <T> DialogResult<ItemChoiceViewModel<T>> showItemChoiceDialog(String title, Stage parent, ItemChoiceViewModel<T> viewModel) {

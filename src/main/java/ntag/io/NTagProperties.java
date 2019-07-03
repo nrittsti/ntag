@@ -46,7 +46,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -64,15 +63,15 @@ public class NTagProperties {
     private static Attributes attributes = null;
     private static IniFile preferences = null;
 
-    private static String homeDir = null;
+    private static Path homeDir = null;
 
     private static StringPropertyHandler actionLogHandler = null;
 
     static {
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
-            homeDir = System.getenv("APPDATA") + "\\ntag";
+            homeDir = Path.of(System.getenv("APPDATA") + "\\ntag");
         } else {
-            homeDir = System.getProperty("user.home") + "/.config/ntag";
+            homeDir = Path.of(System.getProperty("user.home") + "/.config/ntag");
         }
     }
 
@@ -113,15 +112,15 @@ public class NTagProperties {
                 LOGGER.log(Level.SEVERE, "Can't read preferences", e);
             }
             // auto save preferences
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> savePreferences()));
+            Runtime.getRuntime().addShutdownHook(new Thread(this::savePreferences));
         }
     }
 
-    public static String getHomeDir() {
+    public static Path getHomeDir() {
         return homeDir;
     }
 
-    public static void setHomeDir(String homeDir) throws IOException {
+    public static void setHomeDir(Path homeDir) throws IOException {
         FileUtil.checkHomeDirectory(homeDir);
         NTagProperties.homeDir = homeDir;
     }
@@ -144,7 +143,7 @@ public class NTagProperties {
     }
 
     public Path getConfigFile() {
-        return Paths.get(homeDir, CONFIG_FILENAME);
+        return homeDir.resolve(CONFIG_FILENAME);
     }
 
     public static String getCredits() {

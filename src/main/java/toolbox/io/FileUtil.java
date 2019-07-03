@@ -23,7 +23,6 @@ import toolbox.util.StringBuilderUtil;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public final class FileUtil {
 
@@ -31,11 +30,11 @@ public final class FileUtil {
 
     }
 
-    public static void checkHomeDirectory(String homeDir) throws IOException {
-        if (homeDir == null || homeDir.trim().length() == 0) {
+    public static void checkHomeDirectory(Path homeDir) throws IOException {
+        if (homeDir == null) {
             throw new IllegalArgumentException("Home directory cannot be null or empty!");
         }
-        Path path = Paths.get(homeDir, "test.tmp");
+        Path path = homeDir.resolve("test.tmp");
         if (Files.isWritable(path)) {
             throw new IOException(Resources.get("msg_invalid_home_directory"));
         }

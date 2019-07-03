@@ -30,7 +30,7 @@ import java.util.Set;
 
 public class AudioFileVisitor extends SimpleFileVisitor<Path> {
 
-    private final List<Path> audioFiles = new ArrayList<Path>();
+    private final List<Path> audioFiles = new ArrayList<>();
     private final Set<String> extensions = AudioFormat.getFileExtensions();
     private final int maxFiles;
 
