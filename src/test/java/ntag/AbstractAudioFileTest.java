@@ -1,6 +1,8 @@
 package ntag;
 
 import ntag.io.NTagProperties;
+import ntag.io.util.ImageUtil;
+import ntag.model.ArtworkTag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -25,9 +27,10 @@ public abstract class AbstractAudioFileTest {
     static Path tempDirPath;
 
     @BeforeEach
-    void setUp() throws IOException {
+    protected void setUp() throws IOException {
         NTagProperties.setHomeDir(tempDirPath);
         this.appProps = new NTagProperties();
+        this.appProps.distribute();
     }
 
     protected Path getTempDir() {
@@ -48,24 +51,32 @@ public abstract class AbstractAudioFileTest {
         Files.copy(getMp3Id24Sample(), tempDirPath.resolve(SAMPLE_ID3V24_MP3));
     }
 
+    protected static ArtworkTag getArtworkTagSample() throws IOException {
+        return new ArtworkTag(Files.readAllBytes(getArtwork()), 500, 500, ImageUtil.ImageType.JPG);
+    }
+
+    protected static Path getArtwork() {
+        return getPathFromResources("artwork.jpg");
+    }
+
     protected static Path getFlacSample() {
         return getPathFromResources(SAMPLE_FLAC);
     }
 
     protected static Path getWmaSample() {
-        return getPathFromResources("sample.wma");
+        return getPathFromResources(SAMPLE_WMA);
     }
 
     protected static Path getM4aSample() {
-        return getPathFromResources("sample.m4a");
+        return getPathFromResources(SAMPLE_M4A);
     }
 
     protected static Path getMp3Id23Sample() {
-        return getPathFromResources("sample_id3v23.mp3");
+        return getPathFromResources(SAMPLE_ID3V23_MP3);
     }
 
     protected static Path getMp3Id24Sample() {
-        return getPathFromResources("sample_id3v24.mp3");
+        return getPathFromResources(SAMPLE_ID3V24_MP3);
     }
 
     protected static Path getPathFromResources(String fileName) {

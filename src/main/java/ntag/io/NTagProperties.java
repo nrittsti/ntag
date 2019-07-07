@@ -31,11 +31,11 @@ import ntag.fx.scene.control.editor.ArtworkEditorProperty;
 import ntag.fx.scene.control.tableview.FileSizeTableCell;
 import ntag.fx.scene.control.tableview.TagFileTableColumn.ColumnType;
 import ntag.io.util.ArtworkAdjuster;
+import ntag.io.util.ImageUtil.ImageType;
 import ntag.io.util.RatingConverter;
 import ntag.model.ArtworkTag;
 import ntag.model.AudioFormat;
 import toolbox.io.FileUtil;
-import toolbox.io.ImageUtil.ImageType;
 import toolbox.io.Resources;
 import toolbox.io.ini.IniFile;
 import toolbox.io.log.CustomFormatter;
@@ -527,7 +527,6 @@ public class NTagProperties {
         RatingConverter.setConversion(AudioFormat.WMA, getWMARatingConversion());
 
         FileSizeConverter.binaryMode = isBinaryUnit();
-        FileSizeTableCell.binaryMode = isBinaryUnit();
         ArtworkEditorProperty.binaryUnit = isBinaryUnit();
 
         ArtworkAdjuster.defaultImageType = getArtworkImageType();
@@ -541,5 +540,9 @@ public class NTagProperties {
         ArtworkTag.defaultQuality = getArtworkQuality();
 
         Resources.setLocale(getLanguage());
+    }
+
+    public void distributeFx() {
+        FileSizeTableCell.binaryMode = isBinaryUnit();
     }
 }

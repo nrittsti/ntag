@@ -70,6 +70,7 @@ public class NTag extends Application {
         FxUtil.setPrimaryStage(primaryStage);
         final NTagProperties appProps = new NTagProperties();
         appProps.distribute();
+        appProps.distributeFx();
         // init MainWindow with fxml
         final FXMLLoader loader = new FXMLLoader();
         // set resource bundle by locale

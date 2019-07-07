@@ -20,10 +20,10 @@ package ntag.model;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import ntag.io.util.ImageUtil;
+import ntag.io.util.ImageUtil.ImageType;
 import org.jaudiotagger.tag.images.Artwork;
 import toolbox.io.HashUtil;
-import toolbox.io.ImageUtil;
-import toolbox.io.ImageUtil.ImageType;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

@@ -26,13 +26,13 @@ import javafx.util.converter.NumberStringConverter;
 import ntag.fx.scene.control.NTagThemeEnum;
 import ntag.fx.util.NTagFormat;
 import ntag.io.NTagProperties;
+import ntag.io.util.ImageUtil.ImageType;
 import toolbox.fx.control.RegexTextfield;
 import toolbox.fx.dialog.AbstractDialogController;
 import toolbox.fx.dialog.DialogResponse;
 import toolbox.fx.util.IntegerListConverter;
 import toolbox.fx.util.StringListConverter;
 import toolbox.fx.util.StringLocaleConverter;
-import toolbox.io.ImageUtil.ImageType;
 
 import java.net.URL;
 import java.util.*;
@@ -327,6 +327,7 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
         viewModel.setLyricProvider(toList(lyricProviderTextArea.getText()));
 
         viewModel.distribute();
+        viewModel.distributeFx();
         viewModel.savePreferences();
 
         this.getStage().close();

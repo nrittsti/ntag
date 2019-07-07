@@ -21,8 +21,8 @@ package ntag.fx.scene;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import ntag.io.util.ImageUtil.ImageType;
 import ntag.model.TagFile;
-import toolbox.io.ImageUtil.ImageType;
 
 import javax.json.Json;
 import javax.json.JsonObject;

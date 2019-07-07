@@ -23,7 +23,8 @@ class AudioFileVisitorTest extends AbstractAudioFileTest {
     private AudioFileVisitor audioFileVisitor;
 
     @BeforeEach
-    void setUp() throws IOException {
+    protected void setUp() throws IOException {
+        super.setUp();
         this.copyFilesToTempDir();
         this.audioFileVisitor = new AudioFileVisitor(MAX_FILES);
     }
