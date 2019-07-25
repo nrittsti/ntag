@@ -20,8 +20,8 @@ package ntag.task;
 
 import javafx.concurrent.Task;
 import ntag.fx.scene.RenameFilesViewModel;
+import ntag.io.util.FileUtil;
 import ntag.model.TagFile;
-import toolbox.io.FileUtil;
 import toolbox.util.StringBuilderUtil;
 
 import java.io.IOException;
@@ -92,7 +92,7 @@ public class RenameFilesTask extends Task<List<TagFile>> {
         StringBuilderUtil.replace(sb, "%year", tagFile.getYear() > 0 ? "" + tagFile.getYear() : "");
         String fileName;
         if (viewModel.isStripUnsafeChars()) {
-            fileName = FileUtil.removeInvalidChars(sb.toString());
+          fileName = FileUtil.sanitizeFilename(sb.toString());
         } else {
             fileName = sb.toString();
         }

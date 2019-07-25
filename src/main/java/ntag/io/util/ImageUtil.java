@@ -110,8 +110,8 @@ public final class ImageUtil {
      * instruct the imagIO.write method to apply a certain compression quality
      * to the images.
      *
-     * @param image
-     * @param os
+     * @param image BufferedImage
+     * @param os OutputStream
      * @throws IOException
      */
     public static void write(BufferedImage image, OutputStream os, ImageType imageType, float quality) throws IOException {

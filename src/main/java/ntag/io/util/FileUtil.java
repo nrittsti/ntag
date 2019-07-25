@@ -1,23 +1,24 @@
-/**
- * This file is part of NTag (audio file tag editor).
- * <p>
- * NTag is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * NTag is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with NTag.  If not, see <http://www.gnu.org/licenses/>.
- * <p>
- * Copyright 2016, Nico Rittstieg
+/*
+  This file is part of NTag (audio file tag editor).
+  <p>
+  NTag is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  <p>
+  NTag is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  <p>
+  You should have received a copy of the GNU General Public License
+  along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+  <p>
+  Copyright 2016, Nico Rittstieg
  */
-package toolbox.io;
+package ntag.io.util;
 
+import toolbox.io.Resources;
 import toolbox.util.StringBuilderUtil;
 
 import java.io.IOException;
@@ -40,17 +41,8 @@ public final class FileUtil {
         }
     }
 
-    public static String removeInvalidChars(String filename) {
+    public static String sanitizeFilename(String filename) {
         StringBuilder builder = new StringBuilder(filename);
-        StringBuilderUtil.replace(builder, "\\", "");
-        StringBuilderUtil.replace(builder, "/", "");
-        StringBuilderUtil.replace(builder, ":", "");
-        StringBuilderUtil.replace(builder, "*", "");
-        StringBuilderUtil.replace(builder, "?", "");
-        StringBuilderUtil.replace(builder, "\"", "");
-        StringBuilderUtil.replace(builder, "<", "");
-        StringBuilderUtil.replace(builder, ">", "");
-        StringBuilderUtil.replace(builder, "|", "");
         StringBuilderUtil.replace(builder, "À", "A");
         StringBuilderUtil.replace(builder, "Á", "A");
         StringBuilderUtil.replace(builder, "Â", "A");
@@ -112,6 +104,6 @@ public final class FileUtil {
         StringBuilderUtil.replace(builder, "ý", "y");
         StringBuilderUtil.replace(builder, "ÿ", "y");
         StringBuilderUtil.replace(builder, "Ÿ", "y");
-        return builder.toString();
+        return builder.toString().replaceAll("[^a-z0-9.]+", "");
     }
 }

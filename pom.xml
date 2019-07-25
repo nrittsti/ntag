@@ -8,6 +8,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <fx.version>12.0.1</fx.version>
   </properties>
 
   <dependencies>
@@ -31,27 +32,27 @@
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-base</artifactId>
-      <version>11.0.1</version>
+      <version>${fx.version}</version>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
-      <version>11.0.1</version>
+      <version>${fx.version}</version>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
-      <version>11.0.1</version>
+      <version>${fx.version}</version>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
-      <version>11.0.1</version>
+      <version>${fx.version}</version>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-swing</artifactId>
-      <version>11.0.1</version>
+      <version>${fx.version}</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -85,7 +86,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <release>11</release>
+          <release>12</release>
         </configuration>
       </plugin>
       <plugin>
@@ -146,31 +147,31 @@
         <dependency>
           <groupId>org.openjfx</groupId>
           <artifactId>javafx-base</artifactId>
-          <version>11.0.1</version>
+          <version>${fx.version}</version>
           <classifier>linux</classifier>
         </dependency>
         <dependency>
           <groupId>org.openjfx</groupId>
           <artifactId>javafx-controls</artifactId>
-          <version>11.0.1</version>
+          <version>${fx.version}</version>
           <classifier>linux</classifier>
         </dependency>
         <dependency>
           <groupId>org.openjfx</groupId>
           <artifactId>javafx-fxml</artifactId>
-          <version>11.0.1</version>
+          <version>${fx.version}</version>
           <classifier>linux</classifier>
         </dependency>
         <dependency>
           <groupId>org.openjfx</groupId>
           <artifactId>javafx-graphics</artifactId>
-          <version>11.0.1</version>
+          <version>${fx.version}</version>
           <classifier>linux</classifier>
         </dependency>
         <dependency>
           <groupId>org.openjfx</groupId>
           <artifactId>javafx-swing</artifactId>
-          <version>11.0.1</version>
+          <version>${fx.version}</version>
           <classifier>linux</classifier>
         </dependency>
       </dependencies>
@@ -203,31 +204,31 @@
         <dependency>
           <groupId>org.openjfx</groupId>
           <artifactId>javafx-base</artifactId>
-          <version>11.0.1</version>
+          <version>${fx.version}</version>
           <classifier>win</classifier>
         </dependency>
         <dependency>
           <groupId>org.openjfx</groupId>
           <artifactId>javafx-controls</artifactId>
-          <version>11.0.1</version>
+          <version>${fx.version}</version>
           <classifier>win</classifier>
         </dependency>
         <dependency>
           <groupId>org.openjfx</groupId>
           <artifactId>javafx-fxml</artifactId>
-          <version>11.0.1</version>
+          <version>${fx.version}</version>
           <classifier>win</classifier>
         </dependency>
         <dependency>
           <groupId>org.openjfx</groupId>
           <artifactId>javafx-graphics</artifactId>
-          <version>11.0.1</version>
+          <version>${fx.version}</version>
           <classifier>win</classifier>
         </dependency>
         <dependency>
           <groupId>org.openjfx</groupId>
           <artifactId>javafx-swing</artifactId>
-          <version>11.0.1</version>
+          <version>${fx.version}</version>
           <classifier>win</classifier>
         </dependency>
       </dependencies>

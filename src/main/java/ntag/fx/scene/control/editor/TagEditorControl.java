@@ -41,6 +41,7 @@ import ntag.fx.scene.control.rating.RatingControl;
 import ntag.fx.util.TagFieldInputDialogs;
 import ntag.io.NTagProperties;
 import ntag.io.TagFileReader;
+import ntag.io.util.FileUtil;
 import ntag.model.Genre;
 import ntag.model.TagFile;
 import org.jaudiotagger.audio.mp3.MP3File;
@@ -57,7 +58,6 @@ import toolbox.fx.dialog.ItemChoiceViewModel;
 import toolbox.fx.util.DummyStringConverter;
 import toolbox.fx.validator.SimpleTextFieldValidator;
 import toolbox.fx.validator.SimpleTextFieldValidator.ValidationMode;
-import toolbox.io.FileUtil;
 import toolbox.io.Resources;
 
 import java.io.IOException;
@@ -662,7 +662,7 @@ public class TagEditorControl extends TabPane implements Initializable {
         String oldName = tagFile.getName();
         String fileName = filenameTextField.getText().trim();
         if (new NTagProperties().isFilenameStripUnsafeChars()) {
-            fileName = FileUtil.removeInvalidChars(fileName);
+          fileName = FileUtil.sanitizeFilename(fileName);
         }
         if (!fileName.equals(oldName)) {
             Path path = tagFile.getPath();
