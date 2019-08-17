@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github</groupId>
   <artifactId>ntag</artifactId>
-  <version>1.2.0</version>
+    <version>1.2.1</version>
   <packaging>jar</packaging>
 
   <properties>
@@ -75,7 +75,7 @@
     <dependency>
       <groupId>org.testfx</groupId>
       <artifactId>testfx-junit5</artifactId>
-      <version>4.0.15-alpha</version>
+        <version>4.0.16-alpha</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -97,13 +97,13 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <classpathPrefix>libs/</classpathPrefix>
+                <classpathPrefix>lib/</classpathPrefix>
               <mainClass>ntag.NTag</mainClass>
             </manifest>
             <manifestEntries>
               <Implementation-Title>NTag</Implementation-Title>
               <Implementation-Version>${project.version}</Implementation-Version>
-              <Class-Path>libs/jaudiotagger-2.2.4.jar</Class-Path>
+                <Class-Path>lib/jaudiotagger-2.2.4.jar</Class-Path>
             </manifestEntries>
           </archive>
         </configuration>

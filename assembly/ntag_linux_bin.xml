@@ -33,12 +33,12 @@
 	</files>
 	<dependencySets>
 		<dependencySet>
-			<outputDirectory>/libs</outputDirectory>
+            <outputDirectory>/lib</outputDirectory>
 			<useProjectArtifact>false</useProjectArtifact>
 			<scope>system</scope>
 		</dependencySet>
 		<dependencySet>
-			<outputDirectory>/libs</outputDirectory>
+            <outputDirectory>/lib</outputDirectory>
 			<useProjectArtifact>false</useProjectArtifact>
 			<excludes>
 				<exclude>**win.jar</exclude>
