@@ -56,3 +56,8 @@ NTag Version History
 - fixed saving window size and position on close request
 - changed about dialog to modal state
 - added shortcut CTRL+Q for closing NTag
+
+1.2.1          2019-??-??
+-------------------------
+- Migration to Java 12
+- Gradle build support

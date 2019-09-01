@@ -32,7 +32,7 @@
 	</files>
 	<dependencySets>
 		<dependencySet>
-			<outputDirectory>/libs</outputDirectory>
+            <outputDirectory>/lib</outputDirectory>
 			<useProjectArtifact>false</useProjectArtifact>
 			<excludes>
 				<exclude>**linux*</exclude>
@@ -40,7 +40,7 @@
 			<scope>system</scope>
 		</dependencySet>
 		<dependencySet>
-			<outputDirectory>/libs</outputDirectory>
+            <outputDirectory>/lib</outputDirectory>
 			<useProjectArtifact>false</useProjectArtifact>
 			<excludes>
 				<exclude>**linux*</exclude>

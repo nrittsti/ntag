@@ -1,6 +1,4 @@
 Manifest-Version: 1.0
 Implementation-Title: NTag
-Implementation-Version: 1.1.1
-Implementation-Vendor: Nico Rittstieg
+Implementation-Version: Snapshot
 Main-Class: ntag.NTag
-
