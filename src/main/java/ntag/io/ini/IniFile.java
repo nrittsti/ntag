@@ -1,22 +1,22 @@
-/**
- * This file is part of NTag (audio file tag editor).
- * <p>
- * NTag is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * NTag is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with NTag.  If not, see <http://www.gnu.org/licenses/>.
- * <p>
- * Copyright 2016, Nico Rittstieg
+/*
+  This file is part of NTag (audio file tag editor).
+  <p>
+  NTag is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  <p>
+  NTag is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  <p>
+  You should have received a copy of the GNU General Public License
+  along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+  <p>
+  Copyright 2016, Nico Rittstieg
  */
-package toolbox.io.ini;
+package ntag.io.ini;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -29,7 +29,7 @@ import java.util.Map.Entry;
 
 public class IniFile {
 
-    private Map<String, Map<String, List<String>>> sections = new HashMap<String, Map<String, List<String>>>();
+    private Map<String, Map<String, List<String>>> sections = new LinkedHashMap<>();
 
     public IniFile() {
 
@@ -187,39 +187,28 @@ public class IniFile {
             throw new IllegalArgumentException("section cannot be null");
         }
         name = name.trim().toLowerCase();
-        Map<String, List<String>> sectionMap = sections.get(name);
-        if (sectionMap == null) {
-            sectionMap = new HashMap<String, List<String>>();
-            sections.put(name, sectionMap);
-        }
-        return sectionMap;
+        return sections.computeIfAbsent(name, k -> new LinkedHashMap<>());
     }
 
-    public List<String> getValues(String name, String key, String... defaultValues) {
-        if (name == null) {
+    public List<String> getValues(String section, String key, String... defaultValues) {
+        if (section == null) {
             throw new IllegalArgumentException("section cannot be null");
         }
         if (key == null) {
             throw new IllegalArgumentException("key cannot be null");
         }
-        Map<String, List<String>> section = getSection(name);
+        Map<String, List<String>> sectionMap = getSection(section);
         key = key.trim().toLowerCase();
-        List<String> values = section.get(key);
-        if (values == null) {
-            values = new ArrayList<String>();
-            section.put(key, values);
-        }
+        List<String> values = sectionMap.computeIfAbsent(key, k -> new ArrayList<>());
         if (values.isEmpty() && defaultValues != null) {
-            for (String defaultValue : defaultValues) {
-                values.add(defaultValue);
-            }
+            Collections.addAll(values, defaultValues);
         }
         return values;
     }
 
     public List<Double> getDoubleValues(String name, String key) {
         List<String> values = getValues(name, key);
-        List<Double> doubleValues = new ArrayList<Double>();
+        List<Double> doubleValues = new ArrayList<>();
         for (String value : values) {
             doubleValues.add(Double.valueOf(value));
         }
@@ -228,14 +217,12 @@ public class IniFile {
 
     public List<Integer> getIntegerValues(String name, String key, Integer... defaultValues) {
         List<String> values = getValues(name, key);
-        List<Integer> integerValues = new ArrayList<Integer>();
+        List<Integer> integerValues = new ArrayList<>();
         for (String value : values) {
             integerValues.add(Integer.valueOf(value));
         }
         if (integerValues.isEmpty() && defaultValues != null) {
-            for (Integer defaultValue : defaultValues) {
-                integerValues.add(defaultValue);
-            }
+            Collections.addAll(integerValues, defaultValues);
         }
         return integerValues;
     }
