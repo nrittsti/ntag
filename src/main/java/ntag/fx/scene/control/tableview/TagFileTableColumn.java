@@ -23,11 +23,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
-import toolbox.fx.control.BooleanTableCell;
-import toolbox.fx.control.EnhancedTableCell;
-import toolbox.fx.control.LocalDateTableCell;
-import toolbox.fx.control.LocalDateTimeTableCell;
-import toolbox.io.Resources;
+import ntag.io.Resources;
 
 import java.util.ArrayList;
 import java.util.Arrays;

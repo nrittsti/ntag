@@ -18,6 +18,7 @@
  */
 package ntag.fx.scene.control.tableview;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
@@ -26,10 +27,8 @@ import javafx.collections.transformation.SortedList;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import ntag.fx.scene.NTagViewModel;
+import ntag.fx.util.FxUtil;
 import ntag.model.TagFile;
-import toolbox.fx.FxUtil;
-import toolbox.fx.collections.ObservableListLink;
-import toolbox.fx.control.EnhancedTableView;
 
 import java.net.URI;
 import java.util.logging.Level;
@@ -124,7 +123,10 @@ public class TagFileTableView extends EnhancedTableView<TagFile> {
 
         this.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        new ObservableListLink(viewModel.getColumns(), this.getColumns());
+
+      ObservableList a = viewModel.getColumns();
+      ObservableList b = this.getColumns();
+      Bindings.bindContentBidirectional(b, a);
 
         // Configure Table Header Contextmenu
         TagFileTableHeaderMenu contextMenu = new TagFileTableHeaderMenu(viewModel.getColumns());
@@ -133,7 +135,7 @@ public class TagFileTableView extends EnhancedTableView<TagFile> {
             c.setContextMenu(contextMenu);
         }
 
-        new ObservableListLink(viewModel.getSelectedFiles(), selectedFiles);
+      Bindings.bindContentBidirectional(selectedFiles, viewModel.getSelectedFiles());
     }
 
     // ***

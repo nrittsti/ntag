@@ -27,13 +27,13 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.util.converter.NumberStringConverter;
+import ntag.fx.scene.control.editor.RegexTextfield;
+import ntag.fx.scene.dialog.AbstractDialogController;
+import ntag.fx.scene.dialog.DialogResponse;
+import ntag.fx.util.FxUtil;
 import ntag.io.NTagProperties;
+import ntag.io.Resources;
 import ntag.io.util.ImageUtil.ImageType;
-import toolbox.fx.FxUtil;
-import toolbox.fx.control.RegexTextfield;
-import toolbox.fx.dialog.AbstractDialogController;
-import toolbox.fx.dialog.DialogResponse;
-import toolbox.io.Resources;
 
 import java.net.URL;
 import java.util.Comparator;

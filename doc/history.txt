@@ -57,7 +57,8 @@ NTag Version History
 - changed about dialog to modal state
 - added shortcut CTRL+Q for closing NTag
 
-1.2.1          2019-??-??
+1.2.1          2019-09-22
 -------------------------
 - Migration to Java 12
 - Gradle build support
+- New Pop-up menu for toolbar filter options

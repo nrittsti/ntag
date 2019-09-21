@@ -26,7 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import toolbox.io.Resources;
+import ntag.io.Resources;
 
 public class ETextField extends HBox {
 

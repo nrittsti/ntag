@@ -18,9 +18,9 @@ Copyright 2016, Nico Rittstieg
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import ntag.fx.scene.control.button.ButtonLink?>
 <?import ntag.fx.scene.control.editor.TagEditorControl?>
 <?import ntag.fx.scene.control.tableview.TagFileTableView?>
-<?import toolbox.fx.control.ButtonLink?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntag.fx.scene.NTagWindowController">
   <top>
     <ToolBar>
@@ -50,8 +50,7 @@ Copyright 2016, Nico Rittstieg
         <Insets top="0" right="5" bottom="0" left="5"/>
       </padding>
       <ButtonLink styleClass="statusbar-label" minWidth="50" text="%tb_filter" onAction="#handleRefreshFilter"/>
-      <ButtonLink styleClass="statusbar-label" fx:id="filterLink" text="All" onAction="#handleChangeFilter"
-                  focusTraversable="false" minWidth="100"/>
+      <ButtonLink styleClass="statusbar-label" fx:id="filterLink" text="All" focusTraversable="false" minWidth="100"/>
       <Label styleClass="statusbar-label" text="|"/>
       <Label styleClass="statusbar-label" text="%tb_files" minWidth="60"/>
       <Label styleClass="statusbar-label" fx:id="fileCountToolbar" minWidth="40"/>

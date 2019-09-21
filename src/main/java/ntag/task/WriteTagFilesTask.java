@@ -1,24 +1,25 @@
-/**
- * This file is part of NTag (audio file tag editor).
- * <p>
- * NTag is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * NTag is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with NTag.  If not, see <http://www.gnu.org/licenses/>.
- * <p>
- * Copyright 2016, Nico Rittstieg
+/*
+  This file is part of NTag (audio file tag editor).
+  <p>
+  NTag is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  <p>
+  NTag is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  <p>
+  You should have received a copy of the GNU General Public License
+  along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+  <p>
+  Copyright 2016, Nico Rittstieg
  */
 package ntag.task;
 
 import javafx.concurrent.Task;
+import ntag.io.Resources;
 import ntag.io.TagFileWriter;
 import ntag.model.TagFile;
 
@@ -29,7 +30,7 @@ public class WriteTagFilesTask extends Task<Integer> {
 
     private final List<TagFile> files;
     private final List<TagFile> updatedFiles = new ArrayList<>();
-    private final List<String> errors = new ArrayList<String>();
+  private final List<String> errors = new ArrayList<>();
 
     public WriteTagFilesTask(List<TagFile> files) {
         if (files == null || files.isEmpty()) {
@@ -39,7 +40,7 @@ public class WriteTagFilesTask extends Task<Integer> {
     }
 
     @Override
-    protected Integer call() throws Exception {
+    protected Integer call() {
         errors.clear();
         TagFileWriter writer = new TagFileWriter();
         for (int i = 0; i < files.size(); i++) {
@@ -47,7 +48,7 @@ public class WriteTagFilesTask extends Task<Integer> {
                 updateMessage("Cancelled");
                 break;
             }
-            updateMessage(toolbox.io.Resources.format("ntag", "msg_writing_file", i, files.size()));
+          updateMessage(Resources.format("ntag", "msg_writing_file", i, files.size()));
             try {
                 writer.update(files.get(i));
                 updatedFiles.add(files.get(i));

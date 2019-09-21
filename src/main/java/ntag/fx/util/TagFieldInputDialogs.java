@@ -30,6 +30,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 import ntag.NTagException;
+import ntag.fx.scene.control.editor.RegexTextfield;
+import ntag.io.Resources;
 import ntag.model.ASF;
 import ntag.model.Atoms;
 import ntag.model.ID3v2Frames;
@@ -53,9 +55,6 @@ import org.jaudiotagger.tag.mp4.field.Mp4GenreField;
 import org.jaudiotagger.tag.mp4.field.Mp4TagByteField;
 import org.jaudiotagger.tag.mp4.field.Mp4TrackField;
 import org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag;
-import toolbox.fx.FxUtil;
-import toolbox.fx.control.RegexTextfield;
-import toolbox.io.Resources;
 
 import java.util.*;
 import java.util.function.UnaryOperator;

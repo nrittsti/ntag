@@ -20,11 +20,20 @@ public abstract class AbstractAudioFileTest {
     protected static final String SAMPLE_M4A = "sample.m4a";
     protected static final String SAMPLE_ID3V23_MP3 = "sample_id3v23.mp3";
     protected static final String SAMPLE_ID3V24_MP3 = "sample_id3v24.mp3";
+  protected static final String SAMPLE_INI = "sample.ini";
+
+  protected static final String[] ALL_AUDIO_FILES = {
+          SAMPLE_FLAC,
+          SAMPLE_WMA,
+          SAMPLE_M4A,
+          SAMPLE_ID3V23_MP3,
+          SAMPLE_ID3V24_MP3
+  };
 
     protected NTagProperties appProps;
 
     @TempDir
-    static Path tempDirPath;
+    protected Path tempDirPath;
 
     @BeforeEach
     protected void setUp() throws IOException {
@@ -34,11 +43,11 @@ public abstract class AbstractAudioFileTest {
     }
 
     protected Path getTempDir() {
-        return AbstractAudioFileTest.tempDirPath;
+      return tempDirPath;
     }
 
     protected long getFileCount() throws IOException {
-        try (Stream<Path> files = Files.list(AbstractAudioFileTest.tempDirPath)) {
+      try (Stream<Path> files = Files.list(tempDirPath)) {
             return files.count();
         }
     }
@@ -54,6 +63,10 @@ public abstract class AbstractAudioFileTest {
     protected static ArtworkTag getArtworkTagSample() throws IOException {
         return new ArtworkTag(Files.readAllBytes(getArtwork()), 500, 500, ImageUtil.ImageType.JPG);
     }
+
+  protected static Path getIniSample() {
+    return getPathFromResources(SAMPLE_INI);
+  }
 
     protected static Path getArtwork() {
         return getPathFromResources("artwork.jpg");

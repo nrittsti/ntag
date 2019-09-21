@@ -1,24 +1,25 @@
-/**
- * This file is part of NTag (audio file tag editor).
- * <p>
- * NTag is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * NTag is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with NTag.  If not, see <http://www.gnu.org/licenses/>.
- * <p>
- * Copyright 2016, Nico Rittstieg
+/*
+  This file is part of NTag (audio file tag editor).
+  <p>
+  NTag is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  <p>
+  NTag is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  <p>
+  You should have received a copy of the GNU General Public License
+  along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+  <p>
+  Copyright 2016, Nico Rittstieg
  */
 package ntag.task;
 
 import javafx.concurrent.Task;
+import ntag.io.Resources;
 import ntag.io.TagFileReader;
 import ntag.io.util.AudioFileVisitor;
 import ntag.model.TagFile;
@@ -37,7 +38,7 @@ public class ReadTagFilesTask extends Task<List<TagFile>> {
     public static final Logger LOGGER = Logger.getLogger(ReadTagFilesTask.class.getName());
 
     private final List<Path> pathList;
-    private List<String> errors = new ArrayList<String>();
+  private List<String> errors = new ArrayList<>();
     private int maxFiles;
     private int maxDepth;
 
@@ -54,9 +55,9 @@ public class ReadTagFilesTask extends Task<List<TagFile>> {
     protected List<TagFile> call() throws Exception {
         errors.clear();
 
-        List<TagFile> resultList = new ArrayList<TagFile>();
+      List<TagFile> resultList = new ArrayList<>();
 
-        updateMessage(toolbox.io.Resources.get("ntag", "msg_creating_filelist"));
+      updateMessage(Resources.get("ntag", "msg_creating_filelist"));
 
         AudioFileVisitor visitor = new AudioFileVisitor(maxFiles);
 
@@ -74,7 +75,7 @@ public class ReadTagFilesTask extends Task<List<TagFile>> {
                 updateMessage("Cancelled");
                 break;
             }
-            updateMessage(toolbox.io.Resources.format("ntag", "msg_reading_file", i, files.size()));
+          updateMessage(Resources.format("ntag", "msg_reading_file", i, files.size()));
             try {
                 resultList.add(reader.createTagFile(files.get(i)));
             } catch (Exception e) {

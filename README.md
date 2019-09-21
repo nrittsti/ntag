@@ -30,7 +30,7 @@ This distribution contains the following files:
    license.txt                - License information
    readme.txt                 - This file
    tag_mapping.pdf            - Tag mapping documentation   
-   libs/jaudiotagger-*.jar    - Jaudiotagger Tagging library 
+   lib/jaudiotagger-*.jar     - Jaudiotagger Tagging library 
    ntag.jar                   - Executable Java program   
    
 Tag-Editor
@@ -39,6 +39,15 @@ Tag-Editor
    ntag.exe                   - Windows executable (jar wrapper)
    ntag_logging.properties    - Logging and Debug settings
 ```
+
+Build with Gradle:
+-----------------
+
+```
+gradle clean build run
+```
+
+gradle.properties: platform=linux or platform=win
 
 Build with Maven:
 --------------------------
@@ -64,7 +73,7 @@ Launch from command line:
 --------------------------
 
 ```
-java --module-path libs --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.xml.bind -jar ntag.jar
+java --module-path lib --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.xml.bind -jar ntag.jar
 ```
 
 Options:

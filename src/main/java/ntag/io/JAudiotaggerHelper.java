@@ -1,20 +1,20 @@
-/**
- * This file is part of NTag (audio file tag editor).
- * <p>
- * NTag is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * NTag is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with NTag.  If not, see <http://www.gnu.org/licenses/>.
- * <p>
- * Copyright 2016, Nico Rittstieg
+/*
+  This file is part of NTag (audio file tag editor).
+  <p>
+  NTag is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  <p>
+  NTag is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  <p>
+  You should have received a copy of the GNU General Public License
+  along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+  <p>
+  Copyright 2016, Nico Rittstieg
  */
 package ntag.io;
 
@@ -27,7 +27,6 @@ import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.tag.Tag;
-import org.jaudiotagger.tag.TagException;
 import org.jaudiotagger.tag.TagField;
 import org.jaudiotagger.tag.TagTextField;
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
@@ -43,11 +42,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public final class JAudiotaggerHelper {
-
-    static final Logger LOGGER = Logger.getLogger(JAudiotaggerHelper.class.getName());
 
     /**
      * private constructor
@@ -58,7 +54,7 @@ public final class JAudiotaggerHelper {
 
     public static AudioFile readAudioFile(final Path filePath) throws NTagException {
 
-        if (Files.exists(filePath) == false) {
+      if (!Files.exists(filePath)) {
             String msg = String.format("The file '%s' does not exists.", filePath.toString());
             TagFileReader.LOGGER.severe(msg);
             throw new NTagException(msg);
@@ -72,9 +68,6 @@ public final class JAudiotaggerHelper {
         } catch (IOException e) {
             TagFileReader.LOGGER.log(Level.SEVERE, "An IO error occured while reading the audiofile " + filePath.toString(), e);
             throw new NTagException("An IO error occured while reading the audiofile.", e);
-        } catch (TagException e) {
-            TagFileReader.LOGGER.log(Level.SEVERE, "An API error occured while reading the audiofile " + filePath.toString(), e);
-            throw new NTagException("An API error occured while reading the audiofile.", e);
         } catch (ReadOnlyFileException e) {
             TagFileReader.LOGGER.log(Level.SEVERE, "The audiofile is read only " + filePath.toString(), e);
             throw new NTagException("The audiofile is read only, please check the filesystem write permission.", e);
@@ -140,7 +133,6 @@ public final class JAudiotaggerHelper {
      * Removes the AbstractID3v1Tag from the given MP3File
      *
      * @param file MP3File
-     * @return ID3v1Tag
      */
     public static void removeID3v1Tag(final MP3File file) {
         if (file.hasID3v1Tag()) {
@@ -206,7 +198,7 @@ public final class JAudiotaggerHelper {
         }
         try {
             return Integer.parseInt(value);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         return defaultInt;
     }

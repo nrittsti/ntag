@@ -37,12 +37,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
+import ntag.fx.scene.control.button.ButtonLink;
+import ntag.fx.util.FxUtil;
+import ntag.io.Resources;
 import ntag.io.util.ArtworkAdjuster;
 import ntag.io.util.ImageUtil.ImageType;
 import ntag.model.ArtworkTag;
-import toolbox.fx.FxUtil;
-import toolbox.fx.control.ButtonLink;
-import toolbox.io.Resources;
 
 import java.awt.datatransfer.Transferable;
 import java.io.ByteArrayInputStream;

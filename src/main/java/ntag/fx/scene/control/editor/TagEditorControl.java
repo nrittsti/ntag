@@ -18,6 +18,7 @@
  */
 package ntag.fx.scene.control.editor;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener.Change;
 import javafx.event.ActionEvent;
@@ -37,9 +38,18 @@ import javafx.util.converter.LocalDateStringConverter;
 import ntag.NTagException;
 import ntag.fx.scene.NTagViewModel;
 import ntag.fx.scene.control.ArtworkControl;
+import ntag.fx.scene.control.button.ButtonLink;
+import ntag.fx.scene.control.converter.DummyStringConverter;
 import ntag.fx.scene.control.rating.RatingControl;
+import ntag.fx.scene.dialog.DialogResponse;
+import ntag.fx.scene.dialog.DialogResult;
+import ntag.fx.scene.dialog.ItemChoiceViewModel;
+import ntag.fx.util.FxUtil;
 import ntag.fx.util.TagFieldInputDialogs;
+import ntag.fx.validator.SimpleTextFieldValidator;
+import ntag.fx.validator.SimpleTextFieldValidator.ValidationMode;
 import ntag.io.NTagProperties;
+import ntag.io.Resources;
 import ntag.io.TagFileReader;
 import ntag.io.util.FileUtil;
 import ntag.model.Genre;
@@ -49,16 +59,6 @@ import org.jaudiotagger.tag.TagField;
 import org.jaudiotagger.tag.id3.ID3v23Tag;
 import org.jaudiotagger.tag.id3.ID3v24Tag;
 import org.jaudiotagger.tag.reference.ID3V2Version;
-import toolbox.fx.FxUtil;
-import toolbox.fx.collections.ObservableListLink;
-import toolbox.fx.control.ButtonLink;
-import toolbox.fx.dialog.DialogResponse;
-import toolbox.fx.dialog.DialogResult;
-import toolbox.fx.dialog.ItemChoiceViewModel;
-import toolbox.fx.util.DummyStringConverter;
-import toolbox.fx.validator.SimpleTextFieldValidator;
-import toolbox.fx.validator.SimpleTextFieldValidator.ValidationMode;
-import toolbox.io.Resources;
 
 import java.io.IOException;
 import java.net.URI;
@@ -403,7 +403,7 @@ public class TagEditorControl extends TabPane implements Initializable {
         if (converter != null) {
             combo.getComboBox().setConverter(converter);
         }
-        new ObservableListLink<>(combo.getComboBox().getItems(), editorProp.getValues());
+      Bindings.bindContentBidirectional(editorProp.getValues(), combo.getComboBox().getItems());
         combo.getComboBox().setTooltip(new Tooltip());
         combo.getComboBox().tooltipProperty().bind(editorProp.tooltipProperty());
         combo.setClearEventHandler(editorProp.getClearEventHandler());

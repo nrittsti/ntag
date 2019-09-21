@@ -28,7 +28,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.util.StringConverter;
-import toolbox.io.Resources;
+import ntag.io.Resources;
 
 public class EComboBox<T> extends HBox {
 

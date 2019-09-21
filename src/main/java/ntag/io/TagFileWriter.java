@@ -1,20 +1,20 @@
-/**
- * This file is part of NTag (audio file tag editor).
- * <p>
- * NTag is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * NTag is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with NTag.  If not, see <http://www.gnu.org/licenses/>.
- * <p>
- * Copyright 2016, Nico Rittstieg
+/*
+  This file is part of NTag (audio file tag editor).
+  <p>
+  NTag is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  <p>
+  NTag is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  <p>
+  You should have received a copy of the GNU General Public License
+  along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+  <p>
+  Copyright 2016, Nico Rittstieg
  */
 package ntag.io;
 
@@ -33,7 +33,6 @@ import org.jaudiotagger.tag.id3.*;
 import org.jaudiotagger.tag.id3.framebody.*;
 import org.jaudiotagger.tag.images.Artwork;
 import org.jaudiotagger.tag.images.ArtworkFactory;
-import toolbox.io.HashUtil;
 
 import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
@@ -379,12 +378,12 @@ public final class TagFileWriter {
             if (tagFile.getTrack() == null || tagFile.getTrack() <= 0) {
                 try {
                     v1tag.setField(FieldKey.TRACK, "");
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
             } else {
                 try {
                     v1tag.setField(FieldKey.TRACK, trackToString(tagFile.getTrack()));
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
             }
             // GENRE : ID3v1
@@ -564,7 +563,7 @@ public final class TagFileWriter {
         final String email = getRatingEMail();
         int convertedRating = RatingConverter.halfStarsToInternal(audioFormat, rating);
 
-        List<TagField> list = null;
+      List<TagField> list;
         try {
             list = tag.getFields(FieldKey.RATING);
             // POPM Frames entfernen
@@ -614,7 +613,7 @@ public final class TagFileWriter {
     }
 
     private void updateTCON(final AbstractID3v2Tag tag, final String genre) {
-        List<TagField> list = null;
+      List<TagField> list;
         try {
             list = tag.getFields("TCON");
         } catch (KeyNotFoundException e) {
@@ -642,7 +641,7 @@ public final class TagFileWriter {
                             int intGenre = Genre.UNKNOWN.getIntValue();
                             try {
                                 intGenre = Integer.parseInt(textValue.substring(1, textValue.length() - 1));
-                            } catch (Exception e) {
+                            } catch (Exception ignored) {
                             }
                             textValue = Genre.getGenreTypeByIntValue(intGenre).getFirstLabel();
                         }
@@ -674,7 +673,7 @@ public final class TagFileWriter {
     // #########################################################################
 
     private void updateArtworkWithMP3Tag(final AbstractID3v2Tag v2tag, final ArtworkTag artworkTag) {
-        List<TagField> coverartList = null;
+      List<TagField> coverartList;
         try {
             coverartList = v2tag.getFields(FieldKey.COVER_ART);
         } catch (KeyNotFoundException e) {

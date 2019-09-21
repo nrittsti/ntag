@@ -19,7 +19,6 @@
 package ntag.fx.scene.control.tableview;
 
 import ntag.fx.util.NTagFormat;
-import toolbox.fx.control.EnhancedTableCell;
 
 public class BitrateTableCell extends EnhancedTableCell<Object, Long> {
 

@@ -21,7 +21,7 @@ System Requirements :
 ----------------------
 
  - 250MB of free RAM
- - Java Runtime Enviroment (JRE) 11
+ - Java Runtime Enviroment (JRE) 12
 
 This distribution contains the following files:
 -------------------------------------------------
@@ -30,7 +30,7 @@ This distribution contains the following files:
    license.txt                - License information
    readme.txt                 - This file
    tag_mapping.pdf            - Tag mapping documentation   
-   libs/jaudiotagger-*.jar    - Jaudiotagger Tagging library 
+   lib/jaudiotagger-*.jar     - Jaudiotagger Tagging library
    ntag.jar                   - Executable Java program   
    
 Tag-Editor
@@ -38,6 +38,13 @@ Tag-Editor
    ntag.desktop               - Linux Launcher
    ntag.exe                   - Windows executable (jar wrapper)
    ntag_logging.properties    - Logging and Debug settings
+
+Build with Gradle:
+-----------------
+
+gradle clean build
+
+gradle.properties: platform=linux or platform=win
 
 Build with Maven:
 -----------------

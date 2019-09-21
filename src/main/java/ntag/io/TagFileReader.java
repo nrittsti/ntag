@@ -1,20 +1,20 @@
-/**
- * This file is part of NTag (audio file tag editor).
- * <p>
- * NTag is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * NTag is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with NTag.  If not, see <http://www.gnu.org/licenses/>.
- * <p>
- * Copyright 2016, Nico Rittstieg
+/*
+  This file is part of NTag (audio file tag editor).
+  <p>
+  NTag is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  <p>
+  NTag is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  <p>
+  You should have received a copy of the GNU General Public License
+  along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+  <p>
+  Copyright 2016, Nico Rittstieg
  */
 package ntag.io;
 
@@ -33,7 +33,6 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagField;
 import org.jaudiotagger.tag.datatype.DataTypes;
 import org.jaudiotagger.tag.id3.*;
-import org.jaudiotagger.tag.id3.framebody.AbstractFrameBodyTextInfo;
 import org.jaudiotagger.tag.id3.framebody.FrameBodyPOPM;
 import org.jaudiotagger.tag.images.Artwork;
 
@@ -234,7 +233,7 @@ public class TagFileReader {
         tagFile.setReadOnly(!Files.isWritable(tagFile.getPath()));
     }
 
-    private void fillHeaderInformation(TagFile tagFile, MP3File audioFile) throws NTagException {
+  private void fillHeaderInformation(TagFile tagFile, MP3File audioFile) {
         MP3AudioHeader header = audioFile.getMP3AudioHeader();
         tagFile.setVbr(header.isVariableBitRate());
         tagFile.setLossless(header.isLossless());
@@ -247,7 +246,7 @@ public class TagFileReader {
         tagFile.setPlaytime(header.getTrackLength());
     }
 
-    private void fillHeaderInformation(TagFile tagFile, AudioFile audioFile) throws NTagException {
+  private void fillHeaderInformation(TagFile tagFile, AudioFile audioFile) {
         AudioHeader header = audioFile.getAudioHeader();
         tagFile.setVbr(header.isVariableBitRate());
         tagFile.setLossless(header.isLossless());
@@ -322,7 +321,7 @@ public class TagFileReader {
             if (frame != null) {
                 createDateFromISOString(tagFile,//
                         frame.getIdentifier(), //
-                        "" + ((AbstractFrameBodyTextInfo) frame.getBody()).getObjectValue(DataTypes.OBJ_TEXT));
+                        "" + frame.getBody().getObjectValue(DataTypes.OBJ_TEXT));
             }
         } else {
             if (tag.frameMap.containsKey("TYERTDAT")) {
@@ -348,12 +347,12 @@ public class TagFileReader {
                 frame = tag.getFirstField("TYER");
                 if (frame != null) {
                     createYear(tagFile, //
-                            "" + ((AbstractFrameBodyTextInfo) frame.getBody()).getObjectValue(DataTypes.OBJ_TEXT));
+                            "" + frame.getBody().getObjectValue(DataTypes.OBJ_TEXT));
                 }
                 frame = tag.getFirstField("TDAT");
                 if (frame != null) {
                     createID3v23ReleaseDate(tagFile, //
-                            "" + ((AbstractFrameBodyTextInfo) frame.getBody()).getObjectValue(DataTypes.OBJ_TEXT));
+                            "" + frame.getBody().getObjectValue(DataTypes.OBJ_TEXT));
                 }
             }
         }
@@ -365,12 +364,8 @@ public class TagFileReader {
     }
 
     private static boolean isBooleanStringTrue(String pvValue) {
-        if ("Y".equalsIgnoreCase(pvValue) || "1".equals(pvValue) || "TRUE".equalsIgnoreCase(pvValue)
-                || "YES".equalsIgnoreCase(pvValue)) {
-            return true;
-        } else {
-            return false;
-        }
+      return "Y".equalsIgnoreCase(pvValue) || "1".equals(pvValue) || "TRUE".equalsIgnoreCase(pvValue)
+              || "YES".equalsIgnoreCase(pvValue);
     }
 
     private static String trim(String value, int maxLength) {
@@ -480,7 +475,7 @@ public class TagFileReader {
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("read rating from file: " + tagFile.getPath());
         }
-        List<TagField> list = null;
+      List<TagField> list;
         try {
             list = tag.getFields(FieldKey.RATING);
         } catch (KeyNotFoundException e) {
@@ -538,7 +533,7 @@ public class TagFileReader {
                     tagFile.setArtwork(new ArtworkTag(frontCover));
                     tagFile.setSingleArtwork(tagArtList.size() == 1);
                 } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE, String.format("Error on processing artwork from file: " + tagFile.getPath()), e);
+                  LOGGER.log(Level.SEVERE, String.format("Error on processing artwork from file: %s", tagFile.getPath()), e);
                 }
             }
         }
@@ -548,12 +543,12 @@ public class TagFileReader {
     }
 
     private StringBuilder createInfoString(AudioFile audioFile) {
+      StringBuilder sb = new StringBuilder();
         Tag tag = audioFile.getTag();
         AudioHeader header = audioFile.getAudioHeader();
         if (tag == null) {
-            return null;
+          return sb;
         }
-        StringBuilder sb = new StringBuilder();
         sb.append(String.format("%s\n-----------------------------------\n", header.getClass().getSimpleName()));
         sb.append(String.format("\n%-14s%s", "Encoding", header.getEncodingType()));
         sb.append(String.format("\n%-14s%6s Hz", "Samplerate", header.getSampleRate().trim()));
@@ -601,7 +596,7 @@ public class TagFileReader {
             sb.append(String.format("\n%-10s%s", "Comment", v1Tag.getFirstComment()));
             try {
                 sb.append(String.format("\n%-10s%s", "Track", v1Tag.getFirstTrack()));
-            } catch (Exception e) {
+            } catch (Exception ignore) {
             }
         }
         if (audioFile.getID3v2Tag() == null) {

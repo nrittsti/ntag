@@ -1,25 +1,26 @@
-/**
- * This file is part of NTag (audio file tag editor).
- * <p>
- * NTag is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * NTag is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with NTag.  If not, see <http://www.gnu.org/licenses/>.
- * <p>
- * Copyright 2016, Nico Rittstieg
+/*
+  This file is part of NTag (audio file tag editor).
+  <p>
+  NTag is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  <p>
+  NTag is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  <p>
+  You should have received a copy of the GNU General Public License
+  along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+  <p>
+  Copyright 2016, Nico Rittstieg
  */
 package ntag.task;
 
 import javafx.concurrent.Task;
 import ntag.fx.scene.AdjustArtworkViewModel;
+import ntag.io.Resources;
 import ntag.io.TagFileWriter;
 import ntag.io.util.ArtworkAdjuster;
 import ntag.model.ArtworkTag;
@@ -30,11 +31,9 @@ import java.util.List;
 
 public class AdjustArtworkTask extends Task<List<TagFile>> {
 
-    private List<String> errors = new ArrayList<String>();
+  private List<String> errors = new ArrayList<>();
 
     private final AdjustArtworkViewModel viewModel;
-    private ArtworkTag artwork;
-    private int fileSize;
     private final TagFileWriter writer = new TagFileWriter();
     private final ArtworkAdjuster adjuster = new ArtworkAdjuster();
 
@@ -58,25 +57,23 @@ public class AdjustArtworkTask extends Task<List<TagFile>> {
                 updateMessage("Cancelled");
                 break;
             }
-            updateMessage(toolbox.io.Resources.format("ntag", "msg_checking_artwork", i, viewModel.getFiles().size()));
+          updateMessage(Resources.format("ntag", "msg_checking_artwork", i, viewModel.getFiles().size()));
             TagFile tagFile = viewModel.getFiles().get(i);
-            artwork = tagFile.getArtwork();
-            fileSize = artwork.getImageData().length / 1000;
-            if (artwork == null || //
-                    (artwork.getHeight() <= viewModel.getMaxResolution() && artwork.getWidth() <= viewModel.getMaxResolution() && //
+          ArtworkTag artwork = tagFile.getArtwork();
+          int fileSize = artwork.getImageData().length / 1000;
+          if ((artwork.getHeight() <= viewModel.getMaxResolution() && artwork.getWidth() <= viewModel.getMaxResolution() && //
                             fileSize <= viewModel.getMaxKilobytes()) && //
                             (!viewModel.isEnforceImageType() || viewModel.getImageType() == artwork.getImageType())) {
                 // nothing to do
                 continue;
             }
-            updateMessage(toolbox.io.Resources.format("ntag", "msg_resizing_artwork", i, viewModel.getFiles().size()));
+          updateMessage(Resources.format("ntag", "msg_resizing_artwork", i, viewModel.getFiles().size()));
             try {
                 // adjust artwork
                 artwork = adjuster.adjust(artwork);
-                fileSize = artwork.getImageData().length / 1000;
                 // write image data back to audiofile
                 tagFile.setArtwork(artwork);
-                updateMessage(toolbox.io.Resources.format("ntag", "msg_writing_file", i, viewModel.getFiles().size()));
+              updateMessage(Resources.format("ntag", "msg_writing_file", i, viewModel.getFiles().size()));
                 writer.update(tagFile);
             } catch (Exception e) {
                 errors.add(String.format("%s\n%s", viewModel.getFiles().get(i).getPath(), e.getMessage()));

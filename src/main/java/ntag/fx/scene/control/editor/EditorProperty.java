@@ -26,8 +26,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Tooltip;
+import ntag.io.Resources;
 import ntag.model.TagFile;
-import toolbox.io.Resources;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

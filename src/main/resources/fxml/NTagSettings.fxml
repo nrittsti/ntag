@@ -21,7 +21,7 @@ Copyright 2016, Nico Rittstieg
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import toolbox.fx.control.*?>
+<?import ntag.fx.scene.control.editor.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntag.fx.scene.NTagSettingsController">
   <padding>
     <Insets top="5" right="5" bottom="5" left="5"/>

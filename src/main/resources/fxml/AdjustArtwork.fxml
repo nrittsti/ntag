@@ -17,7 +17,7 @@ Copyright 2016, Nico Rittstieg
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import toolbox.fx.control.RegexTextfield?>
+<?import ntag.fx.scene.control.editor.RegexTextfield?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntag.fx.scene.AdjustArtworkController">
   <padding>
     <Insets top="5" right="5" bottom="5" left="5"/>

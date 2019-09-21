@@ -17,7 +17,7 @@ Copyright 2016, Nico Rittstieg
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="toolbox.fx.dialog.ItemChoiceController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntag.fx.scene.dialog.ItemChoiceController">
   <padding>
     <Insets top="5" right="5" bottom="5" left="5"/>
   </padding>
@@ -79,8 +79,8 @@ Copyright 2016, Nico Rittstieg
     <VBox spacing="3">
       <Separator/>
       <HBox spacing="10" alignment="BOTTOM_CENTER">
-        <Button prefWidth="80" text="%btn_cancel" onAction="#handleCancelAction"/>
-        <Button prefWidth="80" text="%btn_ok" onAction="#handleOKAction"/>
+        <Button prefWidth="100" text="%btn_cancel" onAction="#handleCancelAction"/>
+        <Button prefWidth="100" text="%btn_ok" onAction="#handleOKAction"/>
       </HBox>
     </VBox>
   </bottom>

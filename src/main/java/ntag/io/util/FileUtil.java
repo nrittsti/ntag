@@ -18,8 +18,8 @@
  */
 package ntag.io.util;
 
-import toolbox.io.Resources;
-import toolbox.util.StringBuilderUtil;
+import ntag.commons.StringBuilderUtil;
+import ntag.io.Resources;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -104,6 +104,6 @@ public final class FileUtil {
         StringBuilderUtil.replace(builder, "ý", "y");
         StringBuilderUtil.replace(builder, "ÿ", "y");
         StringBuilderUtil.replace(builder, "Ÿ", "y");
-        return builder.toString().replaceAll("[^a-z0-9.]+", "");
+        return builder.toString().replaceAll("[^a-z0-9. -]+", "");
     }
 }

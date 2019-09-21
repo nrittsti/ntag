@@ -20,8 +20,8 @@ package ntag.fx.scene.control.editor;
 
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Tooltip;
+import ntag.io.Resources;
 import ntag.model.ArtworkTag;
-import toolbox.io.Resources;
 
 import java.io.IOException;
 import java.util.logging.Level;

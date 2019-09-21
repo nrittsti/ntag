@@ -18,7 +18,7 @@ Copyright 2016, Nico Rittstieg
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import toolbox.fx.control.ButtonLink?>
+<?import ntag.fx.scene.control.button.ButtonLink?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="HBox" spacing="4" alignment="CENTER">
   <VBox alignment="CENTER_LEFT">
     <Label fx:id="tooltipLabel" minWidth="60"/>

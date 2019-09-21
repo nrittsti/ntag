@@ -1,0 +1,89 @@
+/**
+ * This file is part of NTag (audio file tag editor).
+ * <p>
+ * NTag is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * NTag is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License
+ * along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+ * <p>
+ * Copyright 2016, Nico Rittstieg
+ */
+package ntag.fx.scene.control.converter;
+
+import javafx.util.StringConverter;
+import ntag.commons.ComparableList;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class StringListConverter extends StringConverter<List<String>> {
+
+
+    private final String delim;
+    private final boolean comparable;
+
+    public StringListConverter(String delim) {
+        this(delim, false);
+    }
+
+    public StringListConverter(String delim, boolean comparable) {
+        if (delim == null || delim.length() == 0) {
+            throw new IllegalArgumentException("delim cannot be null or empty");
+        }
+        this.delim = delim;
+        this.comparable = comparable;
+    }
+
+    @Override
+    public String toString(List<String> list) {
+        if (list == null || list.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String value : list) {
+            value = value.trim();
+            if (value.length() == 0) {
+                continue;
+            }
+            if (sb.length() > 0) {
+                sb.append(delim).append(' ');
+            }
+            sb.append(value);
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public List<String> fromString(String value) {
+        List<String> list = null;
+        if (comparable) {
+            list = new ComparableList<String>();
+        } else {
+            list = new ArrayList<String>();
+        }
+        if (value == null) {
+            return list;
+        }
+        value = value.trim();
+        if (value.length() == 0) {
+            return list;
+        }
+        StringTokenizer st = new StringTokenizer(value, delim);
+        while (st.hasMoreTokens()) {
+            String token = st.nextToken().trim();
+            if (token.length() > 0) {
+                list.add(token);
+            }
+        }
+        return list;
+    }
+}

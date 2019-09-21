@@ -31,15 +31,14 @@ import ntag.fx.scene.control.editor.ArtworkEditorProperty;
 import ntag.fx.scene.control.tableview.FileSizeTableCell;
 import ntag.fx.scene.control.tableview.TagFileTableColumn.ColumnType;
 import ntag.io.ini.IniFile;
+import ntag.io.log.CustomFormatter;
+import ntag.io.log.StringPropertyHandler;
 import ntag.io.util.ArtworkAdjuster;
 import ntag.io.util.FileUtil;
 import ntag.io.util.ImageUtil.ImageType;
 import ntag.io.util.RatingConverter;
 import ntag.model.ArtworkTag;
 import ntag.model.AudioFormat;
-import toolbox.io.Resources;
-import toolbox.io.log.CustomFormatter;
-import toolbox.io.log.StringPropertyHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -198,7 +197,7 @@ public class NTagProperties {
     }
 
     public String getDateFormat() {
-        return preferences.getValue("GUI", "Date_Format", "yyyy-mm-dd");
+      return preferences.getValue("GUI", "Date_Format", "yyyy-MM-dd");
     }
 
     public void setDateFormat(String dateFormat) {

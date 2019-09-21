@@ -32,24 +32,24 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.converter.IntegerStringConverter;
+import ntag.fx.scene.control.button.ButtonLink;
 import ntag.fx.scene.control.converter.FileSizeConverter;
 import ntag.fx.scene.control.converter.PlaytimeConverter;
 import ntag.fx.scene.control.editor.EditorProperty;
 import ntag.fx.scene.control.editor.TagEditorControl;
 import ntag.fx.scene.control.tableview.TagFileTableView;
+import ntag.fx.scene.dialog.AbstractDialogController;
+import ntag.fx.scene.dialog.DialogResponse;
+import ntag.fx.scene.dialog.DialogResult;
+import ntag.fx.scene.dialog.ProgressDialog;
+import ntag.fx.util.FxUtil;
 import ntag.io.NTagProperties;
+import ntag.io.Resources;
 import ntag.model.TagFile;
 import ntag.task.AdjustArtworkTask;
 import ntag.task.ReadTagFilesTask;
 import ntag.task.RenameFilesTask;
 import ntag.task.WriteTagFilesTask;
-import toolbox.fx.FxUtil;
-import toolbox.fx.control.ButtonLink;
-import toolbox.fx.dialog.AbstractDialogController;
-import toolbox.fx.dialog.DialogResponse;
-import toolbox.fx.dialog.DialogResult;
-import toolbox.fx.dialog.ProgressDialog;
-import toolbox.io.Resources;
 
 import java.io.File;
 import java.net.URI;
@@ -209,7 +209,19 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
         // Statusbar
         directoryLink.textProperty().bind(appProperties.lastDirectoryProperty());
         filterLink.setUserData(NTagFilterMode.All);
-
+        ContextMenu contextMenu = new ContextMenu();
+        for (NTagFilterMode filterMode : NTagFilterMode.values()) {
+            MenuItem item = new MenuItem(filterMode.name());
+            item.setOnAction(e -> {
+                filterLink.setUserData(filterMode);
+                filterLink.setText(filterMode.name());
+                viewModel.setFilterMode(filterMode);
+            });
+            contextMenu.getItems().add(item);
+        }
+        filterLink.setOnMouseClicked(e -> {
+            contextMenu.show(filterLink, e.getScreenX(), e.getSceneY());
+        });
     }
 
     // ***
@@ -276,19 +288,6 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
             }).start();
         } catch (Exception ex) {
             FxUtil.showException(String.format("Failed to open URI='%s'", uri), ex);
-        }
-    }
-
-    @FXML
-    private void handleChangeFilter(final ActionEvent event) {
-        ChoiceDialog<NTagFilterMode> dialog = new ChoiceDialog<>((NTagFilterMode) filterLink.getUserData(), NTagFilterMode.values());
-        dialog.setHeaderText(Resources.get("ntag", "lbl_change_filtermode"));
-        dialog.setContentText(Resources.get("ntag", "tb_filter"));
-        Optional<NTagFilterMode> result = dialog.showAndWait();
-        if (result.isPresent()) {
-            filterLink.setUserData(result.get());
-            filterLink.setText(result.get().toString());
-            viewModel.setFilterMode(result.get());
         }
     }
 
@@ -375,6 +374,7 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
             buttons = new ButtonType[]{buttonTypeAll, buttonTypeSelection, ButtonType.CANCEL};
         }
         Alert alert = new Alert(AlertType.CONFIRMATION, Resources.get("ntag", "mnu_number_Tracks"), buttons);
+        alert.getDialogPane().getStylesheets().addAll(FxUtil.getPrimaryStage().getScene().getStylesheets());
         Optional<ButtonType> result = alert.showAndWait();
         List<TagFile> files = new ArrayList<TagFile>();
         if (result.get() == buttonTypeAll) {

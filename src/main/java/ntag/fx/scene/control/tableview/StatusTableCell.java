@@ -18,8 +18,6 @@
  */
 package ntag.fx.scene.control.tableview;
 
-import toolbox.fx.control.EnhancedTableCell;
-
 public class StatusTableCell extends EnhancedTableCell<Object, String> {
     @Override
     protected void updateItem(String item, boolean empty) {

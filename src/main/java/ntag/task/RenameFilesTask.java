@@ -1,28 +1,29 @@
-/**
- * This file is part of NTag (audio file tag editor).
- * <p>
- * NTag is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * NTag is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with NTag.  If not, see <http://www.gnu.org/licenses/>.
- * <p>
- * Copyright 2016, Nico Rittstieg
+/*
+  This file is part of NTag (audio file tag editor).
+  <p>
+  NTag is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  <p>
+  NTag is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  <p>
+  You should have received a copy of the GNU General Public License
+  along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+  <p>
+  Copyright 2016, Nico Rittstieg
  */
 package ntag.task;
 
 import javafx.concurrent.Task;
+import ntag.commons.StringBuilderUtil;
 import ntag.fx.scene.RenameFilesViewModel;
+import ntag.io.Resources;
 import ntag.io.util.FileUtil;
 import ntag.model.TagFile;
-import toolbox.util.StringBuilderUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -55,14 +56,14 @@ public class RenameFilesTask extends Task<List<TagFile>> {
     }
 
     @Override
-    protected List<TagFile> call() throws Exception {
+    protected List<TagFile> call() {
         for (int i = 0; i < viewModel.getFiles().size(); i++) {
             if (isCancelled()) {
                 updateMessage("Cancelled");
                 break;
             }
             try {
-                updateMessage(toolbox.io.Resources.format("ntag", "msg_rename_file", i, viewModel.getFiles().size()));
+              updateMessage(Resources.format("ntag", "msg_rename_file", i, viewModel.getFiles().size()));
                 rename(viewModel.getFiles().get(i), viewModel.getFormat());
             } catch (Exception e) {
                 errors.add(String.format("%s\n%s", viewModel.getFiles().get(i).getPath(), e.getMessage()));

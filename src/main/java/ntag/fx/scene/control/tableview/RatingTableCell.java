@@ -18,8 +18,6 @@
  */
 package ntag.fx.scene.control.tableview;
 
-import toolbox.fx.control.EnhancedTableCell;
-
 public class RatingTableCell extends EnhancedTableCell<Object, Integer> {
 
     @Override

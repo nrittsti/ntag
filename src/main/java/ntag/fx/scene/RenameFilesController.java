@@ -23,8 +23,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
-import toolbox.fx.dialog.AbstractDialogController;
-import toolbox.fx.dialog.DialogResponse;
+import ntag.fx.scene.dialog.AbstractDialogController;
+import ntag.fx.scene.dialog.DialogResponse;
 
 import java.net.URL;
 import java.util.ResourceBundle;
