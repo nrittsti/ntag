@@ -49,15 +49,6 @@ gradle clean build run
 
 gradle.properties: platform=linux or platform=win
 
-Build with Maven:
---------------------------
-
-```
-mvn clean package exec:java -p profile
-```
-
-profiles: windows, linux
-
 Download & Installation:
 --------------------------
 

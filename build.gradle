@@ -1,0 +1,93 @@
+plugins {
+    id 'java'
+    id 'java-library-distribution'
+}
+
+group = 'com.github'
+version = '1.2.1'
+sourceCompatibility = '12'
+targetCompatibility = '12'
+jar.archiveName = 'ntag.jar'
+distTar.archiveName = "ntag-${version}-${platform}_bin.tar.gz"
+distZip.archiveName = "ntag-${version}-${platform}_bin.zip"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation files('libs/jaudiotagger-2.2.4.jar')
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'org.glassfish:javax.json:1.1.4'
+    implementation "org.openjfx:javafx-base:${fxVersion}:${platform}"
+    implementation "org.openjfx:javafx-controls:${fxVersion}:${platform}"
+    implementation "org.openjfx:javafx-fxml:${fxVersion}:${platform}"
+    implementation "org.openjfx:javafx-graphics:${fxVersion}:${platform}"
+    implementation "org.openjfx:javafx-swing:${fxVersion}:${platform}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${jupiterVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:${jupiterVersion}"
+    testImplementation 'org.testfx:testfx-junit5:4.0.16-alpha'
+    testImplementation 'org.assertj:assertj-core:3.13.2'
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}"
+}
+
+test {
+    useJUnitPlatform {
+        includeTags tests.split(",")
+    }
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+distributions {
+    main {
+        baseName = "ntag-${platform}_bin"
+        contents {
+            from 'doc'
+            from 'etc/ntag.png'
+            from 'etc/ntag_logging.properties'
+            from 'etc/ntag.desktop'
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes("Implementation-Title": "NTag",
+                "Implementation-Version": version,
+                "Built-By": System.properties['user.name'],
+                "Build-Jdk": JavaVersion.current(),
+                "Main-Class": 'ntag.NTag',
+                "Class-Path": sourceSets.main.runtimeClasspath.findAll{ it.getName() != 'main' }.collect { 'lib/' + it.getName() }.join(' ')
+        )
+    }
+}
+
+distZip {
+    eachFile { file ->
+        String path = file.relativePath
+        file.setPath("ntag-${version}/" + path.substring(path.indexOf("/")+1,path.length()))
+    }
+    includeEmptyDirs = false
+}
+
+distTar {
+    eachFile { file ->
+        String path = file.relativePath
+        file.setPath("ntag-${version}/" + path.substring(path.indexOf("/")+1,path.length()))
+    }
+    includeEmptyDirs = false
+    compression = Compression.GZIP
+}
+
+task run(type: JavaExec) {
+    classpath sourceSets.main.runtimeClasspath
+    main = "ntag.NTag"
+    jvmArgs = [
+            '--module-path',
+            classpath.asPath,
+            '--add-modules',
+            'javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.xml.bind'
+    ]
+}
