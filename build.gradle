@@ -10,6 +10,8 @@ targetCompatibility = '12'
 jar.archiveName = 'ntag.jar'
 distTar.archiveName = "ntag-${version}-${platform}_bin.tar.gz"
 distZip.archiveName = "ntag-${version}-${platform}_bin.zip"
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
 
 repositories {
     mavenCentral()
