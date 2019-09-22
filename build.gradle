@@ -47,9 +47,7 @@ distributions {
         baseName = "ntag-${platform}_bin"
         contents {
             from 'doc'
-            from 'etc/ntag.png'
-            from 'etc/ntag_logging.properties'
-            from 'etc/ntag.desktop'
+            from 'etc'
         }
     }
 }
