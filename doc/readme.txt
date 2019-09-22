@@ -36,7 +36,6 @@ This distribution contains the following files:
 Tag-Editor
 
    ntag.desktop               - Linux Launcher
-   ntag.exe                   - Windows executable (jar wrapper)
    ntag_logging.properties    - Logging and Debug settings
 
 Build with Gradle:
