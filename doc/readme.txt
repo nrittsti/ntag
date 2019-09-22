@@ -59,7 +59,7 @@ https://github.com/nrittsti/ntag/releases
 Launch from command line:
 --------------------------
 
-java --module-path libs --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.xml.bind -jar ntag.jar
+java --module-path lib --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.xml.bind -jar ntag.jar
 
 
 Options:
