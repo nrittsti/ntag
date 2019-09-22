@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=NTag
 Comment=audio file tag editor
-Exec=/bin/java --module-path /opt/ntag/libs --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.xml.bind -jar /opt/ntag/ntag.jar
+Exec=/bin/java --module-path /opt/ntag/lib --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.xml.bind -jar /opt/ntag/ntag.jar
 Icon=/opt/ntag/ntag.png
 Terminal=false
 Type=Application

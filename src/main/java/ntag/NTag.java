@@ -116,10 +116,10 @@ public class NTag extends Application {
             LOGGER.log(Level.SEVERE, "Invalid main args", e);
             System.exit(-1);
         }
-        // init Java logging
+        // init home path
         try {
-            Files.createDirectories(NTagProperties.getHomeDir().resolve("logs"));
-        } catch (Exception e) {
+            Files.createDirectories(NTagProperties.getHomeDir());
+        } catch (Exception ignored) {
         }
         LoggingUtil.setup("ntag_logging.properties");
         // read app propperties

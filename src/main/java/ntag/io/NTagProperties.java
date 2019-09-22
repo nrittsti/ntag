@@ -1,20 +1,20 @@
-/**
- * This file is part of NTag (audio file tag editor).
- * <p>
- * NTag is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * NTag is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with NTag.  If not, see <http://www.gnu.org/licenses/>.
- * <p>
- * Copyright 2016, Nico Rittstieg
+/*
+  This file is part of NTag (audio file tag editor).
+  <p>
+  NTag is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  <p>
+  NTag is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  <p>
+  You should have received a copy of the GNU General Public License
+  along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+  <p>
+  Copyright 2016, Nico Rittstieg
  */
 package ntag.io;
 
@@ -62,7 +62,7 @@ public class NTagProperties {
     private static Attributes attributes = null;
     private static IniFile preferences = null;
 
-    private static Path homeDir = null;
+    private static Path homeDir;
 
     private static StringPropertyHandler actionLogHandler = null;
 
@@ -101,7 +101,7 @@ public class NTagProperties {
                 if (Files.exists(configPath)) {
                     preferences.read(getConfigFile());
                 } else {
-                    List<String> provider = new ArrayList();
+                    List<String> provider = new ArrayList<>();
                     provider.add("https://lyrics.wikia.com/Special:Search?search=input");
                     provider.add("https://www.songtexte.com/search?q=input&c=all");
                     provider.add("https://www.magistrix.de/search/query?utf8=%E2%9C%93&q=input");
@@ -146,15 +146,13 @@ public class NTagProperties {
     }
 
     public static String getCredits() {
-        StringBuilder credits = new StringBuilder(1000);
-        credits.append("Nuvola Icon Theme\n");
-        credits.append("Autor:\tDavid Vignoni\n");
-        credits.append("Licence:\tLGPL\n");
-        credits.append("\n");
-        credits.append("JAudiotagger Library 2.2.4\n");
-        credits.append("Autor:\thttp://www.jthink.net/jaudiotagger/\n");
-        credits.append("Licence:\tLGPL\n");
-        return credits.toString();
+        return "Nuvola Icon Theme\n" +
+                "Autor:\tDavid Vignoni\n" +
+                "Licence:\tLGPL\n" +
+                "\n" +
+                "JAudiotagger Library 2.2.4\n" +
+                "Autor:\thttp://www.jthink.net/jaudiotagger/\n" +
+                "Licence:\tLGPL\n";
     }
 
     // *** Preferences ***
@@ -247,7 +245,7 @@ public class NTagProperties {
     /**
      * default: iTunes star rating values
      *
-     * @return
+     * @return 5 Star Ratings
      */
     public List<Integer> getID3RatingConversion() {
         return preferences.getIntegerValues("MP3", "POPM_Rating_Conversion", 13, 23, 54, 64, 118, 128, 186, 196, 242, 255);

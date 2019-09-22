@@ -68,7 +68,7 @@ public class TagFileTableView extends EnhancedTableView<TagFile> {
     // ***
 
     public TagFileTableView() {
-        FxUtil.loadControl("ntag", this, "/fxml/TagFileTableView.fxml");
+        // FxUtil.loadControl("ntag", this, "/fxml/TagFileTableView.fxml");
 
         selectionModelListener = (Change<? extends TagFile> change) -> {
             onSelectionModelChanged();

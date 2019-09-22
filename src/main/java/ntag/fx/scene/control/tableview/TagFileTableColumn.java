@@ -147,7 +147,7 @@ public class TagFileTableColumn extends TableColumn<Object, Object> {
             public TableCell<Object, Object> call(TableColumn<Object, Object> p) {
                 if (tableCellClass != null) {
                     try {
-                        return (TableCell<Object, Object>) tableCellClass.newInstance();
+                        return (TableCell<Object, Object>) tableCellClass.getConstructor().newInstance();
                     } catch (Exception e) {
                         LOGGER.log(Level.SEVERE, "Error by ColumnType: " + type.name(), e);
                     }
