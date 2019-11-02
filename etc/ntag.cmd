@@ -1,0 +1,1 @@
+start "NTag" /B javaw --module-path lib --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.xml.bind -jar ntag.jar %*
