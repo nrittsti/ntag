@@ -151,7 +151,7 @@ public class EditorProperty<T> {
     //
     // ***
 
-    public EditorProperty(String name, EmptyCheck<T> emptyCheck) throws NoSuchMethodException, SecurityException {
+  public EditorProperty(String name, EmptyCheck<T> emptyCheck) throws SecurityException {
         super();
         if (name == null || name.length() == 0) {
             throw new IllegalArgumentException("a valid property name is required");

@@ -47,7 +47,7 @@ public class RegexTextfield extends TextField {
         if (getSelection().getLength() != 0) {
             length -= getSelection().getLength();
         }
-        if (text == "" || (length < maxLength.getValue() && (text.matches(regex.getValue())))) {
+      if ("".equals(text) || (length < maxLength.getValue() && (text.matches(regex.getValue())))) {
             super.replaceSelection(text);
         }
     }

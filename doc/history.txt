@@ -62,3 +62,8 @@ NTag Version History
 - Migration to Java 12
 - Gradle build support
 - New Pop-up menu for toolbar filter options
+
+1.2.2          2019-11-23
+-------------------------
+- Migration to Java 13
+- added Github CI Action

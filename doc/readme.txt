@@ -21,7 +21,7 @@ System Requirements :
 ----------------------
 
  - 250MB of free RAM
- - Java Runtime Enviroment (JDK) 12 or newer
+ - Java Runtime Enviroment (JDK) 13 or newer
 
 This distribution contains the following files:
 -------------------------------------------------
@@ -61,14 +61,14 @@ https://github.com/nrittsti/ntag/releases
 OpenJDK Windows 10 Installation
 --------------------------
 
-Download OpenJDK from https://jdk.java.net/java-se-ri/12
-Extract the zip file into a folder, e.g. C:\Program Files\Java\ and it will create a jdk-12 folder.
+Download OpenJDK from https://jdk.java.net/java-se-ri/13
+Extract the zip file into a folder, e.g. C:\Program Files\Java\ and it will create a jdk-13 folder.
 
 Set PATH:
 Select Control Panel and then System.
 Click Advanced and then Environment Variables.
 Add the location of the bin folder of the JDK installation to the PATH variable in System Variables.
-The following is a typical value for the PATH variable: C:\WINDOWS\system32;C:\WINDOWS;"C:\Program Files\Java\jdk-12\bin"
+The following is a typical value for the PATH variable: C:\WINDOWS\system32;C:\WINDOWS;"C:\Program Files\Java\jdk-13\bin"
 
 Set JAVA_HOME:
 Under System Variables, click New.

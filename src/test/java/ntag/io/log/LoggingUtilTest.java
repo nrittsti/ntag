@@ -28,10 +28,11 @@ class LoggingUtilTest {
   }
 
   @Test
-  void registerHandler() {
+  void registerHandler() throws InterruptedException {
     NTagProperties props = new NTagProperties();
     LoggingUtil.registerHandler(LOGGER, props.getActionLogHandler());
     LOGGER.log(Level.SEVERE, "Test123");
+    Thread.sleep(100);
     assertTrue(props.getActionLogHandler().getText().contains("Test123"));
   }
 }

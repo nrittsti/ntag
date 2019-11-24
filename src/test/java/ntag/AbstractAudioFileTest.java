@@ -15,11 +15,11 @@ import java.util.stream.Stream;
 
 public abstract class AbstractAudioFileTest {
 
-    protected static final String SAMPLE_FLAC = "sample.flac";
-    protected static final String SAMPLE_WMA = "sample.wma";
-    protected static final String SAMPLE_M4A = "sample.m4a";
-    protected static final String SAMPLE_ID3V23_MP3 = "sample_id3v23.mp3";
-    protected static final String SAMPLE_ID3V24_MP3 = "sample_id3v24.mp3";
+  protected static final String SAMPLE_FLAC = "sample.flac";
+  protected static final String SAMPLE_WMA = "sample.wma";
+  protected static final String SAMPLE_M4A = "sample.m4a";
+  protected static final String SAMPLE_ID3V23_MP3 = "sample_id3v23.mp3";
+  protected static final String SAMPLE_ID3V24_MP3 = "sample_id3v24.mp3";
   protected static final String SAMPLE_INI = "sample.ini";
 
   protected static final String[] ALL_AUDIO_FILES = {

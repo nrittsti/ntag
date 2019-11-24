@@ -2,6 +2,7 @@ package ntag.fx.validator;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.control.TextField;
+import ntag.AbstractAudioFileTest;
 import ntag.Category;
 import ntag.io.NTagProperties;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag(Category.Unit)
-class SimpleTextFieldValidatorTest {
+class SimpleTextFieldValidatorTest extends AbstractAudioFileTest {
 
   TextField textField;
 
@@ -23,7 +24,7 @@ class SimpleTextFieldValidatorTest {
   }
 
   @BeforeEach
-  void setUp() {
+  public void setUp() {
     textField = new TextField();
   }
 

@@ -4,12 +4,12 @@ plugins {
 }
 
 group = 'com.github'
-version = '1.2.1'
-sourceCompatibility = '12'
-targetCompatibility = '12'
-jar.archiveName = 'ntag.jar'
-distTar.archiveName = "ntag-${version}-${platform}_bin.tar.gz"
-distZip.archiveName = "ntag-${version}-${platform}_bin.zip"
+version = '1.2.2'
+sourceCompatibility = '13'
+targetCompatibility = '13'
+jar.archiveFileName = 'ntag.jar'
+distTar.archiveFileName = "ntag-${version}-${platform}_bin.tar.gz"
+distZip.archiveFileName = "ntag-${version}-${platform}_bin.zip"
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
 
@@ -29,11 +29,19 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:${jupiterVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-params:${jupiterVersion}"
     testImplementation 'org.testfx:testfx-junit5:4.0.16-alpha'
-    testImplementation 'org.assertj:assertj-core:3.13.2'
+    testImplementation 'org.assertj:assertj-core:3.14.0'
+    testRuntimeOnly 'org.testfx:openjfx-monocle:jdk-12.0.1+2'
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}"
 }
 
 test {
+    systemProperty "glass.platform", "Monocle"
+    systemProperty "monocle.platform", "Headless"
+    systemProperty "testfx.robot", "glass"
+    systemProperty "testfx.headless", "true"
+    systemProperty "prism.order", "sw"
+    systemProperty "prism.text", "t2k"
+    systemProperty "java.awt.headless", "true"
     useJUnitPlatform {
         includeTags tests.split(",")
     }
@@ -44,7 +52,7 @@ test {
 
 distributions {
     main {
-        baseName = "ntag-${platform}_bin"
+        distributionBaseName = "ntag-${platform}_bin"
         contents {
             from 'doc'
             from 'etc'
@@ -55,7 +63,7 @@ distributions {
 jar {
     manifest {
         attributes("Implementation-Title": "NTag",
-                "Implementation-Version": version,
+                "Implementation-Version": archiveVersion,
                 "Built-By": System.properties['user.name'],
                 "Build-Jdk": JavaVersion.current(),
                 "Main-Class": 'ntag.NTag',
@@ -67,7 +75,7 @@ jar {
 distZip {
     eachFile { file ->
         String path = file.relativePath
-        file.setPath("ntag-${version}/" + path.substring(path.indexOf("/")+1,path.length()))
+        file.setPath("ntag-${archiveVersion}/" + path.substring(path.indexOf("/")+1,path.length()))
     }
     includeEmptyDirs = false
 }
@@ -75,7 +83,7 @@ distZip {
 distTar {
     eachFile { file ->
         String path = file.relativePath
-        file.setPath("ntag-${version}/" + path.substring(path.indexOf("/")+1,path.length()))
+        file.setPath("ntag-${archiveVersion}/" + path.substring(path.indexOf("/")+1,path.length()))
     }
     includeEmptyDirs = false
     compression = Compression.GZIP

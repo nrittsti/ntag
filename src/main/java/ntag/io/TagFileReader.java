@@ -560,7 +560,7 @@ public class TagFileReader {
             sb.append(" (Lossless)");
         }
         sb.append(String.format("\n%-14s%6s", "Channels", header.getChannels().trim()));
-        sb.append(String.format("\n%-14s%6s seconds", "Lenghts", header.getTrackLength()));
+        sb.append(String.format("\n%-14s%6s seconds", "Lengths", header.getTrackLength()));
         sb.append(String.format("\n\n%s\n-----------------------------------\n", tag.getClass().getSimpleName()));
         return sb;
     }
@@ -578,7 +578,7 @@ public class TagFileReader {
             sb.append(" (VBR)");
         }
         sb.append(String.format("\n%-14s%6s", "Channels", header.getChannels()));
-        sb.append(String.format("\n%-14s%6s seconds", "Lenghts", header.getTrackLength()));
+        sb.append(String.format("\n%-14s%6s seconds", "Lengths", header.getTrackLength()));
         sb.append(String.format("\n%-14s%s", "Encoder", header.getEncoder()));
         sb.append(String.format("\n%-14s%s %s", "MPEG Version", header.getMpegVersion(), header.getMpegLayer()));
 
