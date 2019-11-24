@@ -35,8 +35,12 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/distributions/ntag-${{ steps.create_release.outputs.tag_name }}-linux_bin.tar.gz
-        asset_name: ntag-${{ steps.create_release.outputs.tag_name }}-linux_bin.tar.gz
+        # 'steps.create_release.outputs.tag_name' with (vX.X.X) is missing in actions/create-release@v1.0.0
+        #
+        # asset_path: ./build/distributions/ntag-${{ steps.create_release.outputs.tag_name }}-linux_bin.tar.gz
+        # asset_name: ntag-${{ steps.create_release.outputs.tag_name }}-linux_bin.tar.gz
+        asset_path: ./build/distributions/ntag-linux_bin.tar.gz
+        asset_name: ntag-linux_bin.tar.gz
         asset_content_type: application/gzip
     - name: Build Windows Version with Gradle
       id: build-windows
@@ -48,6 +52,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/distributions/ntag-${{ steps.create_release.outputs.tag_name }}-win_bin.zip
-        asset_name: ntag-${{ steps.create_release.outputs.tag_name }}-win_bin.zip
-        asset_content_type: application/zip     
+        # 'steps.create_release.outputs.tag_name' with (vX.X.X) is missing in actions/create-release@v1.0.0
+        #
+        # asset_path: ./build/distributions/ntag-${{ steps.create_release.outputs.tag_name }}-win_bin.zip
+        # asset_name: ntag-${{ steps.create_release.outputs.tag_name }}-win_bin.zip
+        asset_path: ./build/distributions/ntag-win_bin.zip
+        asset_name: ntag-win_bin.zip
+        asset_content_type: application/zip
