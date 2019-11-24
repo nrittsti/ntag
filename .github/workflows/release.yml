@@ -1,0 +1,55 @@
+name: "Build Release"
+
+on:
+  push:
+    branches:
+      - master
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+jobs:
+  test:
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up JDK 13
+      uses: actions/setup-java@v1
+      with:
+        java-version: 13
+    - name: Build Linux Version with Gradle
+      id: build-linux
+      run: ./gradlew build -Pplatform=linux -Ptests=Unit
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: true
+        prerelease: false
+    - name: Upload Linux Release Asset
+      id: upload-linux-release-asset 
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} 
+        asset_path: ./build/distributions/ntag-${{ github.ref }}-linux_bin.tar.gz
+        asset_name: ntag-${{ github.ref }}-linux_bin.tar.gz
+        asset_content_type: application/gzip
+    - name: Build Windows Version with Gradle
+      id: build-windows
+      run: ./gradlew clean build -x test -Pplatform=win
+    - name: Upload Windows Release Asset
+      id: upload-windows-release-asset 
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} 
+        asset_path: ./build/distributions/ntag-${{ github.ref }}-win_bin.zip
+        asset_name: ntag-${{ github.ref }}-win_bin.zip
+        asset_content_type: application/zip     
