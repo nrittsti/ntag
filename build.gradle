@@ -8,8 +8,8 @@ version = '1.2.2'
 sourceCompatibility = '13'
 targetCompatibility = '13'
 jar.archiveFileName = 'ntag.jar'
-distTar.archiveFileName = "ntag-${version}-${platform}_bin.tar.gz"
-distZip.archiveFileName = "ntag-${version}-${platform}_bin.zip"
+distTar.archiveFileName = "ntag-v${version}-${platform}_bin.tar.gz"
+distZip.archiveFileName = "ntag-v${version}-${platform}_bin.zip"
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
 
@@ -75,7 +75,7 @@ jar {
 distZip {
     eachFile { file ->
         String path = file.relativePath
-        file.setPath("ntag-${archiveVersion}/" + path.substring(path.indexOf("/")+1,path.length()))
+        file.setPath("ntag-${archiveVersion.get()}/" + path.substring(path.indexOf("/")+1,path.length()))
     }
     includeEmptyDirs = false
 }
@@ -83,7 +83,7 @@ distZip {
 distTar {
     eachFile { file ->
         String path = file.relativePath
-        file.setPath("ntag-${archiveVersion}/" + path.substring(path.indexOf("/")+1,path.length()))
+        file.setPath("ntag-${archiveVersion.get()}/" + path.substring(path.indexOf("/")+1,path.length()))
     }
     includeEmptyDirs = false
     compression = Compression.GZIP

@@ -1,6 +1,6 @@
 # NTag (audio file tag editor)
 
-<a href="https://github.com/nrittsti/ntag"><img alt="GitHub NTag status" src="https://github.com/nrittsti/ntag/workflows/Java%20CI/badge.svg"></a>
+<a href="https://github.com/nrittsti/ntag"><img alt="GitHub NTag status" src="https://github.com/nrittsti/ntag/workflows/Tests/badge.svg"></a>
 
 ![ScreenShot](https://raw.github.com/nrittsti/ntag/master/ntag.png)
 
