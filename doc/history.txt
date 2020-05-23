@@ -67,3 +67,7 @@ NTag Version History
 -------------------------
 - Migration to Java 13
 - added Github CI Action
+
+1.2.3          2020-05-23
+-------------------------
+- Linux HiDPI support

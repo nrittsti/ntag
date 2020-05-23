@@ -86,6 +86,23 @@ Options:
 -h --home         custom home directory
 -p --portable     use working directory as home
 
+Linux HiDPI Settings:
+--------------------------
+
+Windows and MacOS take care of the scaling automatically.
+Linux Java  applications using JavaFX can be scaled by defining the glass.gtk.uiScale VM property when invoking java.
+The value can be an integer percentage value, an integer DPI value (where 96dpi represents a scale factor of 100%, and
+for example 192dpi represents a scale factor of 200%), or a float value.
+
+You can simply use the following configuration file
+
+~/.config/ntag/hidpi.config
+
+... and configure HiDPI Scalling in percent or dpi. For example:
+
+HIDPI_SCALING=130%
+HIDPI_SCALING=144dpi
+
 Project Web site :
 --------------------
 

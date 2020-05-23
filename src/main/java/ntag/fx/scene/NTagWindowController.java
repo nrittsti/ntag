@@ -430,7 +430,7 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
     @FXML
     private void handleSettingsAction(final ActionEvent event) {
         FxUtil.showDialog("ntag", Resources.get("ntag", "mnu_settings"), //
-                appProperties, getClass().getResource("/fxml/NTagSettings.fxml"), getStage(), 600, 500);
+                appProperties, getClass().getResource("/fxml/NTagSettings.fxml"), getStage(), 600, 540);
     }
 
     @FXML
