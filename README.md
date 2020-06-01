@@ -22,7 +22,7 @@ System Requirements :
 ----------------------
 
  - 250MB of free RAM
- - OpenJDK 13 or newer
+ - OpenJDK 14 or newer
 
 This distribution contains the following files:
 -------------------------------------------------
@@ -66,9 +66,9 @@ OpenJDK Windows 10 Installation
 
 Download OpenJDK from
 
-https://jdk.java.net/java-se-ri/13
+https://jdk.java.net/14/
 
-Extract the zip file into a folder, e.g. C:\Program Files\Java\ and it will create a jdk-13 folder.
+Extract the zip file into a folder, e.g. C:\Program Files\Java\ and it will create a jdk-14 folder.
 
 Set PATH:
 - Select Control Panel and then System.

@@ -4,9 +4,9 @@ plugins {
 }
 
 group = 'com.github'
-version = '1.2.3'
-sourceCompatibility = '13'
-targetCompatibility = '13'
+version = '1.2.4'
+sourceCompatibility = '14'
+targetCompatibility = '14'
 jar.archiveFileName = 'ntag.jar'
 distTar.archiveFileName = "ntag-${platform}_bin.tar.gz"
 distZip.archiveFileName = "ntag-${platform}_bin.zip"

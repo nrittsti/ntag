@@ -1,5 +1,5 @@
 #! /bin/bash
-JAVA_HOME="/usr/lib/jvm/java-13-openjdk"
+JAVA_HOME="/usr/lib/jvm/java-14-openjdk"
 HIDPI_CONFIG="${HOME}/.config/ntag/hidpi.config"
 HIDPI_SCALING=100%
 if test -f "${HIDPI_CONFIG}"; then
