@@ -4,12 +4,12 @@ plugins {
 }
 
 group = 'com.github'
-version = '1.2.4'
+version = '1.2.5'
 sourceCompatibility = '14'
 targetCompatibility = '14'
 jar.archiveFileName = 'ntag.jar'
-distTar.archiveFileName = "ntag-${platform}_bin.tar.gz"
-distZip.archiveFileName = "ntag-${platform}_bin.zip"
+distTar.archiveFileName = "ntag-${version}-${platform}_bin.tar.gz"
+distZip.archiveFileName = "ntag-${version}-${platform}_bin.zip"
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
 
@@ -52,7 +52,7 @@ test {
 
 distributions {
     main {
-        distributionBaseName = "ntag-${platform}_bin"
+        distributionBaseName = "ntag-${version}-${platform}_bin"
         contents {
             from 'doc'
             from 'etc'

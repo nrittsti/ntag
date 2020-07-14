@@ -57,10 +57,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -344,7 +341,7 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
         DialogResult<AdjustArtworkViewModel> dresult = FxUtil.showDialog("ntag", "Adjust Artwork", //
                 adjArtworkViewModel, getClass().getResource("/fxml/AdjustArtwork.fxml"), getStage(), 550, 380);
         if (dresult.getRespone() == DialogResponse.SELECTION) {
-            adjArtworkViewModel.getFiles().addAll(viewModel.getSelectedFiles());
+            adjArtworkViewModel.getFiles().addAll(viewModel.getSortedFiles());
         } else if (dresult.getRespone() == DialogResponse.ALL) {
             adjArtworkViewModel.getFiles().addAll(viewModel.getFiles());
         } else {
@@ -366,19 +363,29 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
     private void handleNumberTracksAction(final ActionEvent event) {
         appProperties.getActionLogHandler().clear();
         ButtonType[] buttons = null;
+        ButtonType buttonTypeShuffle = new ButtonType(Resources.get("ntag", "btn_shuffle"));
         ButtonType buttonTypeAll = new ButtonType(Resources.get("ntag", "btn_all_files"));
         ButtonType buttonTypeSelection = new ButtonType(Resources.get("ntag", "btn_selected_files"));
         if (viewModel.getSelectedFiles().isEmpty()) {
-            buttons = new ButtonType[]{buttonTypeAll, ButtonType.CANCEL};
+            buttons = new ButtonType[]{buttonTypeShuffle, buttonTypeAll, ButtonType.CANCEL};
         } else {
-            buttons = new ButtonType[]{buttonTypeAll, buttonTypeSelection, ButtonType.CANCEL};
+            buttons = new ButtonType[]{buttonTypeShuffle, buttonTypeAll, buttonTypeSelection, ButtonType.CANCEL};
         }
-        Alert alert = new Alert(AlertType.CONFIRMATION, Resources.get("ntag", "mnu_number_Tracks"), buttons);
+        Alert alert = new Alert(AlertType.CONFIRMATION, null, buttons);
+        alert.setHeaderText(Resources.get("ntag", "mnu_number_Tracks"));
         alert.getDialogPane().getStylesheets().addAll(FxUtil.getPrimaryStage().getScene().getStylesheets());
         Optional<ButtonType> result = alert.showAndWait();
-        List<TagFile> files = new ArrayList<TagFile>();
-        if (result.get() == buttonTypeAll) {
+        List<TagFile> files = new ArrayList<>();
+        if (result.get() == buttonTypeShuffle) {
+            viewModel.getSelectedFiles().clear();
+            this.tagFileTableView.getSortOrder().clear();
+            filterLink.setUserData(NTagFilterMode.All);
+            filterLink.setText(NTagFilterMode.All.name());
+            this.viewModel.setFilterMode(NTagFilterMode.All);
+            Collections.shuffle(viewModel.getFiles());
             files.addAll(viewModel.getFiles());
+        } else if (result.get() == buttonTypeAll) {
+            files.addAll(viewModel.getSortedFiles());
         } else if (result.get() == buttonTypeSelection) {
             files.addAll(viewModel.getSelectedFiles());
         }
@@ -410,7 +417,7 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
         if (dresult.getRespone() == DialogResponse.SELECTION) {
             renameFilesViewModel.getFiles().addAll(viewModel.getSelectedFiles());
         } else if (dresult.getRespone() == DialogResponse.ALL) {
-            renameFilesViewModel.getFiles().addAll(viewModel.getFiles());
+            renameFilesViewModel.getFiles().addAll(viewModel.getSortedFiles());
         } else {
             return;
         }
@@ -425,6 +432,16 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
             FxUtil.showErrors("Rename Errors", task.getErrors());
         }
         refreshSelection();
+    }
+
+    @FXML
+    private void handleShuffleAction(final ActionEvent event) {
+        viewModel.getSelectedFiles().clear();
+        this.tagFileTableView.getSortOrder().clear();
+        filterLink.setUserData(NTagFilterMode.All);
+        filterLink.setText(NTagFilterMode.All.name());
+        this.viewModel.setFilterMode(NTagFilterMode.All);
+        Collections.shuffle(viewModel.getFiles());
     }
 
     @FXML

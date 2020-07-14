@@ -23,7 +23,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.SortedList;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import ntag.fx.scene.NTagViewModel;
@@ -117,16 +116,15 @@ public class TagFileTableView extends EnhancedTableView<TagFile> {
         // FilteredList is unmodifiable, so it cannot be sorted. The List must
         // be wraped in SortedList for this purpose.
         // http://stackoverflow.com/a/18227763
-        SortedList<TagFile> sortedList = new SortedList<>(viewModel.getFilteredFiles());
-        this.setItems(sortedList);
-        sortedList.comparatorProperty().bind(this.comparatorProperty());
+        this.setItems(viewModel.getSortedFiles());
+        viewModel.getSortedFiles().comparatorProperty().bind(this.comparatorProperty());
 
         this.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 
-      ObservableList a = viewModel.getColumns();
-      ObservableList b = this.getColumns();
-      Bindings.bindContentBidirectional(b, a);
+        ObservableList a = viewModel.getColumns();
+        ObservableList b = this.getColumns();
+        Bindings.bindContentBidirectional(b, a);
 
         // Configure Table Header Contextmenu
         TagFileTableHeaderMenu contextMenu = new TagFileTableHeaderMenu(viewModel.getColumns());

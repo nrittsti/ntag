@@ -104,6 +104,6 @@ public final class FileUtil {
         StringBuilderUtil.replace(builder, "ý", "y");
         StringBuilderUtil.replace(builder, "ÿ", "y");
         StringBuilderUtil.replace(builder, "Ÿ", "y");
-        return builder.toString().replaceAll("[^a-z0-9. -]+", "");
+        return builder.toString().replaceAll("[^a-zA-Z0-9. -]+", "");
     }
 }

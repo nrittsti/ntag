@@ -25,7 +25,7 @@ class FileUtilTest extends AbstractAudioFileTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"abc1.mp3,abc1.mp3", "aöz.mp3,aoez.mp3", "abc€.mp3,abc.mp3", "abc\t.mp3,abc.mp3", "01 - test.mp3, 01 - test.mp3"})
+  @CsvSource({"abc1.mp3,abc1.mp3", "aöz.mp3,aoez.mp3", "abc€.mp3,abc.mp3", "abc\t.mp3,abc.mp3", "01 - test.mp3, 01 - test.mp3", "10 - Free Me.mp3,10 - Free Me.mp3"})
   void sanitizeFilename(String given, String expected) {
     // when
     String actual = FileUtil.sanitizeFilename(given);

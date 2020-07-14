@@ -24,6 +24,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import ntag.fx.scene.control.tableview.TagFileTableColumn;
 import ntag.fx.scene.control.tableview.TagFileTableColumn.ColumnType;
 import ntag.io.NTagProperties;
@@ -73,6 +74,12 @@ public class NTagViewModel {
 
     public ObservableList<TagFile> getFilteredFiles() {
         return filteredFiles;
+    }
+
+    private SortedList<TagFile> sortedFiles = null;
+
+    public SortedList<TagFile> getSortedFiles() {
+        return sortedFiles;
     }
 
     // *** UpdatedFiles
@@ -207,6 +214,7 @@ public class NTagViewModel {
             calcSelectedFileProperties();
         });
         filteredFiles = new FilteredList<>(files);
+        sortedFiles = new SortedList<>(filteredFiles);
         columns.addListener((Change<? extends TagFileTableColumn> change) -> {
             List<ColumnType> columnList = new ArrayList<>();
             for (TagFileTableColumn tc : columns) {
