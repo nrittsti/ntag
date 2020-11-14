@@ -1,20 +1,21 @@
-/**
- * This file is part of NTagDB (tag-based database for audio files).
- * <p>
- * NTagDB is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * NTagDB is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with NTagDB.  If not, see <http://www.gnu.org/licenses/>.
- * <p>
- * Copyright 2017, Nico Rittstieg
+/*
+ *   This file is part of NTag (audio file tag editor).
+ *
+ *   NTag is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   NTag is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *   Copyright 2020, Nico Rittstieg
+ *
  */
 package ntag.fx.util;
 
@@ -98,9 +99,7 @@ public final class TagFieldInputDialogs {
 
     ListView<TagField> listView = new ListView<>(filteredList);
     listView.setPrefSize(150, 200);
-    listView.setCellFactory((ListView<TagField> param) -> {
-      return new TagFieldListCell();
-    });
+    listView.setCellFactory((ListView<TagField> param) -> new TagFieldListCell());
 
     CheckBox commonCheckBox = new CheckBox(Resources.get("ntag", "lbl_common_tags"));
     TextField filterTextField = new TextField();
@@ -450,7 +449,7 @@ public final class TagFieldInputDialogs {
     gridPane.add(new Label("Track Total"), 0, 1);
     gridPane.add(trackTotal, 1, 1);
 
-    Platform.runLater(() -> track.requestFocus());
+    Platform.runLater(track::requestFocus);
 
     dialog.setResultConverter(dialogButton -> {
       if (dialogButton == ButtonType.OK) {
@@ -583,7 +582,7 @@ public final class TagFieldInputDialogs {
     gridPane.add(new Label("TDAT"), 0, 1);
     gridPane.add(tdatField, 1, 1);
 
-    Platform.runLater(() -> tyerField.requestFocus());
+    Platform.runLater(tyerField::requestFocus);
 
     dialog.setResultConverter(dialogButton -> {
       if (dialogButton == ButtonType.OK) {

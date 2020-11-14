@@ -22,30 +22,30 @@ System Requirements :
 ----------------------
 
  - 250MB of free RAM
- - OpenJDK 14 or newer
 
 This distribution contains the following files:
 -------------------------------------------------
 
 ```
+   jre/                       - Java Runtime Enviroment
+   lib/                       - Third party libraries
    history.txt                - History of NTag
    license.txt                - License information
-   readme.txt                 - This file
-   tag_mapping.pdf            - Tag mapping documentation   
-   lib/jaudiotagger-*.jar     - Jaudiotagger Tagging library 
-   ntag.jar                   - Executable Java program   
-   
-Tag-Editor
-
+   ntag.cmd                   - Windows Launcher
+   ntag.sh                    - Linux CLI Launcher
+   ntag.desktop               - Linux Desktop Launcher
+   ntag.jar                   - Executable Java program
    ntag.desktop               - Linux Launcher
    ntag_logging.properties    - Logging and Debug settings
+   readme.txt                 - This file
+   tag_mapping.pdf            - Tag mapping documentation
 ```
 
 Build with Gradle:
 -----------------
 
 ```
-gradle clean build run
+./gradlew jre build run
 ```
 
 gradle.properties: platform=linux or platform=win
@@ -61,33 +61,11 @@ Others:
 
 https://github.com/nrittsti/ntag/releases
 
-OpenJDK Windows 10 Installation
---------------------------
-
-Download OpenJDK from
-
-https://jdk.java.net/14/
-
-Extract the zip file into a folder, e.g. C:\Program Files\Java\ and it will create a jdk-14 folder.
-
-Set PATH:
-- Select Control Panel and then System.
-- Click Advanced and then Environment Variables.
-- Add the location of the bin folder of the JDK installation to the PATH variable in System Variables.
-- The following is a typical value for the PATH variable: C:\WINDOWS\system32;C:\WINDOWS;"C:\Program Files\Java\jdk-13\bin"
-
-Set JAVA_HOME:
-- Under System Variables, click New.
-- Enter the variable name as JAVA_HOME.
-- Enter the variable value as the installation path of the JDK (without the bin sub-folder).
-- Click OK. 
-- Click Apply Changes.
-
 Launch from command line:
 --------------------------
 
 ```
-java --module-path lib --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.xml.bind -jar ntag.jar
+./jre/bin/java --module-path lib --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.json -jar ntag.jar
 ```
 
 Options:

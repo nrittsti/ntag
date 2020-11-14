@@ -1,10 +1,30 @@
+/*
+ *   This file is part of NTag (audio file tag editor).
+ *
+ *   NTag is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   NTag is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *   Copyright 2020, Nico Rittstieg
+ *
+ */
+
 plugins {
-    id 'java'
-    id 'java-library-distribution'
+  id 'java'
+  id 'java-library-distribution'
 }
 
 group = 'com.github'
-version = '1.2.5'
+version = '1.2.6'
 sourceCompatibility = '14'
 targetCompatibility = '14'
 jar.archiveFileName = 'ntag.jar'
@@ -14,88 +34,102 @@ compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
 
 repositories {
-    mavenCentral()
+  mavenCentral()
+  maven {
+    url "https://dl.bintray.com/ijabz/maven"
+  }
 }
 
 dependencies {
-    implementation files('libs/jaudiotagger-2.2.4.jar')
-    implementation 'javax.xml.bind:jaxb-api:2.3.1'
-    implementation 'org.glassfish:javax.json:1.1.4'
-    implementation "org.openjfx:javafx-base:${fxVersion}:${platform}"
-    implementation "org.openjfx:javafx-controls:${fxVersion}:${platform}"
-    implementation "org.openjfx:javafx-fxml:${fxVersion}:${platform}"
-    implementation "org.openjfx:javafx-graphics:${fxVersion}:${platform}"
-    implementation "org.openjfx:javafx-swing:${fxVersion}:${platform}"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${jupiterVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-params:${jupiterVersion}"
-    testImplementation 'org.testfx:testfx-junit5:4.0.16-alpha'
-    testImplementation 'org.assertj:assertj-core:3.14.0'
-    testRuntimeOnly 'org.testfx:openjfx-monocle:jdk-12.0.1+2'
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}"
+  compileOnly 'com.github.spotbugs:spotbugs-annotations:4.1.4'
+  implementation 'net.jthink:jaudiotagger:2.2.5'
+  implementation 'org.glassfish:javax.json:1.1.4'
+  implementation "org.openjfx:javafx-base:${fxVersion}:${platform}"
+  implementation "org.openjfx:javafx-controls:${fxVersion}:${platform}"
+  implementation "org.openjfx:javafx-fxml:${fxVersion}:${platform}"
+  implementation "org.openjfx:javafx-graphics:${fxVersion}:${platform}"
+  implementation "org.openjfx:javafx-swing:${fxVersion}:${platform}"
+  testImplementation "org.junit.jupiter:junit-jupiter-api:${jupiterVersion}"
+  testImplementation "org.junit.jupiter:junit-jupiter-params:${jupiterVersion}"
+  testImplementation 'org.assertj:assertj-core:3.18.0'
+  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}"
 }
 
 test {
-    systemProperty "glass.platform", "Monocle"
-    systemProperty "monocle.platform", "Headless"
-    systemProperty "testfx.robot", "glass"
-    systemProperty "testfx.headless", "true"
-    systemProperty "prism.order", "sw"
-    systemProperty "prism.text", "t2k"
-    systemProperty "java.awt.headless", "true"
-    useJUnitPlatform {
-        includeTags tests.split(",")
-    }
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
+  useJUnitPlatform {
+    includeTags tests.split(",")
+  }
+  testLogging {
+    events "passed", "skipped", "failed"
+  }
 }
 
 distributions {
-    main {
-        distributionBaseName = "ntag-${version}-${platform}_bin"
-        contents {
-            from 'doc'
-            from 'etc'
-        }
+  main {
+    distributionBaseName = "ntag-${version}-${platform}_bin"
+    contents {
+      from 'doc'
+      from 'etc'
+      from 'build/jlink'
     }
+  }
 }
 
 jar {
-    manifest {
-        attributes("Implementation-Title": "NTag",
-                "Implementation-Version": archiveVersion,
-                "Built-By": System.properties['user.name'],
-                "Build-Jdk": JavaVersion.current(),
-                "Main-Class": 'ntag.NTag',
-                "Class-Path": sourceSets.main.runtimeClasspath.findAll{ it.getName() != 'main' }.collect { 'lib/' + it.getName() }.join(' ')
-        )
-    }
+  manifest {
+    attributes("Implementation-Title": "NTag",
+        "Implementation-Version": archiveVersion,
+        "Built-By": System.properties['user.name'],
+        "Build-Jdk": JavaVersion.current(),
+        "Main-Class": 'ntag.NTag',
+        "Class-Path": sourceSets.main.runtimeClasspath.findAll { it.getName() != 'main' }.collect { 'lib/' + it.getName() }.join(' ')
+    )
+  }
 }
 
 distZip {
-    eachFile { file ->
-        String path = file.relativePath
-        file.setPath("ntag-${archiveVersion.get()}/" + path.substring(path.indexOf("/")+1,path.length()))
-    }
-    includeEmptyDirs = false
+  eachFile { file ->
+    String path = file.relativePath
+    file.setPath("ntag-${archiveVersion.get()}/" + path.substring(path.indexOf("/") + 1, path.length()))
+  }
+  includeEmptyDirs = false
 }
 
 distTar {
-    eachFile { file ->
-        String path = file.relativePath
-        file.setPath("ntag-${archiveVersion.get()}/" + path.substring(path.indexOf("/")+1,path.length()))
-    }
-    includeEmptyDirs = false
-    compression = Compression.GZIP
+  eachFile { file ->
+    String path = file.relativePath
+    file.setPath("ntag-${archiveVersion.get()}/" + path.substring(path.indexOf("/") + 1, path.length()))
+  }
+  includeEmptyDirs = false
+  compression = Compression.GZIP
 }
 
 task run(type: JavaExec) {
-    classpath sourceSets.main.runtimeClasspath
-    main = "ntag.NTag"
-    jvmArgs = [
-            '--module-path',
-            classpath.asPath,
-            '--add-modules',
-            'javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.xml.bind'
-    ]
+  classpath sourceSets.main.runtimeClasspath
+  main = "ntag.NTag"
+  jvmArgs = [
+      '--module-path',
+      classpath.asPath,
+      '--add-modules',
+      'javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.json'
+  ]
+}
+
+task jre(type: Exec) {
+  description 'Build the custom Java Runtime Enviroment for NTag'
+  commandLine 'jlink',
+      '--output',
+      './build/jlink/jre',
+      '--no-header-files',
+      '--no-man-pages',
+      '--compress=2',
+      '--add-modules',
+      'java.base,jdk.unsupported,java.logging,java.desktop,jdk.unsupported.desktop,java.scripting'
+}
+
+task version {
+  description("Print NTag version from gradle.properties to standard out")
+  doLast {
+    print "${version}"
+  }
 }

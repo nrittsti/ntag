@@ -1,20 +1,21 @@
-/**
- * This file is part of NTag (audio file tag editor).
- * <p>
- * NTag is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * NTag is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with NTag.  If not, see <http://www.gnu.org/licenses/>.
- * <p>
- * Copyright 2016, Nico Rittstieg
+/*
+ *   This file is part of NTag (audio file tag editor).
+ *
+ *   NTag is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   NTag is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *   Copyright 2020, Nico Rittstieg
+ *
  */
 package ntag.fx.scene;
 
@@ -45,8 +46,8 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
     //
     // ***
 
-    private IntegerListConverter integerListConverter = new IntegerListConverter(",");
-    private StringListConverter stringListConverter = new StringListConverter(",");
+    private final IntegerListConverter integerListConverter = new IntegerListConverter(",");
+    private final StringListConverter stringListConverter = new StringListConverter(",");
 
     // ***
     //
@@ -157,7 +158,7 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
         languageComboBox.getItems().addAll(Locale.ENGLISH, Locale.GERMAN);
         languageComboBox.setConverter(new StringLocaleConverter());
         artworkImageFormatComboBox.getItems().addAll(ImageType.values());
-        dateFormatComboBox.getItems().addAll(NTagFormat.DATE_FORMATS);
+        dateFormatComboBox.getItems().addAll(NTagFormat.getSupportedDateFormats());
         Bindings.bindBidirectional(artworkQualityTextField.textProperty(), artworkQualitySlider.valueProperty(), new NumberStringConverter("0.00"));
         Bindings.bindBidirectional(artworkKilobytesTextField.textProperty(), artworkKilobytesSlider.valueProperty(), new NumberStringConverter("###"));
         Bindings.bindBidirectional(artworkResolutionTextField.textProperty(), artworkResolutionSlider.valueProperty(), new NumberStringConverter("####"));
@@ -194,6 +195,7 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
         return true;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean validateRatingConversion(String text, String format) {
         try {
             List<Integer> list = integerListConverter.fromString(text);
@@ -281,6 +283,7 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
 
     }
 
+    @SuppressWarnings("unused")
     @FXML
     private void handleOKAction(final ActionEvent event) {
         if (!validate()) {
@@ -327,7 +330,6 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
         viewModel.setLyricProvider(toList(lyricProviderTextArea.getText()));
 
         viewModel.distribute();
-        viewModel.distributeFx();
         viewModel.savePreferences();
 
         this.getStage().close();
