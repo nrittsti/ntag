@@ -1,20 +1,21 @@
 /*
-  This file is part of NTag (audio file tag editor).
-  <p>
-  NTag is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-  <p>
-  NTag is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  <p>
-  You should have received a copy of the GNU General Public License
-  along with NTag.  If not, see <http://www.gnu.org/licenses/>.
-  <p>
-  Copyright 2016, Nico Rittstieg
+ *   This file is part of NTag (audio file tag editor).
+ *
+ *   NTag is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   NTag is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *   Copyright 2020, Nico Rittstieg
+ *
  */
 package ntag.fx.validator;
 
@@ -37,10 +38,10 @@ public class SimpleTextFieldValidator implements ChangeListener<Boolean> {
   private ValidationMode validationMode;
   private String lastValue;
   private int maxLength;
-  private NTagProperties appProps = null;
+  private final NTagProperties appProps;
 
   public SimpleTextFieldValidator(TextField textField, ValidationMode validationMode, int maxLength) {
-    appProps = new NTagProperties();
+    appProps = NTagProperties.instance();
     if (textField == null) {
       throw new IllegalArgumentException("textField cannot be null");
     }
@@ -92,10 +93,12 @@ public class SimpleTextFieldValidator implements ChangeListener<Boolean> {
     }
   }
 
+  @SuppressWarnings("unused")
   public ValidationMode getValidationMode() {
     return validationMode;
   }
 
+  @SuppressWarnings("unused")
   public void setValidationMode(ValidationMode validationMode) {
     if (validationMode == null) {
       throw new IllegalArgumentException("validationMode cannot be null");
@@ -103,6 +106,7 @@ public class SimpleTextFieldValidator implements ChangeListener<Boolean> {
     this.validationMode = validationMode;
   }
 
+  @SuppressWarnings("unused")
   public int getMaxLength() {
     if (maxLength < 1) {
       throw new IllegalArgumentException("maxLength nust be greater than 0");
@@ -110,11 +114,12 @@ public class SimpleTextFieldValidator implements ChangeListener<Boolean> {
     return maxLength;
   }
 
+  @SuppressWarnings("unused")
   public void setMaxLength(int maxLength) {
     this.maxLength = maxLength;
   }
 
   public enum ValidationMode {
-    Text, UInteger, LocalDate;
+    Text, UInteger, LocalDate
   }
 }

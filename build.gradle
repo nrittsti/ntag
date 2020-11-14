@@ -1,3 +1,23 @@
+/*
+ *   This file is part of NTag (audio file tag editor).
+ *
+ *   NTag is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   NTag is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *   Copyright 2020, Nico Rittstieg
+ *
+ */
+
 plugins {
     id 'java'
     id 'java-library-distribution'
@@ -15,10 +35,14 @@ compileTestJava.options.encoding = "UTF-8"
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://dl.bintray.com/ijabz/maven"
+    }
 }
 
 dependencies {
-    implementation files('libs/jaudiotagger-2.2.4.jar')
+    compile 'com.github.spotbugs:spotbugs-annotations:4.1.4'
+    implementation 'net.jthink:jaudiotagger:2.2.5'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
     implementation 'org.glassfish:javax.json:1.1.4'
     implementation "org.openjfx:javafx-base:${fxVersion}:${platform}"
@@ -28,9 +52,7 @@ dependencies {
     implementation "org.openjfx:javafx-swing:${fxVersion}:${platform}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${jupiterVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-params:${jupiterVersion}"
-    testImplementation 'org.testfx:testfx-junit5:4.0.16-alpha'
-    testImplementation 'org.assertj:assertj-core:3.14.0'
-    testRuntimeOnly 'org.testfx:openjfx-monocle:jdk-12.0.1+2'
+    testImplementation 'org.assertj:assertj-core:3.18.0'
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}"
 }
 

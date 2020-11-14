@@ -1,20 +1,21 @@
-/**
- * This file is part of NTag (audio file tag editor).
- * <p>
- * NTag is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * NTag is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with NTag.  If not, see <http://www.gnu.org/licenses/>.
- * <p>
- * Copyright 2016, Nico Rittstieg
+/*
+ *   This file is part of NTag (audio file tag editor).
+ *
+ *   NTag is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   NTag is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *   Copyright 2020, Nico Rittstieg
+ *
  */
 package ntag.fx.scene.dialog;
 
@@ -33,7 +34,7 @@ public class ItemChoiceViewModel<T> {
 
     // *** Items
 
-    private ObservableList<T> items = FXCollections.observableArrayList();
+    private final ObservableList<T> items = FXCollections.observableArrayList();
 
     public ObservableList<T> getItems() {
         return items;
@@ -41,7 +42,7 @@ public class ItemChoiceViewModel<T> {
 
     // *** Filtered Items
 
-    private FilteredList<T> filteredItems = null;
+    private final FilteredList<T> filteredItems;
 
     public FilteredList<T> getFilteredItems() {
         return filteredItems;
@@ -49,7 +50,7 @@ public class ItemChoiceViewModel<T> {
 
     // *** Favorites
 
-    private ObservableList<T> favorites = FXCollections.observableArrayList();
+    private final ObservableList<T> favorites = FXCollections.observableArrayList();
 
     public ObservableList<T> getFavorites() {
         return favorites;
@@ -57,7 +58,7 @@ public class ItemChoiceViewModel<T> {
 
     // *** Selection
 
-    private ObservableList<T> selection = FXCollections.observableArrayList();
+    private final ObservableList<T> selection = FXCollections.observableArrayList();
 
     public ObservableList<T> getSelection() {
         return selection;
