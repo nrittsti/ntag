@@ -19,7 +19,6 @@
  */
 package ntag.io;
 
-import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
@@ -32,17 +31,17 @@ public final class HashUtil {
 
   }
 
-  public static String createFromByteArray(String algorithm, byte[] data) {
+  public static byte[] createFromByteArray(String algorithm, byte[] data) {
     if (data == null || data.length == 0) {
-      return "";
+      return null;
     }
     try {
       MessageDigest digest = MessageDigest.getInstance(algorithm);
       digest.update(data);
-      return DatatypeConverter.printHexBinary(digest.digest());
+      return digest.digest();
     } catch (NoSuchAlgorithmException e) {
       LOGGER.severe(e.getMessage());
-      return "";
+      return null;
     }
   }
 }

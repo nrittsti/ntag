@@ -37,6 +37,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 public class ArtworkTag implements Comparable<ArtworkTag> {
@@ -51,7 +52,7 @@ public class ArtworkTag implements Comparable<ArtworkTag> {
 
   private byte[] imageData;
   private ImageType imageType;
-  private String imageHash;
+  private byte[] imageHash;
   private Dimension dimension;
 
   // ***
@@ -156,7 +157,7 @@ public class ArtworkTag implements Comparable<ArtworkTag> {
     }
   }
 
-  public String getImageHash() {
+  public byte[] getImageHash() {
     return imageHash;
   }
 
@@ -191,7 +192,7 @@ public class ArtworkTag implements Comparable<ArtworkTag> {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((imageHash == null) ? 0 : imageHash.hashCode());
+    result = prime * result + ((imageHash == null) ? 0 : Arrays.hashCode(imageHash));
     return result;
   }
 
@@ -206,7 +207,7 @@ public class ArtworkTag implements Comparable<ArtworkTag> {
     ArtworkTag other = (ArtworkTag) obj;
     if (imageHash == null) {
       return other.imageHash == null;
-    } else return imageHash.equals(other.imageHash);
+    } else return Arrays.equals(imageHash, other.imageHash);
   }
 
   @Override

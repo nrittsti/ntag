@@ -26,7 +26,6 @@ import javafx.util.converter.LocalDateStringConverter;
 import ntag.fx.util.FxUtil;
 import ntag.io.NTagProperties;
 
-import javax.xml.bind.ValidationException;
 import java.lang.ref.WeakReference;
 import java.time.format.DateTimeFormatter;
 
@@ -71,7 +70,7 @@ public class SimpleTextFieldValidator implements ChangeListener<Boolean> {
       String text = textField.getText();
       try {
         if (text.length() > maxLength) {
-          throw new ValidationException(String.format("TextField length limit %d is exceeded", maxLength));
+          throw new StringIndexOutOfBoundsException(String.format("TextField length limit %d is exceeded", maxLength));
         }
         switch (validationMode) {
           case UInteger:

@@ -38,6 +38,7 @@ import org.jaudiotagger.tag.images.ArtworkFactory;
 import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -728,8 +729,8 @@ public final class TagFileWriter {
   }
 
   private void updateFrameBodyAPIC(final ArtworkTag artworkTag, final FrameBodyAPIC apicBody) {
-    final String hash = HashUtil.createFromByteArray("MD5", apicBody.getImageData());
-    if (!hash.equals(artworkTag.getImageHash())) {
+    final byte[] hash = HashUtil.createFromByteArray("MD5", apicBody.getImageData());
+    if (!Arrays.equals(hash, artworkTag.getImageHash())) {
       apicBody.setMimeType(artworkTag.getImageType().getMimeTypes()[0]);
       apicBody.setImageData(artworkTag.getImageData());
       addChange("APIC", "yes", "yes");
@@ -787,8 +788,8 @@ public final class TagFileWriter {
       }
     } else {
       Artwork artwork = coverartList.get(0);
-      final String hash = HashUtil.createFromByteArray("MD5", artwork.getBinaryData());
-      if (!hash.equals(artworkTag.getImageHash())) {
+      final byte[] hash = HashUtil.createFromByteArray("MD5", artwork.getBinaryData());
+      if (!Arrays.equals(hash, artworkTag.getImageHash())) {
         createGenericArtwork(tag, artworkTag, false);
         addChange("Artwork", "yes", "yes");
       }

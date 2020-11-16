@@ -62,7 +62,7 @@ class AdjustArtworkTaskTest extends AbstractAudioFileTest {
   @DisplayName("artwork.jpg does not need to be changed")
   void adjust_nothing() throws Exception {
     // given
-    String expected = artworkTag.getImageHash();
+    byte[] expected = artworkTag.getImageHash();
     TagFile tagFile = reader.createTagFile(tempDirPath.resolve(SAMPLE_ID3V23_MP3));
     tagFile.setArtwork(artworkTag);
     AdjustArtworkViewModel viewModel = new AdjustArtworkViewModel();
@@ -78,7 +78,7 @@ class AdjustArtworkTaskTest extends AbstractAudioFileTest {
     task.call();
     // then
     assertFalse(task.hasErrors());
-    assertEquals(expected, tagFile.getArtwork().getImageHash());
+    assertArrayEquals(expected, tagFile.getArtwork().getImageHash());
   }
 
   @Test
