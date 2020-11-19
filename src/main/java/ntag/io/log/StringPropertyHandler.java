@@ -49,13 +49,11 @@ public class StringPropertyHandler extends Handler {
 
   @Override
   public void publish(LogRecord record) {
-    Platform.runLater(() -> {
-      if (text.length().getValue() == 0) {
-        text.set(this.getFormatter().format(record));
-      } else {
-        text.set(text.get() + this.getFormatter().format(record));
-      }
-    });
+    if (Platform.isFxApplicationThread()) {
+      Platform.runLater(() -> updateStringProperty(record));
+    } else {
+      updateStringProperty(record);
+    }
   }
 
   public void clear() {
@@ -71,5 +69,13 @@ public class StringPropertyHandler extends Handler {
   public void close() throws SecurityException {
     text.set("");
     text.unbind();
+  }
+
+  private void updateStringProperty(LogRecord record) {
+    if (text.length().getValue() == 0) {
+      text.set(this.getFormatter().format(record));
+    } else {
+      text.set(text.get() + this.getFormatter().format(record));
+    }
   }
 }

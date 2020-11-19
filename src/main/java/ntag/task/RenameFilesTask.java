@@ -113,4 +113,5 @@ public class RenameFilesTask extends Task<List<TagFile>> {
   public List<String> getErrors() {
     return errors;
   }
+
 }

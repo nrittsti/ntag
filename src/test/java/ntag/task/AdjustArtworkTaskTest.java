@@ -20,7 +20,6 @@
 
 package ntag.task;
 
-import javafx.embed.swing.JFXPanel;
 import ntag.AbstractAudioFileTest;
 import ntag.Category;
 import ntag.fx.scene.AdjustArtworkViewModel;
@@ -29,7 +28,10 @@ import ntag.io.TagFileReader;
 import ntag.io.util.ImageUtil;
 import ntag.model.ArtworkTag;
 import ntag.model.TagFile;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -43,11 +45,6 @@ class AdjustArtworkTaskTest extends AbstractAudioFileTest {
   private NTagProperties appProperties;
 
   private TagFileReader reader;
-
-  @BeforeAll
-  static void beforeClass() {
-    new JFXPanel();
-  }
 
   @BeforeEach
   public void setUp() throws IOException {
@@ -74,7 +71,7 @@ class AdjustArtworkTaskTest extends AbstractAudioFileTest {
     viewModel.setEnforceSingle(appProperties.isArtworkEnforceSingle());
     viewModel.getFiles().add(tagFile);
     // when
-    AdjustArtworkTask task = new AdjustArtworkTask(viewModel);
+    AdjustArtworkTask task = new AdjustArtworkTaskWithoutRunLater(viewModel);
     task.call();
     // then
     assertFalse(task.hasErrors());
@@ -97,7 +94,7 @@ class AdjustArtworkTaskTest extends AbstractAudioFileTest {
     viewModel.setEnforceSingle(appProperties.isArtworkEnforceSingle());
     viewModel.getFiles().add(tagFile);
     // when
-    AdjustArtworkTask task = new AdjustArtworkTask(viewModel);
+    AdjustArtworkTask task = new AdjustArtworkTaskWithoutRunLater(viewModel);
     task.call();
     // then
     assertFalse(task.hasErrors());
@@ -120,7 +117,7 @@ class AdjustArtworkTaskTest extends AbstractAudioFileTest {
     viewModel.setEnforceSingle(appProperties.isArtworkEnforceSingle());
     viewModel.getFiles().add(tagFile);
     // when
-    AdjustArtworkTask task = new AdjustArtworkTask(viewModel);
+    AdjustArtworkTask task = new AdjustArtworkTaskWithoutRunLater(viewModel);
     task.call();
     // then
     assertFalse(task.hasErrors());
@@ -144,10 +141,28 @@ class AdjustArtworkTaskTest extends AbstractAudioFileTest {
     viewModel.setEnforceSingle(appProperties.isArtworkEnforceSingle());
     viewModel.getFiles().add(tagFile);
     // when
-    AdjustArtworkTask task = new AdjustArtworkTask(viewModel);
+    AdjustArtworkTask task = new AdjustArtworkTaskWithoutRunLater(viewModel);
     task.call();
     // then
     assertFalse(task.hasErrors());
     assertEquals(expected, tagFile.getArtwork().getImageType());
+  }
+
+  // avoid java.lang.IllegalStateException: Toolkit not initialized from
+  // com.sun.javafx.application.PlatformImpl.runLater
+  private static class AdjustArtworkTaskWithoutRunLater extends AdjustArtworkTask {
+    public AdjustArtworkTaskWithoutRunLater(AdjustArtworkViewModel viewModel) {
+      super(viewModel);
+    }
+
+    @Override
+    protected void updateProgress(double workDone, double max) {
+
+    }
+
+    @Override
+    protected void updateMessage(String message) {
+
+    }
   }
 }
