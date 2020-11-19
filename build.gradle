@@ -24,7 +24,7 @@ plugins {
 }
 
 group = 'com.github'
-version = '1.2.5'
+version = '1.2.6'
 sourceCompatibility = '14'
 targetCompatibility = '14'
 jar.archiveFileName = 'ntag.jar'
