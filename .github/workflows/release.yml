@@ -47,8 +47,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/distributions/ntag-${VERSION}-linux_bin.tar.gz
-          asset_name: ntag-${VERSION}-linux_bin.tar.gz
+          asset_path: ./build/distributions/ntag-${{VERSION}}-linux_bin.tar.gz
+          asset_name: ntag-${{VERSION}}-linux_bin.tar.gz
           asset_content_type: application/gzip
   windows_release:
     runs-on: [windows-latest]
@@ -81,6 +81,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/distributions/ntag-${VERSION}-win_bin.zip
-          asset_name: ntag-${VERSION}-win_bin.zip
+          asset_path: ./build/distributions/ntag-${{VERSION}}-win_bin.zip
+          asset_name: ntag-${{VERSION}}-win_bin.zip
           asset_content_type: application/zip
