@@ -14,7 +14,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2020, Nico Rittstieg
+ *   Copyright 2021, Nico Rittstieg
  *
  */
 package ntag.fx.util;
@@ -71,19 +71,27 @@ public final class TagFieldInputDialogs {
 
   static {
     for (ID3v2Frames e : ID3v2Frames.values()) {
-      commonFields.add(e.name());
+      if (e.isCommon()) {
+        commonFields.add(e.name());
+      }
       fieldDescMap.put(e.name(), String.format("%s (%s)", e.name(), e.getLabel()));
     }
     for (VorbisComments e : VorbisComments.values()) {
-      commonFields.add(e.name());
+      if (e.isCommon()) {
+        commonFields.add(e.name());
+      }
       fieldDescMap.put(e.name(), String.format("%s (%s)", e.name(), e.getLabel()));
     }
     for (ASF e : ASF.values()) {
-      commonFields.add(e.getCode());
+      if (e.isCommon()) {
+        commonFields.add(e.name());
+      }
       fieldDescMap.put(e.getCode(), String.format("%s (%s)", e.getCode(), e.getLabel()));
     }
     for (Atoms e : Atoms.values()) {
-      commonFields.add(e.getCode());
+      if (e.isCommon()) {
+        commonFields.add(e.name());
+      }
       fieldDescMap.put(e.getCode(), String.format("%s (%s)", e.getCode(), e.getLabel()));
     }
   }
@@ -95,45 +103,36 @@ public final class TagFieldInputDialogs {
   public static boolean showNewTagFieldWizard(AudioFile audioFile) throws NTagException {
     Tag tag = audioFile.getTagOrCreateAndSetDefault();
     ObservableList<TagField> tagFields = createTagFieldList(tag);
-    FilteredList<TagField> filteredList = new FilteredList<>(tagFields, null);
+    FilteredList<TagField> filteredTagList = new FilteredList<>(tagFields, null);
 
-    ListView<TagField> listView = new ListView<>(filteredList);
+    ListView<TagField> listView = new ListView<>(filteredTagList);
     listView.setPrefSize(150, 200);
     listView.setCellFactory((ListView<TagField> param) -> new TagFieldListCell());
 
-    CheckBox commonCheckBox = new CheckBox(Resources.get("ntag", "lbl_common_tags"));
-    TextField filterTextField = new TextField();
-    filterTextField.setPromptText("Quick Filter");
+    CheckBox showCommonTagsCheckBox = new CheckBox(Resources.get("ntag", "lbl_common_tags"));
+    showCommonTagsCheckBox.setMinWidth(200);
 
-    filterTextField.textProperty().addListener(obs -> {
-      final String filter = filterTextField.getText();
-      if (filter == null || filter.length() == 0) {
-        filteredList.setPredicate(s -> (!commonCheckBox.isSelected() || commonFields.contains(s.getId())));
-      } else {
-        filteredList.setPredicate(s -> createDescription(s.getId()).toUpperCase().contains(filter.toUpperCase()) && (!commonCheckBox.isSelected() || commonFields.contains(s.getId())));
-      }
-    });
+    TextField quickFilterTextField = new TextField();
+    quickFilterTextField.setPromptText("Quick Filter");
 
-    commonCheckBox.setOnAction(event -> {
-      final String filter = filterTextField.getText();
-      if (filter == null || filter.length() == 0) {
-        filteredList.setPredicate(s -> (!commonCheckBox.isSelected() || commonFields.contains(s.getId())));
-      } else {
-        filteredList.setPredicate(s -> createDescription(s.getId()).toUpperCase().contains(filter.toUpperCase()) && (!commonCheckBox.isSelected() || commonFields.contains(s.getId())));
-      }
-    });
+    quickFilterTextField.textProperty().addListener(obs ->
+            filterTagList(quickFilterTextField, filteredTagList, showCommonTagsCheckBox)
+    );
+
+    showCommonTagsCheckBox.selectedProperty().addListener((observable, oldValue, newValue) ->
+            filterTagList(quickFilterTextField, filteredTagList, showCommonTagsCheckBox));
 
     VBox vbox = new VBox(4);
-    vbox.getChildren().add(filterTextField);
+    vbox.getChildren().add(quickFilterTextField);
     vbox.getChildren().add(listView);
-    vbox.getChildren().add(commonCheckBox);
+    vbox.getChildren().add(showCommonTagsCheckBox);
     VBox.setVgrow(listView, Priority.ALWAYS);
 
     Dialog<TagField> dialog = new Dialog<>();
     dialog.initOwner(FxUtil.getPrimaryStage());
     dialog.setTitle(Resources.get("ntag", "mnu_new_tag"));
     dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-    dialog.getDialogPane().setPrefSize(300, 300);
+    dialog.getDialogPane().setPrefSize(400, 500);
     dialog.setResizable(true);
     dialog.getDialogPane().setContent(vbox);
 
@@ -160,6 +159,16 @@ public final class TagFieldInputDialogs {
       return true;
     } else {
       return false;
+    }
+  }
+
+  private static void filterTagList(TextField quickFilterTextField, FilteredList<TagField> filteredTagList, CheckBox showCommonTagsCheckBox) {
+    final String quickFilterText = quickFilterTextField.getText();
+    final boolean showAllTags = !showCommonTagsCheckBox.isSelected();
+    if (quickFilterText == null || quickFilterText.length() == 0) {
+      filteredTagList.setPredicate(s -> (showAllTags || commonFields.contains(s.getId())));
+    } else {
+      filteredTagList.setPredicate(s -> createDescription(s.getId()).toUpperCase().contains(quickFilterText.toUpperCase()) && (showAllTags || commonFields.contains(s.getId())));
     }
   }
 

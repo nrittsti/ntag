@@ -14,7 +14,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2020, Nico Rittstieg
+ *   Copyright 2021, Nico Rittstieg
  *
  */
 package ntag;
@@ -55,7 +55,9 @@ public class NTag extends Application {
   public void start(Stage primaryStage) {
     Thread.currentThread().setUncaughtExceptionHandler((thread, throwable) -> {
       LOGGER.log(Level.SEVERE, "Uncaught Exception", throwable);
-      FxUtil.showException("Uncaught Exception", throwable);
+      if (isThrowableInterestingForTheUser(throwable)) {
+        FxUtil.showException("Uncaught Exception", throwable);
+      }
     });
     try {
       initPrimaryStage(primaryStage);
@@ -64,6 +66,13 @@ public class NTag extends Application {
       LOGGER.log(Level.SEVERE, msg, e);
       FxUtil.showException(msg, e);
     }
+  }
+
+  // do not report random errors from javafx.graphics to the user
+  // java.lang.NullPointerException
+  // at javafx.graphics/com.sun.javafx.text.PrismTextLayout.addTextRun(PrismTextLayout.java:770)
+  private boolean isThrowableInterestingForTheUser(Throwable throwable) {
+    return throwable.getStackTrace().length > 0 && !throwable.getStackTrace()[0].getModuleName().equals("javafx.graphics");
   }
 
   void initPrimaryStage(Stage primaryStage) throws IOException {
