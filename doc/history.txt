@@ -85,3 +85,9 @@ NTag Version History
 -------------------------
 - New feature: integrated Java Runtime Enviroment
 - Code cleanup
+
+1.2.7          2021-01-02
+-------------------------
+- fixed visual scrollbar issues in the log view.
+- fixed new Tag Dialog, checkbox 'Common tags' had stopped working
+- stop reporting random errors from javafx.graphics to the user when opening files

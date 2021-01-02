@@ -14,7 +14,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2020, Nico Rittstieg
+ *   Copyright 2021, Nico Rittstieg
  *
  */
 
@@ -24,7 +24,7 @@ plugins {
 }
 
 group = 'com.github'
-version = '1.2.6'
+version = '1.2.7'
 sourceCompatibility = '14'
 targetCompatibility = '14'
 jar.archiveFileName = 'ntag.jar'
