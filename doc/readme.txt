@@ -25,6 +25,7 @@ This distribution contains the following files:
    history.txt                - History of NTag
    license.txt                - License information
    ntag.cmd                   - Windows Launcher
+   ntag.exe                   - Windows exe
    ntag.sh                    - Linux CLI Launcher
    ntag.desktop               - Linux Desktop Launcher
    ntag.jar                   - Executable Java program

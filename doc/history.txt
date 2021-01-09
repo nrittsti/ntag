@@ -91,3 +91,8 @@ NTag Version History
 - fixed visual scrollbar issues in the log view.
 - fixed new Tag Dialog, checkbox 'Common tags' had stopped working
 - stop reporting random errors from javafx.graphics to the user when opening files
+
+1.2.8          2021-01-09
+-------------------------
+- ntag.exe for Windows
+
