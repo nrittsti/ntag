@@ -58,6 +58,14 @@ Arch Linux AUR package:
 
 https://aur.archlinux.org/packages/ntag
 
+Chocolatey Package Manager for Windows:
+
+https://chocolatey.org/install
+
+```
+choco install ntag --version=1.2.8
+```
+
 Others:
 
 https://github.com/nrittsti/ntag/releases
