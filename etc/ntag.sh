@@ -15,11 +15,12 @@
 #   You should have received a copy of the GNU General Public License
 #   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
 #
-#   Copyright 2020, Nico Rittstieg
+#   Copyright 2021, Nico Rittstieg
 #
 #
 
-HIDPI_CONFIG="${HOME}/.config/ntag/hidpi.config"
+
+HIDPI_CONFIG="${XDG_CONFIG_HOME:-${HOME}/.config}/ntag/hidpi.config"
 HIDPI_SCALING=100%
 if test -f "${HIDPI_CONFIG}"; then
   . "${HIDPI_CONFIG}"

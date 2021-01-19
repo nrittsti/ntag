@@ -14,7 +14,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2020, Nico Rittstieg
+ *   Copyright 2021, Nico Rittstieg
  *
  */
 package ntag.io;
@@ -64,7 +64,12 @@ public class NTagProperties {
     if (System.getProperty("os.name").toLowerCase().contains("win")) {
       homeDir = Path.of(System.getenv("APPDATA") + "\\ntag");
     } else {
-      homeDir = Path.of(System.getProperty("user.home") + "/.config/ntag");
+      String xdgConfigHome = System.getenv("XDG_CONFIG_HOME");
+      if (xdgConfigHome != null && xdgConfigHome.length() > 0) {
+        homeDir = Path.of(xdgConfigHome + "/ntag");
+      } else {
+        homeDir = Path.of(System.getProperty("user.home") + "/.config/ntag");
+      }
     }
     initJarAttributes();
     initPreferences();
@@ -112,7 +117,15 @@ public class NTagProperties {
             "\n" +
             "JAudiotagger Library 2.2.5\n" +
             "Autor:\thttp://www.jthink.net/jaudiotagger/\n" +
-            "Licence:\tLGPL\n";
+            "Licence:\tLGPL\n" +
+            "\n" +
+            "OpenJDK\n" +
+            "Autor:\thttps://jdk.java.net/15/\n" +
+            "Licence:\tGPL v2 with the Classpath Exception\n" +
+            "\n" +
+            "OpenJFX\n" +
+            "Autor:\thttps://github.com/openjdk/jfx/\n" +
+            "Licence:\tGPL v2 with the Classpath Exception\n";
   }
 
   // *** Preferences ***

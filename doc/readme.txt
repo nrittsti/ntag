@@ -22,6 +22,7 @@ This distribution contains the following files:
 
    jre/                       - Java Runtime Enviroment
    lib/                       - Third party libraries
+   *.metainfo.xml             - Appstream Flathub metadata
    history.txt                - History of NTag
    license.txt                - License information
    ntag.cmd                   - Windows Launcher
@@ -120,8 +121,16 @@ Autor:   David Vignoni
 Licence: LGPL
 
 JAudiotagger Library 2.2.5
-Autor:   http://www.jthink.net/jaudiotagger/
+Autor:   https://www.jthink.net/jaudiotagger/
 Licence: LGPL
+
+Open JDK 15
+Autor:   https://jdk.java.net/15/
+Licence: GPL v2 with the Classpath Exception
+
+OpenJFX
+Autor:   https://github.com/openjdk/jfx/
+Licence: GPL v2 with the Classpath Exception
 
 --------------------------------------------------------------------------------
 End of document

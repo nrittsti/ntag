@@ -21,10 +21,10 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Set up JDK 14
+      - name: Set up JDK 15
         uses: actions/setup-java@v1
         with:
-          java-version: 14
+          java-version: 15
       - name: Build Linux Version with Gradle
         id: build-linux
         run: ./gradlew jre build -Pplatform=linux -Ptests=Unit
@@ -69,10 +69,10 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Set up JDK 14
+      - name: Set up JDK 15
         uses: actions/setup-java@v1
         with:
-          java-version: 14
+          java-version: 15
           architecture: x64
       - name: Build Windows Version with Gradle
         id: build-windows

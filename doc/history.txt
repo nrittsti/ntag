@@ -96,3 +96,8 @@ NTag Version History
 -------------------------
 - ntag.exe for Windows
 
+1.2.9          2021-01-18
+-------------------------
+- Migration to Java 15
+- Respect Linux Enviroment Variable XDG_CONFIG_HOME
+- Added Appstream metada.xml for Flathub
