@@ -45,6 +45,11 @@ gradle.properties: platform=linux or platform=win
 Download & Installation:
 --------------------------
 
+Flatpak Linux package:
+
+flatpak install flathub com.github.nrittsti.NTag
+See: https://github.com/nrittsti/ntag/wiki/Flatpak
+
 Arch Linux AUR package:
 
 https://aur.archlinux.org/packages/ntag
