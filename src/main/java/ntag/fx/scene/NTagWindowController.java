@@ -14,7 +14,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2020, Nico Rittstieg
+ *   Copyright 2021, Nico Rittstieg
  *
  */
 package ntag.fx.scene;
@@ -59,14 +59,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import static ntag.fx.util.FxUtil.openURI;
 
 
 @SuppressWarnings("FieldMayBeFinal")
 public class NTagWindowController extends AbstractDialogController<NTagViewModel> {
-
-  private static final Logger LOGGER = Logger.getLogger(NTagWindowController.class.getName());
 
   // ***
   //
@@ -275,18 +273,7 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
   @FXML
   private void handleOpenDirectory(final ActionEvent event) {
     URI uri = Paths.get(appProperties.getLastDirectory()).toUri();
-    try {
-      new Thread(() -> {
-        try {
-          java.awt.Desktop.getDesktop().browse(uri);
-        } catch (Exception e) {
-          LOGGER.log(Level.SEVERE, String.format("Failed to open URI='%s'", uri), e);
-          FxUtil.showException(String.format("Failed to open URI='%s'", uri), e);
-        }
-      }).start();
-    } catch (Exception ex) {
-      FxUtil.showException(String.format("Failed to open URI='%s'", uri), ex);
-    }
+    openURI(uri);
   }
 
   @SuppressWarnings("unused")

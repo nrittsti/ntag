@@ -14,7 +14,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2020, Nico Rittstieg
+ *   Copyright 2021, Nico Rittstieg
  *
  */
 package ntag.fx.scene.control.editor;
@@ -75,6 +75,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static ntag.fx.util.FxUtil.openURI;
 
 public class TagEditorControl extends TabPane implements Initializable {
 
@@ -470,7 +472,7 @@ public class TagEditorControl extends TabPane implements Initializable {
                 viewModel.getSelectedFiles().get(0).getPath().toString()));
       } else {
         URI uri = viewModel.getSelectedFiles().get(0).getPath().getParent().toUri();
-        openUri(uri);
+        openURI(uri);
       }
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, "Failed to open URI", e);
@@ -516,22 +518,11 @@ public class TagEditorControl extends TabPane implements Initializable {
     }
     final String encodedProvider = provider.replace("input", URLEncoder.encode(sb.toString(), StandardCharsets.UTF_8));
     try {
-      openUri(new URI(encodedProvider));
+      openURI(encodedProvider);
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, "Failed to open URI", e);
       FxUtil.showException("Failed to open URI", e);
     }
-  }
-
-  private void openUri(URI uri) {
-    new Thread(() -> {
-      try {
-        java.awt.Desktop.getDesktop().browse(uri);
-      } catch (Exception e) {
-        LOGGER.log(Level.SEVERE, String.format("Failed to open URI='%s'", uri), e);
-        FxUtil.showException("Failed to launch this URL", e);
-      }
-    }).start();
   }
 
   @FXML

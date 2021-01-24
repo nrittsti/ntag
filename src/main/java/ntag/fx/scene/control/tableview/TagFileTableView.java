@@ -14,7 +14,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2020, Nico Rittstieg
+ *   Copyright 2021, Nico Rittstieg
  *
  */
 package ntag.fx.scene.control.tableview;
@@ -27,16 +27,13 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import ntag.fx.scene.NTagViewModel;
-import ntag.fx.util.FxUtil;
 import ntag.model.TagFile;
 
 import java.net.URI;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import static ntag.fx.util.FxUtil.openURI;
 
 public class TagFileTableView extends EnhancedTableView<TagFile> {
-
-  private static final Logger LOGGER = Logger.getLogger(TagFileTableView.class.getName());
 
   // ***
   //
@@ -80,19 +77,7 @@ public class TagFileTableView extends EnhancedTableView<TagFile> {
         TagFile tagFile = getSelectionModel().getSelectedItem();
         if (tagFile != null) {
           URI uri = tagFile.getPath().toUri();
-          try {
-            new Thread(() -> {
-              try {
-                java.awt.Desktop.getDesktop().browse(uri);
-              } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", uri), e);
-                FxUtil.showException(String.format("Failed to launch this URI='%s'", uri), e);
-              }
-            }).start();
-          } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", uri), e);
-            FxUtil.showException(String.format("Failed to launch this URI='%s'", uri), e);
-          }
+          openURI(uri);
         }
       }
     });

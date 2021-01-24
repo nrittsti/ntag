@@ -14,7 +14,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2020, Nico Rittstieg
+ *   Copyright 2021, Nico Rittstieg
  *
  */
 package ntag.fx.util;
@@ -50,6 +50,7 @@ import java.awt.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.logging.Level;
@@ -266,12 +267,25 @@ public final class FxUtil {
   }
 
   public static void openURI(String uri) {
+    try {
+      openURI(new URI(uri));
+    } catch (URISyntaxException e) {
+      LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", uri), e);
+      FxUtil.showException(String.format("Failed to launch this URI='%s'", uri), e);
+    }
+  }
+
+  public static void openURI(URI uri) {
     new Thread(() -> {
       try {
-        Desktop.getDesktop().browse(new URI(uri));
-      } catch (Exception ex) {
-        LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", uri), ex);
-        FxUtil.showException(String.format("Failed to launch this URI='%s'", uri), ex);
+        if (System.getProperty("os.name").toLowerCase().contains("win")) {
+          Desktop.getDesktop().browse(uri);
+        } else {
+          Runtime.getRuntime().exec("xdg-open " + uri);
+        }
+      } catch (Exception e) {
+        LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", uri), e);
+        FxUtil.showException(String.format("Failed to launch this URI='%s'", uri), e);
       }
     }).start();
   }
