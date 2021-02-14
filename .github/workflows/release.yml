@@ -38,13 +38,21 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: true
           prerelease: false
+      - name: Get NTag version and release url
+        run: |
+          VERSION=$(./gradlew version -q)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo $VERSION > ntag_version.txt
+          echo ${{ steps.create_release.outputs.upload_url }} > release_url.txt
       - name: Archive build artifact
         uses: actions/upload-artifact@v2
         with:
-          name: linux-bin
-          path: build/distributions/ntag-*-linux_bin.tar.gz
-      - name: Get NTag Version
-        run: echo "VERSION=$(./gradlew version -q)" >> $GITHUB_ENV
+          name: release_infos
+          path: |
+            ntag_version.txt
+            release_url.txt
+      - name: Create SHA256 Checksum
+        run: sha256 ./build/distributions/ntag-${{ env.VERSION }}-linux_bin.tar.gz > ./build/distributions/ntag-${{ env.VERSION }}-linux_bin_sha256.txt
       - name: Upload Linux Release Asset
         id: upload-linux-release-asset
         uses: actions/upload-release-asset@v1.0.1
@@ -55,6 +63,16 @@ jobs:
           asset_path: ./build/distributions/ntag-${{ env.VERSION }}-linux_bin.tar.gz
           asset_name: ntag-${{ env.VERSION }}-linux_bin.tar.gz
           asset_content_type: application/gzip
+      - name: Upload Linux Checksum SHA256 Asset
+        id: upload-linux-checksum-asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/distributions/ntag-${{ env.VERSION }}-linux_bin_sha256.txt
+          asset_name: ntag-${{ env.VERSION }}-linux_bin_sha256.txt
+          asset_content_type: application/text
   windows_release:
     runs-on: [windows-latest]
     steps:
@@ -77,8 +95,63 @@ jobs:
       - name: Build Windows Version with Gradle
         id: build-windows
         run: ./gradlew jre build -x test -Pplatform=win
-      - name: Archive build artifact
-        uses: actions/upload-artifact@v2
+      - name: Download Linux job results
+        uses: actions/download-artifact@v2
         with:
-          name: win-bin
-          path: build/distributions/ntag-*-win_bin.zip      
+          name: release-infos
+      - name: Get NTag Version and Release URL
+        run: |
+          echo "VERSION=$(cat ntag_version.txt)" >> $GITHUB_ENV
+          echo "RELEASE_URL=$(cat release_url.txt)" >> $GITHUB_ENV
+      - name: Create NSIS Installer
+        id: nsis
+        run: |
+          7z x ./build/distributions/ntag-${{ env.VERSION }}-win_bin.zip
+          (Get-Content -Path ntag.nsi) -replace 'XXX', ${{ env.VERSION }} | Add-Content -Path ./build/distributions/ntag-${{ env.VERSION }}/ntag.nsi
+          cd ./build/distributions/ntag-${{ env.VERSION }}
+          makensis ntag.nsi
+      - name: Create SHA256 Checksums
+        id: checksums
+        run: |
+          Get-Filehash ./build/distributions/ntag-${{ env.VERSION }}-win_bin.zip -Algorithm SHA256 | Format-List -Property Hash > ./build/distributions/ntag-${{ env.VERSION }}-win_bin_sha256.txt
+          Get-Filehash ./build/distributions/ntag-${{ env.VERSION }}-win_setup.exe -Algorithm SHA256 | Format-List -Property Hash > ./build/distributions/ntag-${{ env.VERSION }}-win_setup_sha256.txt
+      - name: Upload Windows ZIP Release Asset
+        id: upload-win-release-asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${ env.RELEASE_URL }
+          asset_path: ./build/distributions/ntag-${{ env.VERSION }}-win_bin.zip
+          asset_name: ntag-${{ env.VERSION }}-win_bin.zip
+          asset_content_type: application/gzip
+      - name: Upload Windows ZIP SHA256 Asset
+        id: upload-win-bin-sha256-asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${ env.RELEASE_URL }
+          asset_path: ./build/distributions/ntag-${{ env.VERSION }}-win_bin_sha256.txt
+          asset_name: ntag-${{ env.VERSION }}-win_bin_sha256.txt
+          asset_content_type: application/text
+      - name: Upload Windows Installer Asset
+        id: upload-win-installer-asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ env.RELEASE_URL }
+          asset_path: ./build/distributions/ntag-${{ env.VERSION }}-win-setup.exe
+          asset_name: ntag-${{ env.VERSION }}-win-setup.exe
+          asset_content_type: application/gzip
+      - name: Upload Windows Installer SHA256 Asset
+        id: upload-win-installer-sha256-asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${ env.RELEASE_URL }
+          asset_path: ./build/distributions/ntag-${{ env.VERSION }}-win_setup_sha256.txt
+          asset_name: ntag-${{ env.VERSION }}-win_setup_sha256.txt
+          asset_content_type: application/text
