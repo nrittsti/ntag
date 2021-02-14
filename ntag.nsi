@@ -12,7 +12,7 @@
   !define APP_NAME "NTag"
   !define APP_VERSION "XXX"
 
-  Name "${APP_NAME} ${APP_VERSION}"
+  Name "${APP_NAME}"
   OutFile "${APP_NAME}-${APP_VERSION}-win-setup.exe"
   Unicode True  
 
@@ -44,7 +44,7 @@
   !insertmacro MUI_PAGE_DIRECTORY
   
   ;Start Menu Folder Page Configuration
-  !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKU" 
+  !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKLM"
   !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\${APP_NAME}" 
   !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
   

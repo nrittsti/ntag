@@ -101,3 +101,8 @@ NTag Version History
 - Migration to Java 15
 - Respect Linux Enviroment Variable XDG_CONFIG_HOME
 - Added Appstream metada.xml for Flathub
+
+1.2.10          2021-02-14
+--------------------------
+- New feature: Using xdg-open on Linux for opening urls
+- New feature: Windows NSIS Installer
