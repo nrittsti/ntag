@@ -65,6 +65,7 @@
 
 Section
 
+  SetShellVarContext all
   SetOutPath "$INSTDIR"
   
   file "ntag.cmd"
@@ -99,6 +100,8 @@ SectionEnd
 
 Section "Uninstall"
 
+  SetShellVarContext all
+
   Delete "$INSTDIR\ntag.cmd"
   Delete "$INSTDIR\ntag.ico"
   Delete "$INSTDIR\ntag_logging.properties"
@@ -114,6 +117,7 @@ Section "Uninstall"
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
     
   Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk"
+  Delete "$SMPROGRAMS\$StartMenuFolder\NTag.lnk"
   RMDir "$SMPROGRAMS\$StartMenuFolder"
   
   DeleteRegKey /ifempty HKLM "Software\${APP_NAME}"
