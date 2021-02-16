@@ -54,9 +54,17 @@ Arch Linux AUR package:
 
 https://aur.archlinux.org/packages/ntag
 
+Winget Package Manager for Windows:
+
+See: https://github.com/microsoft/winget-cli
+
+```
+winget install NTag
+```
+
 Chocolatey Package Manager for Windows:
 
-https://chocolatey.org/install
+See: https://chocolatey.org/install
 
 ```
 choco install ntag --version=1.2.8
@@ -115,7 +123,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with NTag.  If not, see <http://www.gnu.org/licenses/>.
 
-Copyright 2018, Nico Rittstieg
+Copyright 2021, Nico Rittstieg
 
 --------------------------------------------------------------------------------
 Third party libraries used by NTag
