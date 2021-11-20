@@ -67,7 +67,7 @@ Chocolatey Package Manager for Windows:
 See: https://chocolatey.org/install
 
 ```
-choco install ntag --version=1.2.8
+choco install ntag --version=1.2.11
 ```
 
 Others:
@@ -133,12 +133,12 @@ Nuvola Icon Theme
 Autor:   David Vignoni
 Licence: LGPL
 
-JAudiotagger Library 2.2.5
+JAudiotagger Library 3.0.1
 Autor:   https://www.jthink.net/jaudiotagger/
 Licence: LGPL
 
-Open JDK 15
-Autor:   https://jdk.java.net/15/
+Open JDK 17
+Autor:   https://jdk.java.net/17/
 Licence: GPL v2 with the Classpath Exception
 
 OpenJFX

@@ -106,3 +106,8 @@ NTag Version History
 --------------------------
 - New feature: Using xdg-open on Linux for opening urls
 - New feature: Windows NSIS Installer
+
+1.2.11          2021-11-15
+--------------------------
+- Upgrading to Java 17
+- Upgrading to JAudiotagger 3.0.1

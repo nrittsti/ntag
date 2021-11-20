@@ -59,7 +59,6 @@ import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.tag.TagField;
 import org.jaudiotagger.tag.id3.ID3v23Tag;
 import org.jaudiotagger.tag.id3.ID3v24Tag;
-import org.jaudiotagger.tag.reference.ID3V2Version;
 
 import java.io.IOException;
 import java.net.URI;
@@ -596,10 +595,10 @@ public class TagEditorControl extends TabPane implements Initializable {
     MP3File mp3 = (MP3File) selectedFile.getAudioFile();
     boolean changed = false;
     if (id3v23MenuItem.isSelected() && !selectedFile.getTaggingSystem().equals(ID3v23Tag.class.getSimpleName())) {
-      mp3.setTag(mp3.convertTag(mp3.getTagOrCreateDefault(), ID3V2Version.ID3_V23));
+      // mp3.setTag(mp3.convertTag(mp3.getTagOrCreateDefault(), ID3V2Version.ID3_V23));
       changed = true;
     } else if (id3v24MenuItem.isSelected() && !selectedFile.getTaggingSystem().equals(ID3v24Tag.class.getSimpleName())) {
-      mp3.setTag(mp3.convertTag(mp3.getTagOrCreateDefault(), ID3V2Version.ID3_V24));
+      // mp3.setTag(mp3.convertTag(mp3.getTagOrCreateDefault(), ID3V2Version.ID3_V24));
       changed = true;
     }
     if (changed) {

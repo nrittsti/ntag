@@ -14,7 +14,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2020, Nico Rittstieg
+ *   Copyright 2021, Nico Rittstieg
  *
  */
 package ntag.io;
@@ -328,15 +328,16 @@ public class TagFileReader {
                 "" + frame.getBody().getObjectValue(DataTypes.OBJ_TEXT));
       }
     } else {
-      if (tag.frameMap.containsKey("TYERTDAT")) {
-        TyerTdatAggregatedFrame tyerTdat = (TyerTdatAggregatedFrame) tag.frameMap.get("TYERTDAT");
+      if (tag.hasFrame("TYERTDAT")) {
+        List<TagField> tyertdat = tag.getFrame("TYERTDAT");
+        TyerTdatAggregatedFrame tyerTdatAggregatedFrame = (TyerTdatAggregatedFrame) tyertdat.get(0);
         String tyer = null;
         String tdat = null;
-        for (AbstractID3v2Frame f : tyerTdat.getFrames()) {
-          if ("TYER".equals(f.getIdentifier())) {
-            tyer = "" + f.getBody().getObjectValue(DataTypes.OBJ_TEXT);
-          } else if ("TDAT".equals(f.getIdentifier())) {
-            tdat = "" + f.getBody().getObjectValue(DataTypes.OBJ_TEXT);
+        for (AbstractID3v2Frame f : tyerTdatAggregatedFrame.getFrames()) {
+          if ("TYER".equals(f.getId())) {
+            tyer = f.getContent();
+          } else if ("TDAT".equals(f.getId())) {
+            tdat = f.getContent();
           }
         }
         // ID3V23 : TYER

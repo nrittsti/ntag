@@ -14,7 +14,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2020, Nico Rittstieg
+ *   Copyright 2021, Nico Rittstieg
  *
  */
 package ntag.io;
@@ -516,8 +516,8 @@ public final class TagFileWriter {
       final String text = tagFile.getDate().format(DateTimeFormatter.ofPattern("ddMM", Locale.UK));
       ID3v23Frame frame = null;
 
-      if (tag.frameMap.containsKey("TYERTDAT")) {
-        TyerTdatAggregatedFrame tyerTdat = (TyerTdatAggregatedFrame) tag.frameMap.get("TYERTDAT");
+      if (tag.hasFrame("TYERTDAT")) {
+        TyerTdatAggregatedFrame tyerTdat = (TyerTdatAggregatedFrame) tag.getFrame("TYERTDAT").get(0);
         for (AbstractID3v2Frame f : tyerTdat.getFrames()) {
           if ("TDAT".equals(f.getIdentifier())) {
             frame = (ID3v23Frame) f;
@@ -544,7 +544,7 @@ public final class TagFileWriter {
         }
       }
     } else {
-      if (tag.frameMap.containsKey("TYERTDAT")) {
+      if (tag.hasFrame("TYERTDAT")) {
         tag.removeFrame("TYERTDAT");
         addRemove("TDAT");
         if (tagFile.getYear() != null && tagFile.getYear() > 0) {
@@ -554,7 +554,7 @@ public final class TagFileWriter {
             addError("TYER", tagFile.getYear().toString(), e.getMessage());
           }
         }
-      } else if (tag.frameMap.containsKey("TDAT")) {
+      } else if (tag.hasFrame("TDAT")) {
         tag.removeFrame("TDAT");
         addRemove("TDAT");
       }
