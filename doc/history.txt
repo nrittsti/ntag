@@ -111,3 +111,7 @@ NTag Version History
 --------------------------
 - Upgrading to Java 17
 - Upgrading to JAudiotagger 3.0.1
+
+1.2.12          2021-11-21
+--------------------------
+- Fixed com.github.nrittsti.NTag.metainfo.xml for Flathub
