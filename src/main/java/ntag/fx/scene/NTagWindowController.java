@@ -234,12 +234,23 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
     th.start();
     dialog.showAndWait();
     if (task.getState() == State.FAILED) {
-      FxUtil.showException("Read Errors", task.getException());
+      FxUtil.showException("Directory scanning errors", task.getException());
     } else if (task.hasErrors()) {
-      FxUtil.showErrors("Read Errors", task.getErrors());
-    } else if (!task.isCancelled()) {
+      if (appProperties.isShowDirectoryScanErrors()) {
+        FxUtil.showErrors("Directory scanning errors", task.getErrors());        
+      } else {
+        FxUtil.showNotification(String.format(
+          "%d errors occurred while scanning this directory, please check the logging tab.", 
+          task.getErrors().size()), stage, 5000);
+      }      
+    } 
+    if (!task.isCancelled()) {
       List<TagFile> result = task.getValue();
-      viewModel.getFiles().setAll(result);
+      if (result == null || result.isEmpty()) {
+        viewModel.getFiles().clear();
+      } else {
+        viewModel.getFiles().setAll(result);
+      }
       EditorProperty.getChangedObjects().clear();
     }
   }

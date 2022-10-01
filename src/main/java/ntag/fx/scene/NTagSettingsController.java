@@ -77,6 +77,11 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
     @FXML
     private ComboBox<String> dateFormatComboBox;
 
+    // *** Scanner
+
+    @FXML
+    private CheckBox showDirectoryScanErrorsCheckBox;
+
     // *** MP3
 
     @FXML
@@ -239,6 +244,8 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
         filenameStripUnsafeCharsCheckBox.setSelected(viewModel.isFilenameStripUnsafeChars());
         genreFavTextField.setText(stringListConverter.toString(viewModel.getGenreFavorites()));
         dateFormatComboBox.setValue(viewModel.getDateFormat());
+        // Scanner
+        showDirectoryScanErrorsCheckBox.setSelected(viewModel.isShowDirectoryScanErrors());
         // ID3 Version
         id3v1CheckBox.setSelected(viewModel.isID3v11());
         id3v24RadioButton.setSelected(viewModel.isID3v24());
@@ -298,6 +305,8 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
         viewModel.setFilenameStripUnsafeChars(filenameStripUnsafeCharsCheckBox.isSelected());
         viewModel.setGenreFavorites(stringListConverter.fromString(genreFavTextField.getText().trim()));
         viewModel.setDateFormat(dateFormatComboBox.getValue());
+        // Scanner
+        viewModel.setShowDirectoryScanErrors(showDirectoryScanErrorsCheckBox.isSelected());
         // ID3 Version
         viewModel.setID3v11(id3v1CheckBox.isSelected());
         viewModel.setID3v24(id3v24RadioButton.isSelected());

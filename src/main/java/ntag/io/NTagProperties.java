@@ -175,6 +175,14 @@ public class NTagProperties {
     preferences.setValue("GUI", "Date_Format", dateFormat);
   }
 
+  public void setShowDirectoryScanErrors(boolean value) {
+    preferences.setValue("Scanner", "show_directory_scan_errors", value);
+  }
+
+  public boolean isShowDirectoryScanErrors() {
+    return preferences.getBoolean("Scanner", "show_directory_scan_errors", false);
+  } 
+
   public int getMaxDepth() {
     return preferences.getInteger("Paths", "depth", 10);
   }
