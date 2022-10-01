@@ -281,7 +281,7 @@ public final class FxUtil {
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
           Desktop.getDesktop().browse(uri);
         } else {
-          Runtime.getRuntime().exec("xdg-open " + uri);
+          Runtime.getRuntime().exec(new String[] {"xdg-open", uri.toString()});
         }
       } catch (Exception e) {
         LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", uri), e);
