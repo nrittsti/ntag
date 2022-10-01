@@ -115,3 +115,7 @@ NTag Version History
 1.2.12          2021-11-21
 --------------------------
 - Fixed com.github.nrittsti.NTag.metainfo.xml for Flathub
+
+1.2.13          2022-10-01
+--------------------------
+- Minor dependency updates

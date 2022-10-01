@@ -24,7 +24,7 @@ plugins {
 }
 
 group = 'com.github'
-version = '1.2.12'
+version = '1.2.13'
 sourceCompatibility = '17'
 targetCompatibility = '17'
 jar.archiveFileName = 'ntag.jar'
@@ -41,9 +41,9 @@ repositories {
 }
 
 dependencies {
-  compileOnly 'com.github.spotbugs:spotbugs-annotations:4.1.4'
+  compileOnly 'com.github.spotbugs:spotbugs-annotations:4.7.2'
   implementation 'net.jthink:jaudiotagger:3.0.1'
-  implementation 'org.glassfish:javax.json:1.1.4'
+  implementation 'org.glassfish:jakarta.json:2.0.1'
   implementation "org.openjfx:javafx-base:${fxVersion}:${platform}"
   implementation "org.openjfx:javafx-controls:${fxVersion}:${platform}"
   implementation "org.openjfx:javafx-fxml:${fxVersion}:${platform}"
@@ -51,7 +51,7 @@ dependencies {
   implementation "org.openjfx:javafx-swing:${fxVersion}:${platform}"
   testImplementation "org.junit.jupiter:junit-jupiter-api:${jupiterVersion}"
   testImplementation "org.junit.jupiter:junit-jupiter-params:${jupiterVersion}"
-  testImplementation 'org.assertj:assertj-core:3.18.0'
+  testImplementation 'org.assertj:assertj-core:3.23.1'
   testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}"
 }
 

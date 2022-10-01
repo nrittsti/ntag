@@ -67,7 +67,7 @@ Chocolatey Package Manager for Windows:
 See: https://chocolatey.org/install
 
 ```
-choco install ntag --version=1.2.11
+choco install ntag
 ```
 
 Others:
