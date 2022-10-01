@@ -8,8 +8,7 @@ assignees: ''
 ---
 
 **Desktop (please complete the following information):**
-- OS and Version: 
-- Java Version:
+- OS and Version:
 - NTag Version:
 
 **Describe the bug**
