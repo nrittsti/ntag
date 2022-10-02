@@ -25,6 +25,7 @@ Copyright 2016, Nico Rittstieg
   <top>
     <ToolBar>
       <Button id="open-button" fx:id="openButton" onAction="#handleOpenAction" text="%mnu_open"/>
+      <CheckBox fx:id="scanSubfoldersCheckBox" text="%lbl_scan_subfolders"/>
       <Button id="save-button" fx:id="saveButton" onAction="#handleSaveAction" text="%mnu_save" disable="true"/>
       <Separator/>
       <Button styleClass="toolbar-button" fx:id="adjustArtworkButton" onAction="#handleAdjustArtworkAction"

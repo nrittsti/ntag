@@ -81,6 +81,8 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
 
     @FXML
     private CheckBox showDirectoryScanErrorsCheckBox;
+    @FXML
+    private CheckBox scanSubfoldersCheckBox;
 
     // *** MP3
 
@@ -246,6 +248,7 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
         dateFormatComboBox.setValue(viewModel.getDateFormat());
         // Scanner
         showDirectoryScanErrorsCheckBox.setSelected(viewModel.isShowDirectoryScanErrors());
+        scanSubfoldersCheckBox.setSelected(viewModel.isScanSubfolders());
         // ID3 Version
         id3v1CheckBox.setSelected(viewModel.isID3v11());
         id3v24RadioButton.setSelected(viewModel.isID3v24());
@@ -307,6 +310,7 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
         viewModel.setDateFormat(dateFormatComboBox.getValue());
         // Scanner
         viewModel.setShowDirectoryScanErrors(showDirectoryScanErrorsCheckBox.isSelected());
+        viewModel.setScanSubfolders(scanSubfoldersCheckBox.isSelected());
         // ID3 Version
         viewModel.setID3v11(id3v1CheckBox.isSelected());
         viewModel.setID3v24(id3v24RadioButton.isSelected());

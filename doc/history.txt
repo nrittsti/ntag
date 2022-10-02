@@ -119,3 +119,6 @@ NTag Version History
 1.2.13          2022-10-01
 --------------------------
 - Minor dependency updates
+- Silently skip not readable files
+- Display error messages for not readable files is now optional
+- Scanning of subdirectories is now optional

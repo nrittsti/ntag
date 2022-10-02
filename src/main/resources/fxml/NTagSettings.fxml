@@ -194,6 +194,14 @@ Copyright 2016, Nico Rittstieg
                 </Insets>
               </VBox.margin>
             </CheckBox>
+            <CheckBox fx:id="scanSubfoldersCheckBox" text="%lbl_scan_subfolders">
+              <VBox.margin>
+                <Insets>
+                  <top>5</top>
+                  <left>15</left>
+                </Insets>
+              </VBox.margin>
+            </CheckBox>
           </VBox>
         </Tab>
         <Tab text="MP3" closable="false">

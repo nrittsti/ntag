@@ -149,6 +149,8 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
   @FXML
   private Button openButton;
   @FXML
+  private CheckBox scanSubfoldersCheckBox;
+  @FXML
   private Button saveButton;
   @FXML
   private Button adjustArtworkButton;
@@ -216,6 +218,7 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
       contextMenu.getItems().add(item);
     }
     filterLink.setOnMouseClicked(e -> contextMenu.show(filterLink, e.getScreenX(), e.getSceneY()));
+    scanSubfoldersCheckBox.setSelected(appProperties.isScanSubfolders());
   }
 
   // ***
@@ -227,8 +230,8 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
   public void readFiles(List<Path> pathList) {
     // Register special LogHandler
     appProperties.getActionLogHandler().clear();
-
-    ReadTagFilesTask task = new ReadTagFilesTask(pathList, appProperties.getMaxFiles(), appProperties.getMaxDepth());
+    final int maxDepth = scanSubfoldersCheckBox.isSelected() ? appProperties.getMaxDepth() : 1;
+    ReadTagFilesTask task = new ReadTagFilesTask(pathList, appProperties.getMaxFiles(), maxDepth);
     ProgressDialog<List<TagFile>> dialog = new ProgressDialog<>(task);
     Thread th = new Thread(task);
     th.start();

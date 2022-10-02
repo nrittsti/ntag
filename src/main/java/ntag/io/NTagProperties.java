@@ -181,14 +181,22 @@ public class NTagProperties {
 
   public boolean isShowDirectoryScanErrors() {
     return preferences.getBoolean("Scanner", "show_directory_scan_errors", false);
-  } 
+  }
+
+  public void setScanSubfolders(boolean value) {
+    preferences.setValue("Scanner", "scan_subfolders", value);
+  }
+
+  public boolean isScanSubfolders() {
+    return preferences.getBoolean("Scanner", "scan_subfolders", false);
+  }
 
   public int getMaxDepth() {
-    return preferences.getInteger("Paths", "depth", 10);
+    return preferences.getInteger("Scanner", "depth", 20);
   }
 
   public int getMaxFiles() {
-    return preferences.getInteger("Paths", "files", 1000);
+    return preferences.getInteger("Scanner", "files", 1000);
   }
 
   public boolean isID3v11() {
