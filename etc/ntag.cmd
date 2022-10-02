@@ -15,4 +15,4 @@
 #
 #   Copyright 2020, Nico Rittstieg
 #
-start "NTag" /B .\jre\bin\javaw --module-path lib --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.json -jar ntag.jar %*
+start "NTag" /B .\jre\bin\javaw --module-path lib --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,jarkata.json -jar ntag.jar %*

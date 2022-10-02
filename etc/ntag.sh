@@ -25,4 +25,4 @@ HIDPI_SCALING=100%
 if test -f "${HIDPI_CONFIG}"; then
   . "${HIDPI_CONFIG}"
 fi
-/opt/ntag/jre/bin/java -Dglass.gtk.uiScale=${HIDPI_SCALING} --module-path /opt/ntag/lib --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.json -jar /opt/ntag/ntag.jar "$@"
+/opt/ntag/jre/bin/java -Dglass.gtk.uiScale=${HIDPI_SCALING} --module-path /opt/ntag/lib --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,jarkata.json -jar /opt/ntag/ntag.jar "$@"

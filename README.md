@@ -90,7 +90,7 @@ Launch from command line:
 --------------------------
 
 ```
-./jre/bin/java --module-path lib --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,java.json -jar ntag.jar
+./jre/bin/java --module-path lib --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,jarkata.json -jar ntag.jar
 ```
 
 Options:
