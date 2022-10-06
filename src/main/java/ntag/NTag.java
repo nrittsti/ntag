@@ -90,7 +90,7 @@ public class NTag extends Application {
     // set light or dark css theme
     scene.getStylesheets().add(appProps.getTheme().getCSS());
     // register CTRL+Q shorcut for exit
-    scene.getAccelerators().put(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN), primaryStage::close);
+    scene.getAccelerators().put(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN), primaryStage::close);    
     primaryStage.setTitle(appProps.getTitle());
     primaryStage.getIcons().add(new Image("icons/ntag.png"));
     primaryStage.setScene(scene);
@@ -103,7 +103,7 @@ public class NTag extends Application {
     // auto save window state
     FxUtil.getPrimaryStage().setOnCloseRequest(controller::onCloseRequest);
     // restore window state
-    appProps.restoreMainWindowState(controller);
+    appProps.restoreMainWindowState(controller);     
     // show main window
     primaryStage.show();
   }

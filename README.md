@@ -119,6 +119,18 @@ HIDPI_SCALING=130%
 HIDPI_SCALING=144dpi
 ```
 
+Keyboard Shortcuts :
+---------------------
+
+- Open directory `(CTRL + O)`
+- Save files `(CTRL + S)`
+- Adjust artwork `(CTRL + A)`
+- Rename files `(CTRL + R)`
+- Number Tracks `(CTRL + N)`
+- Open Settings `(CTRL + S)`
+- Hide and show editor `(CTRL + E)`
+- Quit `(ALT + F4)`
+
 Project Web site :
 --------------------
 

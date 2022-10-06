@@ -19,14 +19,35 @@
  */
 package ntag.fx.scene;
 
+import static ntag.fx.util.FxUtil.openURI;
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ListChangeListener.Change;
 import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitPane;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
@@ -44,6 +65,7 @@ import ntag.fx.scene.dialog.DialogResponse;
 import ntag.fx.scene.dialog.DialogResult;
 import ntag.fx.scene.dialog.ProgressDialog;
 import ntag.fx.util.FxUtil;
+import ntag.fx.util.ToggleSplitPane;
 import ntag.io.NTagProperties;
 import ntag.io.Resources;
 import ntag.model.TagFile;
@@ -51,16 +73,6 @@ import ntag.task.AdjustArtworkTask;
 import ntag.task.ReadTagFilesTask;
 import ntag.task.RenameFilesTask;
 import ntag.task.WriteTagFilesTask;
-
-import java.io.File;
-import java.net.URI;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-
-import static ntag.fx.util.FxUtil.openURI;
 
 
 @SuppressWarnings("FieldMayBeFinal")
@@ -100,6 +112,14 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
         handleRefreshFilter(new ActionEvent(keyEvent.getSource(), null));
       }
     });
+    ToggleSplitPane toggleSplitPane = new ToggleSplitPane(this);
+    stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN), () -> toggleSplitPane.hideOrShowEditor());
+    stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN), () -> handleOpenDirectory(null));
+    stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN), () -> handleSaveAction(null));
+    stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN), () -> handleRenameAction(null));
+    stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.I, KeyCombination.CONTROL_DOWN), () -> handleSettingsAction(null));
+    stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN), () -> handleNumberTracksAction(null));
+    stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN), () -> handleAdjustArtworkAction(null));
   }
 
   // *** DividerPositions
@@ -113,7 +133,7 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
   public double[] getDividerPositions() {
     assert splitPane != null : "splitPane is null";
     return splitPane.getDividerPositions();
-  }
+  }   
 
   // *** ViewModel
 
@@ -203,7 +223,7 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     // Toolbar
-    EditorProperty.getChangedObjects().addListener((Change<? extends TagFile> change) -> saveButton.setDisable(EditorProperty.getChangedObjects().isEmpty()));
+    EditorProperty.getChangedObjects().addListener((Change<? extends TagFile> change) -> saveButton.setDisable(EditorProperty.getChangedObjects().isEmpty()));    
     // Statusbar
     directoryLink.textProperty().bind(appProperties.lastDirectoryProperty());
     filterLink.setUserData(NTagFilterMode.All);
@@ -256,6 +276,10 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
       }
       EditorProperty.getChangedObjects().clear();
     }
+  }
+
+  public void showOrHideEditor() {
+
   }
 
   // ***
@@ -496,5 +520,5 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
   @Override
   protected void unbindViewModel() {
 
-  }
+  }  
 }
