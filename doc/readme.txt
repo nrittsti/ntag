@@ -62,14 +62,6 @@ See: https://github.com/microsoft/winget-cli
 winget install NTag
 ```
 
-Chocolatey Package Manager for Windows:
-
-See: https://chocolatey.org/install
-
-```
-choco install ntag
-```
-
 Others:
 
 https://github.com/nrittsti/ntag/releases
