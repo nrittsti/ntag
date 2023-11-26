@@ -24,14 +24,17 @@ plugins {
 }
 
 group = 'com.github'
-version = '1.2.13'
-sourceCompatibility = '17'
-targetCompatibility = '17'
+version = '1.2.14'
 jar.archiveFileName = 'ntag.jar'
 distTar.archiveFileName = "ntag-${version}-${platform}_bin.tar.gz"
 distZip.archiveFileName = "ntag-${version}-${platform}_bin.zip"
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_17
+  targetCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
   mavenCentral()
@@ -41,7 +44,7 @@ repositories {
 }
 
 dependencies {
-  compileOnly 'com.github.spotbugs:spotbugs-annotations:4.7.2'
+  compileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.1'
   implementation 'net.jthink:jaudiotagger:3.0.1'
   implementation 'org.glassfish:jakarta.json:2.0.1'
   implementation "org.openjfx:javafx-base:${fxVersion}:${platform}"
@@ -51,7 +54,7 @@ dependencies {
   implementation "org.openjfx:javafx-swing:${fxVersion}:${platform}"
   testImplementation "org.junit.jupiter:junit-jupiter-api:${jupiterVersion}"
   testImplementation "org.junit.jupiter:junit-jupiter-params:${jupiterVersion}"
-  testImplementation 'org.assertj:assertj-core:3.23.1'
+  testImplementation 'org.assertj:assertj-core:3.24.2'
   testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}"
 }
 
