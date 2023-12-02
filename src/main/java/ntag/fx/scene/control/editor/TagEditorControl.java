@@ -14,7 +14,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2021, Nico Rittstieg
+ *   Copyright 2023, Nico Rittstieg
  *
  */
 package ntag.fx.scene.control.editor;
@@ -34,8 +34,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
-import javafx.util.converter.IntegerStringConverter;
-import javafx.util.converter.LocalDateStringConverter;
 import ntag.NTagException;
 import ntag.fx.scene.NTagViewModel;
 import ntag.fx.scene.control.ArtworkControl;
@@ -47,8 +45,8 @@ import ntag.fx.scene.dialog.DialogResult;
 import ntag.fx.scene.dialog.ItemChoiceViewModel;
 import ntag.fx.util.FxUtil;
 import ntag.fx.util.TagFieldInputDialogs;
-import ntag.fx.validator.SimpleTextFieldValidator;
-import ntag.fx.validator.SimpleTextFieldValidator.ValidationMode;
+import ntag.fx.validator.ValidatingDateFieldConverter;
+import ntag.fx.validator.ValidatingIntegerFieldConverter;
 import ntag.io.NTagProperties;
 import ntag.io.Resources;
 import ntag.io.TagFileReader;
@@ -68,7 +66,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -334,17 +331,13 @@ public class TagEditorControl extends TabPane implements Initializable {
     // Album Artist
     initialize(albumArtistComboBox, albumArtistEditorProperty);
     // Track
-    initialize(trackComboBox, trackEditorProperty, new IntegerStringConverter());
-    new SimpleTextFieldValidator(trackComboBox.getComboBox().getEditor(), ValidationMode.UInteger, 3);
+    initialize(trackComboBox, trackEditorProperty, new ValidatingIntegerFieldConverter(trackComboBox.getComboBox().getEditor(), 3));
     // TrackTotal
-    initialize(trackTotalComboBox, trackTotalEditorProperty, new IntegerStringConverter());
-    new SimpleTextFieldValidator(trackTotalComboBox.getComboBox().getEditor(), ValidationMode.UInteger, 3);
+    initialize(trackTotalComboBox, trackTotalEditorProperty, new ValidatingIntegerFieldConverter(trackTotalComboBox.getComboBox().getEditor(), 3));
     // Disc
-    initialize(discComboBox, discEditorProperty, new IntegerStringConverter());
-    new SimpleTextFieldValidator(discComboBox.getComboBox().getEditor(), ValidationMode.UInteger, 3);
+    initialize(discComboBox, discEditorProperty, new ValidatingIntegerFieldConverter(discComboBox.getComboBox().getEditor(), 3));
     // DiscTotal
-    initialize(discTotalComboBox, discTotalEditorProperty, new IntegerStringConverter());
-    new SimpleTextFieldValidator(discTotalComboBox.getComboBox().getEditor(), ValidationMode.UInteger, 3);
+    initialize(discTotalComboBox, discTotalEditorProperty, new ValidatingIntegerFieldConverter(discTotalComboBox.getComboBox().getEditor(), 3));
     // Composer
     initialize(composerComboBox, composerEditorProperty);
     // Language
@@ -352,12 +345,11 @@ public class TagEditorControl extends TabPane implements Initializable {
     // Comment
     initialize(commentTextField, commentEditorProperty);
     // Year
-    initialize(yearComboBox, yearEditorProperty, new IntegerStringConverter());
-    new SimpleTextFieldValidator(yearComboBox.getComboBox().getEditor(), ValidationMode.UInteger, 4);
+    initialize(yearComboBox, yearEditorProperty, new ValidatingIntegerFieldConverter(yearComboBox.getComboBox().getEditor(), 4));
     // Date
     dateFormatLabel.setText(" (" + appProps.getDateFormat() + ")");
-    initialize(dateComboBox, dateEditorProperty, new LocalDateStringConverter(DateTimeFormatter.ofPattern(appProps.getDateFormat()), null));
-    new SimpleTextFieldValidator(dateComboBox.getComboBox().getEditor(), ValidationMode.LocalDate, 10);
+    initialize(dateComboBox, dateEditorProperty, new ValidatingDateFieldConverter(dateComboBox.getComboBox().getEditor(), 10));
+
     // Genre
     initialize(genreComboBox, genreEditorProperty);
     // Compilation

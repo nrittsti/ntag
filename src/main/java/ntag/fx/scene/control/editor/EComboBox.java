@@ -14,12 +14,11 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2020, Nico Rittstieg
+ *   Copyright 2023, Nico Rittstieg
  *
  */
 package ntag.fx.scene.control.editor;
 
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -28,7 +27,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.util.StringConverter;
 import ntag.io.Resources;
 
 public class EComboBox<T> extends HBox {
@@ -44,20 +42,6 @@ public class EComboBox<T> extends HBox {
     comboBox.setMinWidth(50);
     comboBox.setPrefWidth(100);
     comboBox.setEditable(true);
-    // Maybe a bug in Java Version "1.8.0_66" --> The value property is
-    // updated only when i press enter
-    comboBox.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldValue, Boolean newValue) -> {
-      if (!newValue) {
-        StringConverter<T> converter = comboBox.getConverter();
-        T value;
-        if (converter != null) {
-          value = converter.fromString(comboBox.getEditor().getText().trim());
-        } else {
-          value = getEditorValue();
-        }
-        comboBox.setValue(value);
-      }
-    });
     setHgrow(comboBox, Priority.ALWAYS);
     this.getChildren().add(comboBox);
     button = new Button();

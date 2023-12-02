@@ -126,3 +126,4 @@ NTag Version History
 1.2.14          2023-11-30
 --------------------------
 - Minor dependency updates
+- Fixed: validation of date, disc, track and year fields
