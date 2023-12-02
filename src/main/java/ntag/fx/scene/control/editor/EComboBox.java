@@ -39,7 +39,7 @@ public class EComboBox<T> extends HBox {
     this.setSpacing(3);
     comboBox = new ComboBox<>();
     comboBox.setMaxWidth(Double.MAX_VALUE);
-    comboBox.setMinWidth(50);
+    comboBox.setMinWidth(70);
     comboBox.setPrefWidth(100);
     comboBox.setEditable(true);
     setHgrow(comboBox, Priority.ALWAYS);

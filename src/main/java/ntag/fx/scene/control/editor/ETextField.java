@@ -14,7 +14,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2020, Nico Rittstieg
+ *   Copyright 2023, Nico Rittstieg
  *
  */
 package ntag.fx.scene.control.editor;
@@ -37,7 +37,7 @@ public class ETextField extends HBox {
   public ETextField() {
     this.setSpacing(3);
     textField = new TextField();
-    textField.setMinWidth(50);
+    textField.setMinWidth(70);
     textField.setPrefWidth(100);
     setHgrow(textField, Priority.ALWAYS);
     this.getChildren().add(textField);
