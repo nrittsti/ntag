@@ -14,7 +14,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2020, Nico Rittstieg
+ *   Copyright 2023, Nico Rittstieg
  *
  */
 package ntag.fx.scene;
@@ -83,6 +83,14 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
     private CheckBox showDirectoryScanErrorsCheckBox;
     @FXML
     private CheckBox scanSubfoldersCheckBox;
+    @FXML
+    private CheckBox warnIfArtworkIsMissing;
+    @FXML
+    private CheckBox warnIfLyricsIsMissing;
+    @FXML
+    private CheckBox warnIfRatingIsMissing;
+    @FXML
+    private CheckBox warnIfMetadataIsIncomplete;
 
     // *** MP3
 
@@ -195,7 +203,7 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
             return false;
         }
         // ID3 Rating EMail
-        if (id3RatingMailTextField.getText().trim().length() == 0) {
+        if (id3RatingMailTextField.getText().trim().isEmpty()) {
             errorLabel.setText("ID3 Rating EMail is required");
             return false;
         }
@@ -249,6 +257,10 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
         // Scanner
         showDirectoryScanErrorsCheckBox.setSelected(viewModel.isShowDirectoryScanErrors());
         scanSubfoldersCheckBox.setSelected(viewModel.isScanSubfolders());
+        warnIfArtworkIsMissing.setSelected(viewModel.isWarnIfArtworkIsMissing());
+        warnIfLyricsIsMissing.setSelected(viewModel.isWarnIfLyricsIsMissing());
+        warnIfRatingIsMissing.setSelected(viewModel.isWarnIfRatingIsMissing());
+        warnIfMetadataIsIncomplete.setSelected(viewModel.isWarnIfMetadataIsIncomplete());
         // ID3 Version
         id3v1CheckBox.setSelected(viewModel.isID3v11());
         id3v24RadioButton.setSelected(viewModel.isID3v24());
@@ -311,6 +323,10 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
         // Scanner
         viewModel.setShowDirectoryScanErrors(showDirectoryScanErrorsCheckBox.isSelected());
         viewModel.setScanSubfolders(scanSubfoldersCheckBox.isSelected());
+        viewModel.setWarnIfArtworkIsMissing(warnIfArtworkIsMissing.isSelected());
+        viewModel.setWarnIfRatingIsMissing(warnIfRatingIsMissing.isSelected());
+        viewModel.setWarnIfLyricsIsMissing(warnIfLyricsIsMissing.isSelected());
+        viewModel.setWarnIfMetadataIsIncomplete(warnIfMetadataIsIncomplete.isSelected());
         // ID3 Version
         viewModel.setID3v11(id3v1CheckBox.isSelected());
         viewModel.setID3v24(id3v24RadioButton.isSelected());
@@ -368,7 +384,7 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
         StringTokenizer st = new StringTokenizer(value);
         while (st.hasMoreTokens()) {
             String line = st.nextToken().trim();
-            if (line.length() > 0) {
+            if (!line.isEmpty()) {
                 list.add(line);
             }
         }

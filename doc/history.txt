@@ -128,3 +128,5 @@ NTag Version History
 - Minor dependency updates
 - Fixed: validation of date, disc, track and year fields
 - Fixed: track and cd field min width property
+- New Feature: config options for status warning
+- New Feature: status tooltip

@@ -14,7 +14,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2021, Nico Rittstieg
+ *   Copyright 2023, Nico Rittstieg
  *
  */
 package ntag.io;
@@ -189,6 +189,38 @@ public class NTagProperties {
 
   public boolean isScanSubfolders() {
     return preferences.getBoolean("Scanner", "scan_subfolders", false);
+  }
+
+  public boolean isWarnIfArtworkIsMissing() {
+    return preferences.getBoolean("Scanner", "warn_if_artwork_is_missing", true);
+  }
+
+  public void setWarnIfArtworkIsMissing(boolean value) {
+    preferences.setValue("Scanner", "warn_if_artwork_is_missing", value);
+  }
+
+  public boolean isWarnIfLyricsIsMissing() {
+    return preferences.getBoolean("Scanner", "warn_if_lyrics_is_missing", true);
+  }
+
+  public void setWarnIfLyricsIsMissing(boolean value) {
+    preferences.setValue("Scanner", "warn_if_lyrics_is_missing", value);
+  }
+
+  public boolean isWarnIfMetadataIsIncomplete() {
+    return preferences.getBoolean("Scanner", "warn_if_metadata_is_incomplete", true);
+  }
+
+  public void setWarnIfMetadataIsIncomplete(boolean value) {
+    preferences.setValue("Scanner", "warn_if_metadata_is_incomplete", value);
+  }
+
+  public boolean isWarnIfRatingIsMissing() {
+    return preferences.getBoolean("Scanner", "warn_if_rating_is_missing", true);
+  }
+
+  public void setWarnIfRatingIsMissing(boolean value) {
+    preferences.setValue("Scanner", "warn_if_rating_is_missing", value);
   }
 
   public int getMaxDepth() {

@@ -14,10 +14,13 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2020, Nico Rittstieg
+ *   Copyright 2023, Nico Rittstieg
  *
  */
 package ntag.fx.scene.control.tableview;
+
+import javafx.scene.control.Tooltip;
+import ntag.io.Resources;
 
 public class StatusTableCell extends EnhancedTableCell<Object, String> {
   @Override
@@ -34,6 +37,35 @@ public class StatusTableCell extends EnhancedTableCell<Object, String> {
       } else {
         setStyle("");
       }
+      setTooltip(new Tooltip(tooltip(item)));
     }
+  }
+
+  private String tooltip(String item) {
+    StringBuilder sb = new StringBuilder();
+    if (item == null || item.isBlank()) {
+      sb.append("No issues found \uD83D\uDE00");
+    } else {
+      sb.append("The following issues were found:\n");
+      if (item.contains("A")) {
+        sb.append("\nA = ").append(Resources.get("ntag", "tip_missing_artwork"));
+      }
+      if (item.contains("C")) {
+        sb.append("\nC = ").append(Resources.get("ntag", "tip_unsaved_changes"));
+      }
+      if (item.contains("L")) {
+        sb.append("\nL = ").append(Resources.get("ntag", "tip_missing_lyrics"));
+      }
+      if (item.contains("M")) {
+        sb.append("\nM = ").append(Resources.get("ntag", "tip_metadata_is_incomplete"));
+      }
+      if (item.contains("R")) {
+        sb.append("\nR = ").append(Resources.get("ntag", "tip_missing_rating"));
+      }
+      if (item.contains("RO")) {
+        sb.append("\nR = ").append(Resources.get("ntag", "tip_ro"));
+      }
+    }
+    return sb.toString();
   }
 }

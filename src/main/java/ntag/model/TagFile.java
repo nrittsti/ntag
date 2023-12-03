@@ -14,7 +14,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
  *
- *   Copyright 2020, Nico Rittstieg
+ *   Copyright 2023, Nico Rittstieg
  *
  */
 package ntag.model;
@@ -22,6 +22,7 @@ package ntag.model;
 import javafx.beans.property.*;
 import ntag.NTagException;
 import ntag.io.JAudiotaggerUtil;
+import ntag.io.NTagProperties;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.exceptions.CannotWriteException;
 import org.jaudiotagger.audio.mp3.MP3File;
@@ -741,25 +742,26 @@ public class TagFile {
    * R - Rating is missing<br>
    */
   public void updateStatus() {
+    NTagProperties settings = NTagProperties.instance();
     StringBuilder buffer = new StringBuilder(4);
-    this.setIncomplete(getGenre() == null || getGenre().length() == 0 || getTitle() == null || getTitle().length() == 0 || getAlbum() == null || getAlbum().length() == 0 || getArtist() == null
-            || getArtist().length() == 0 || getYear() == null || getYear() < 1800);
+    this.setIncomplete(getGenre() == null || getGenre().isEmpty() || getTitle() == null || getTitle().isEmpty() || getAlbum() == null || getAlbum().isEmpty() || getArtist() == null
+        || getArtist().isEmpty() || getYear() == null || getYear() < 1800);
     if (isReadOnly()) {
       buffer.append("ro ");
     }
     if (isDirty()) {
       buffer.append('C');
     }
-    if (isIncomplete()) {
+    if (settings.isWarnIfMetadataIsIncomplete() && isIncomplete()) {
       buffer.append('M');
     }
-    if (isArtworkMissing()) {
+    if (settings.isWarnIfArtworkIsMissing() && isArtworkMissing()) {
       buffer.append('A');
     }
-    if (getLyrics().length() == 0) {
+    if (settings.isWarnIfLyricsIsMissing() && getLyrics().isEmpty()) {
       buffer.append('L');
     }
-    if (getRating() == null || getRating() <= 0) {
+    if (settings.isWarnIfRatingIsMissing() && getRating() == null || getRating() <= 0) {
       buffer.append('R');
     }
     setStatus(buffer.toString());
