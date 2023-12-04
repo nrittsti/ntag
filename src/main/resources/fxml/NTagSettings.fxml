@@ -555,6 +555,7 @@
             </padding>
             <Label text="Provider"/>
             <TextArea fx:id="lyricProviderTextArea"/>
+            <Label text="%lbl_help_lyrics_provider"/>
           </VBox>
         </Tab>
       </tabs>

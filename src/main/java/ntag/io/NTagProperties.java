@@ -407,7 +407,7 @@ public class NTagProperties {
   }
 
   public List<String> getLyricProvider() {
-    return preferences.getValues("Lyrics", "provider");
+    return preferences.getValues("Lyrics", "provider", "https://www.songtexte.com/search?q=input&c=all", "https://genius.com/search?q=input");
   }
 
   public void setLyricProvider(List<String> values) {

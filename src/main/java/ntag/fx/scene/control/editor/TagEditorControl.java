@@ -239,7 +239,7 @@ public class TagEditorControl extends TabPane implements Initializable {
   public TagEditorControl() {
     appProps = NTagProperties.instance();
     // EmptyCheck Implementations
-    EmptyCheck<String> emptyStringCheck = (String value) -> value == null || value.length() == 0;
+    EmptyCheck<String> emptyStringCheck = (String value) -> value == null || value.isEmpty();
     EmptyCheck<Integer> emptyIntegerCheck = (Integer value) -> value == null || value <= 0;
     // EditorProperties
     try {
@@ -454,7 +454,7 @@ public class TagEditorControl extends TabPane implements Initializable {
   @FXML
   @SuppressWarnings("unused")
   private void handleShowFileAction(final ActionEvent event) {
-    if (viewModel.getSelectedFiles().size() == 0) {
+    if (viewModel.getSelectedFiles().isEmpty()) {
       return;
     }
     try {
@@ -498,14 +498,14 @@ public class TagEditorControl extends TabPane implements Initializable {
     String provider = button.getUserData().toString();
     TagFile tagFile = this.viewModel.getSelectedFiles().get(0);
     StringBuilder sb = new StringBuilder(80);
-    if (tagFile.getTitle() != null && tagFile.getTitle().length() > 0) {
-      sb.append(tagFile.getTitle());
+    if (tagFile.getTitle() != null && !tagFile.getTitle().isEmpty()) {
+      sb.append(FileUtil.sanitizeFilename(tagFile.getTitle()));
     }
-    if (tagFile.getArtist() != null && tagFile.getArtist().length() > 0) {
-      if (sb.length() > 0) {
+    if (tagFile.getArtist() != null && !tagFile.getArtist().isEmpty()) {
+      if (!sb.isEmpty()) {
         sb.append(' ');
       }
-      sb.append(tagFile.getArtist());
+      sb.append(FileUtil.sanitizeFilename(tagFile.getArtist()));
     }
     final String encodedProvider = provider.replace("input", URLEncoder.encode(sb.toString(), StandardCharsets.UTF_8));
     try {
@@ -620,7 +620,7 @@ public class TagEditorControl extends TabPane implements Initializable {
         LOGGER.log(Level.SEVERE, "Error on updating Editor Property " + editorProperty.getName(), e);
       }
     }
-    editorTab.setDisable(viewModel.getSelectedFiles().size() == 0);
+    editorTab.setDisable(viewModel.getSelectedFiles().isEmpty());
     if (viewModel.getSelectedFiles().size() == 1) {
       TagFile selectedFile = viewModel.getSelectedFiles().get(0);
       headerTab.setDisable(false);

@@ -130,3 +130,4 @@ NTag Version History
 - Fixed: track and cd field min width property
 - New Feature: config options for status warning
 - New Feature: status tooltip
+- New Feature: lyrics provider examples
