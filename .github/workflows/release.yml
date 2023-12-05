@@ -10,7 +10,7 @@ jobs:
   linux_release:
     runs-on: ubuntu-latest
     outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.get_ntag_version.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,52 +24,37 @@ jobs:
       - name: Build Linux Version with Gradle
         id: build-linux
         run: ./gradlew jre build -Pplatform=linux -Ptests=Unit
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: true
-          prerelease: false
-      - name: Get NTag version and release url
+      - name: Get NTag version
+        id: get_ntag_version
         run: |
           VERSION=$(./gradlew version -q)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo $VERSION > ntag_version.txt
-      - name: Archive build artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: release_infos
-          path: |
-            ntag_version.txt
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
       - name: Create SHA256 Checksum
         run: sha256sum ./build/distributions/ntag-${{ env.VERSION }}-linux_bin.tar.gz > ./build/distributions/ntag-${{ env.VERSION }}-linux_bin_sha256.txt
       - name: Upload Linux Release Asset
         id: upload-linux-release-asset
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-artifact@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/distributions/ntag-${{ env.VERSION }}-linux_bin.tar.gz
-          asset_name: ntag-${{ env.VERSION }}-linux_bin.tar.gz
-          asset_content_type: application/gzip
+          path: ./build/distributions/ntag-${{ env.VERSION }}-linux_bin.tar.gz
+          name: ntag-${{ env.VERSION }}-linux_bin.tar.gz
+          retention-days: 7
       - name: Upload Linux Checksum SHA256 Asset
         id: upload-linux-checksum-asset
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-artifact@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/distributions/ntag-${{ env.VERSION }}-linux_bin_sha256.txt
-          asset_name: ntag-${{ env.VERSION }}-linux_bin_sha256.txt
-          asset_content_type: application/text
+          path: ./build/distributions/ntag-${{ env.VERSION }}-linux_bin_sha256.txt
+          name: ntag-${{ env.VERSION }}-linux_bin_sha256.txt
+          retention-days: 7
   windows_release:
     needs: linux_release
     runs-on: windows-latest
+    env:
+      VERSION: ${{ needs.linux_release.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -83,13 +68,6 @@ jobs:
       - name: Build Windows Version with Gradle
         id: build-windows
         run: ./gradlew jre build -x test -Pplatform=win
-      - name: Download Linux job results
-        uses: actions/download-artifact@v2
-        with:
-          name: release_infos
-      - name: Get NTag Version and Release URL
-        run: |
-          echo "VERSION=$(cat ntag_version.txt)" >> $env:GITHUB_ENV
       - name: Create NSIS Installer
         run: |
           7z x -obuild/distributions ./build/distributions/ntag-${{ env.VERSION }}-win_bin.zip
@@ -103,41 +81,67 @@ jobs:
           Get-Filehash ./build/distributions/ntag-${{ env.VERSION }}/NTag-${{ env.VERSION }}-win-setup.exe -Algorithm SHA256 | Format-List -Property Hash > ./build/distributions/ntag-${{ env.VERSION }}-win_setup_sha256.txt
       - name: Upload Windows ZIP Release Asset
         id: upload-win-release-asset
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-artifact@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.linux_release.outputs.upload_url }}
-          asset_path: ./build/distributions/ntag-${{ env.VERSION }}-win_bin.zip
-          asset_name: ntag-${{ env.VERSION }}-win_bin.zip
-          asset_content_type: application/gzip
+          path: ./build/distributions/ntag-${{ env.VERSION }}-win_bin.zip
+          name: ntag-${{ env.VERSION }}-win_bin.zip
+          retention-days: 7
       - name: Upload Windows ZIP SHA256 Asset
         id: upload-win-bin-sha256-asset
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-artifact@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.linux_release.outputs.upload_url }}
-          asset_path: ./build/distributions/ntag-${{ env.VERSION }}-win_bin_sha256.txt
-          asset_name: ntag-${{ env.VERSION }}-win_bin_sha256.txt
-          asset_content_type: application/text
+          path: ./build/distributions/ntag-${{ env.VERSION }}-win_bin_sha256.txt
+          name: ntag-${{ env.VERSION }}-win_bin_sha256.txt
+          retention-days: 7
       - name: Upload Windows Installer Asset
         id: upload-win-installer-asset
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-artifact@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.linux_release.outputs.upload_url }}
-          asset_path: ./build/distributions/ntag-${{ env.VERSION }}/NTag-${{ env.VERSION }}-win-setup.exe
-          asset_name: ntag-${{ env.VERSION }}-win-setup.exe
-          asset_content_type: application/gzip
+          path: ./build/distributions/ntag-${{ env.VERSION }}/NTag-${{ env.VERSION }}-win-setup.exe
+          name: ntag-${{ env.VERSION }}-win-setup.exe
+          retention-days: 7
       - name: Upload Windows Installer SHA256 Asset
         id: upload-win-installer-sha256-asset
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-artifact@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.linux_release.outputs.upload_url }}
-          asset_path: ./build/distributions/ntag-${{ env.VERSION }}-win_setup_sha256.txt
-          asset_name: ntag-${{ env.VERSION }}-win_setup_sha256.txt
-          asset_content_type: application/text
+          path: ./build/distributions/ntag-${{ env.VERSION }}-win_setup_sha256.txt
+          name: ntag-${{ env.VERSION }}-win_setup_sha256.txt
+          retention-days: 7
+  create_release:
+    runs-on: ubuntu-latest
+    needs:
+      - linux_release
+      - windows_release
+    env:
+      VERSION: ${{ needs.linux_release.outputs.version }}
+    steps:
+      - name: Download all artifcats
+        uses: actions/download-artifact@v3
+      - name: fix-windows-setup
+        run: mv /home/runner/work/ntag/ntag/ntag-${{ env.VERSION }}-win-setup.exe/NTag-${{ env.VERSION }}-win-setup.exe /home/runner/work/ntag/ntag/ntag-${{ env.VERSION }}-win-setup.exe/ntag-${{ env.VERSION }}-win-setup.exe
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          name: Release ${{ github.ref }}
+          draft: true
+          prerelease: false
+          generate_release_notes: false
+          files: |
+            /home/runner/work/ntag/ntag/ntag-${{ env.VERSION }}-linux_bin_sha256.txt/ntag-${{ env.VERSION }}-linux_bin_sha256.txt
+            /home/runner/work/ntag/ntag/ntag-${{ env.VERSION }}-linux_bin.tar.gz/ntag-${{ env.VERSION }}-linux_bin.tar.gz
+            /home/runner/work/ntag/ntag/ntag-${{ env.VERSION }}-win_setup_sha256.txt/ntag-${{ env.VERSION }}-win_setup_sha256.txt
+            /home/runner/work/ntag/ntag/ntag-${{ env.VERSION }}-win-setup.exe/ntag-${{ env.VERSION }}-win-setup.exe
+            /home/runner/work/ntag/ntag/ntag-${{ env.VERSION }}-win_bin_sha256.txt/ntag-${{ env.VERSION }}-win_bin_sha256.txt
+            /home/runner/work/ntag/ntag/ntag-${{ env.VERSION }}-win_bin.zip/ntag-${{ env.VERSION }}-win_bin.zip

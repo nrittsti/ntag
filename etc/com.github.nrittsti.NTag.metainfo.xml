@@ -15,7 +15,7 @@
   ~   You should have received a copy of the GNU General Public License
   ~   along with NTag.  If not, see <http://www.gnu.org/licenses/>.
   ~
-  ~   Copyright 2021, Nico Rittstieg
+  ~   Copyright 2023, Nico Rittstieg
   ~
   -->
 <component type="desktop-application">
@@ -48,6 +48,9 @@
   </screenshots>
   <developer_name>Nico Rittstieg</developer_name> 
   <releases>
+    <release version="1.2.14" date="2023-12-05">
+      <url>https://github.com/nrittsti/ntag/releases/tag/v1.2.14</url>
+    </release>
     <release version="1.2.13" date="2022-10-08">
       <url>https://github.com/nrittsti/ntag/releases/tag/v1.2.13</url>
     </release>
