@@ -76,6 +76,13 @@ Options:
 -h --home         custom home directory
 -p --portable     use working directory as home
 
+Linux Wayland Support:
+--------------------------
+
+Java 21 LTS does not have wayland support.
+NTag works with xorg-xwayland as a compatibility layer.
+https://wiki.archlinux.org/title/Wayland#Xwayland
+
 Linux HiDPI Settings:
 --------------------------
 
@@ -141,8 +148,8 @@ JAudiotagger Library 3.0.1
 Autor:   https://www.jthink.net/jaudiotagger/
 Licence: LGPL
 
-Open JDK 17
-Autor:   https://jdk.java.net/17/
+Open JDK 21
+Autor:   https://openjdk.org/projects/jdk/21/
 Licence: GPL v2 with the Classpath Exception
 
 OpenJFX

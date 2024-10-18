@@ -131,3 +131,8 @@ NTag Version History
 - New Feature: config options for status warning
 - New Feature: status tooltip
 - New Feature: lyrics provider examples
+
+1.2.15          2024-10-18
+--------------------------
+- Upgrading to Java 21 LTS
+- Minor dependency updates
