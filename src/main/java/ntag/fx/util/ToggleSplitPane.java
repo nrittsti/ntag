@@ -35,7 +35,7 @@ public class ToggleSplitPane {
       this.windowController.setDividerPositions(lastPosition);
     } else {
       this.lastPosition = windowController.getDividerPositions();
-      this.windowController.setDividerPositions(new double[] {1d});
+      this.windowController.setDividerPositions(1d);
     }
   }
 

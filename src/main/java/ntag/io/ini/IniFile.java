@@ -47,7 +47,7 @@ public class IniFile {
       for (String line = reader.readLine(); line != null; line = reader.readLine()) {
         currentLine++;
         line = line.trim();
-        if (line.length() == 0) {
+        if (line.isEmpty()) {
           continue;
         } else if (line.charAt(0) == '#' || line.charAt(0) == ';') {
           continue;
@@ -59,7 +59,7 @@ public class IniFile {
         if (index != -1) {
           setValue(currentSection, line.substring(0, index), line.substring(index + 1).trim(), true);
         } else {
-          throw new IOException(String.format("Line %d in INI-File '%s' contains no valid content!", currentLine, path.toString()));
+          throw new IOException(String.format("Line %d in INI-File '%s' contains no valid content!", currentLine, path));
         }
       }
     }
@@ -236,7 +236,7 @@ public class IniFile {
       }
       return defaultValue;
     } else {
-      return values.get(0);
+      return values.getFirst();
     }
   }
 
@@ -248,7 +248,7 @@ public class IniFile {
       }
       return defaultValue;
     } else {
-      return Integer.parseInt(values.get(0));
+      return Integer.parseInt(values.getFirst());
     }
   }
 
@@ -260,7 +260,7 @@ public class IniFile {
       }
       return defaultValue;
     } else {
-      return Float.parseFloat(values.get(0));
+      return Float.parseFloat(values.getFirst());
     }
   }
 
@@ -272,7 +272,7 @@ public class IniFile {
       }
       return defaultValue;
     } else {
-      return Double.valueOf(values.get(0));
+      return Double.valueOf(values.getFirst());
     }
   }
 
@@ -284,7 +284,7 @@ public class IniFile {
       }
       return defaultValue;
     } else {
-      return "1".equals(values.get(0)) ? Boolean.TRUE : Boolean.FALSE;
+      return "1".equals(values.getFirst()) ? Boolean.TRUE : Boolean.FALSE;
     }
   }
 }

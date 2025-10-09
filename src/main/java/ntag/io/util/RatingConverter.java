@@ -102,7 +102,7 @@ public final class RatingConverter {
         if (value < 1) {
             return 0;
         } else if (value > 10) {
-            return conversions.get(conversions.size() - 1);
+            return conversions.getLast();
         } else {
             return conversions.get(value - 1);
         }

@@ -149,7 +149,7 @@ public class ItemChoiceController<T> extends AbstractDialogController<ItemChoice
     itemsListView.setItems(viewModel.getFilteredItems());
     selectionListView.setItems(viewModel.getSelection());
     favListView.setItems(viewModel.getFavorites());
-    if (viewModel.getSelection().size() > 0) {
+    if (!viewModel.getSelection().isEmpty()) {
       selectionListView.getSelectionModel().select(0);
     }
     createItemButton.setDisable(viewModel.getStringConverter() == null);
@@ -187,7 +187,7 @@ public class ItemChoiceController<T> extends AbstractDialogController<ItemChoice
   @SuppressWarnings({"unused", "SameParameterValue"})
   @FXML
   private void handleAddItemAction(final ActionEvent event) {
-    if (getViewModel().isSingleSelection() && selectionListView.getItems().size() > 0) {
+    if (getViewModel().isSingleSelection() && !selectionListView.getItems().isEmpty()) {
       selectionListView.getItems().clear();
     }
     T item = itemsListView.getSelectionModel().getSelectedItem();
@@ -201,7 +201,7 @@ public class ItemChoiceController<T> extends AbstractDialogController<ItemChoice
   @SuppressWarnings({"unused", "SameParameterValue"})
   @FXML
   private void handleAddFavAction(final ActionEvent event) {
-    if (getViewModel().isSingleSelection() && selectionListView.getItems().size() > 0) {
+    if (getViewModel().isSingleSelection() && !selectionListView.getItems().isEmpty()) {
       selectionListView.getItems().clear();
     }
     T item = favListView.getSelectionModel().getSelectedItem();
@@ -215,11 +215,11 @@ public class ItemChoiceController<T> extends AbstractDialogController<ItemChoice
   @SuppressWarnings("unused")
   @FXML
   private void handleCreateItemAction(final ActionEvent event) {
-    if (getViewModel().isSingleSelection() && selectionListView.getItems().size() > 0) {
+    if (getViewModel().isSingleSelection() && !selectionListView.getItems().isEmpty()) {
       return;
     }
     String textValue = createItemTextField.getText().trim();
-    if (textValue.length() > 0) {
+    if (!textValue.isEmpty()) {
       T item;
       try {
         item = getViewModel().getStringConverter().fromString(textValue);

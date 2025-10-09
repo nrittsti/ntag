@@ -190,7 +190,7 @@ public class AdjustArtworkController extends AbstractDialogController<AdjustArtw
   @FXML
   private void handleSaveProfileAction(final ActionEvent event) {
     String name = profileComboBox.getEditor().getText().trim();
-    if (name.length() == 0) {
+    if (name.isEmpty()) {
       return;
     }
     AdjustArtworkViewModel vm = null;
@@ -216,7 +216,7 @@ public class AdjustArtworkController extends AbstractDialogController<AdjustArtw
   @FXML
   private void handleRemoveProfileAction(final ActionEvent event) {
     String name = profileComboBox.getEditor().getText().trim();
-    if (name.length() == 0) {
+    if (name.isEmpty()) {
       return;
     }
     AdjustArtworkViewModel selection = null;

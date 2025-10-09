@@ -146,7 +146,7 @@ public final class JAudiotaggerUtil {
       if (idList.isEmpty()) {
         // wenn keine Genre ID3v1 IDs gefunden worden
         // liegt wahrscheinlich das Genre als Text vor
-        if (genreString.length() > 0) {
+        if (!genreString.isEmpty()) {
           return genreString;
         }
       } else {
@@ -154,7 +154,7 @@ public final class JAudiotaggerUtil {
         // erzeugen
         for (Integer genreInt : idList) {
           genreString = Genre.getGenreTypeByIntValue(genreInt).getFirstLabel();
-          if (genreString != null && genreString.length() > 0) {
+          if (genreString != null && !genreString.isEmpty()) {
             return genreString;
           }
         }
@@ -191,7 +191,7 @@ public final class JAudiotaggerUtil {
       return defaultInt;
     }
     value = value.trim();
-    if (value.length() == 0 || "null".equals(value)) {
+    if (value.isEmpty() || "null".equals(value)) {
       return defaultInt;
     }
     try {

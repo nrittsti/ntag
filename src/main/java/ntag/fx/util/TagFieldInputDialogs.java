@@ -165,7 +165,7 @@ public final class TagFieldInputDialogs {
   private static void filterTagList(TextField quickFilterTextField, FilteredList<TagField> filteredTagList, CheckBox showCommonTagsCheckBox) {
     final String quickFilterText = quickFilterTextField.getText();
     final boolean showAllTags = !showCommonTagsCheckBox.isSelected();
-    if (quickFilterText == null || quickFilterText.length() == 0) {
+    if (quickFilterText == null || quickFilterText.isEmpty()) {
       filteredTagList.setPredicate(s -> (showAllTags || commonFields.contains(s.getId())));
     } else {
       filteredTagList.setPredicate(s -> createDescription(s.getId()).toUpperCase().contains(quickFilterText.toUpperCase()) && (showAllTags || commonFields.contains(s.getId())));
@@ -355,12 +355,12 @@ public final class TagFieldInputDialogs {
       if (dialogButton == ButtonType.OK) {
         String discStr = disc.getText().trim();
         String discTotalStr = discTotal.getText().trim();
-        if (discStr.length() > 0) {
+        if (!discStr.isEmpty()) {
           tpos.setDiscNo(discStr);
         } else {
           tpos.setDiscNo(0);
         }
-        if (discTotalStr.length() > 0) {
+        if (!discTotalStr.isEmpty()) {
           tpos.setDiscTotal(discTotalStr);
         } else {
           tpos.setDiscTotal(0);
@@ -407,15 +407,15 @@ public final class TagFieldInputDialogs {
         StringBuilder sb = new StringBuilder();
         String discStr = disc.getText().trim();
         String discTotalStr = discTotal.getText().trim();
-        if (discStr.length() > 0) {
+        if (!discStr.isEmpty()) {
           tpos.setDiscNo(Integer.parseInt(discStr));
           sb.append(discStr);
         } else {
           tpos.setDiscNo(0);
         }
-        if (discTotalStr.length() > 0) {
+        if (!discTotalStr.isEmpty()) {
           tpos.setDiscTotal(Integer.parseInt(discTotalStr));
-          if (sb.length() > 0) {
+          if (!sb.isEmpty()) {
             sb.append("/");
           }
           sb.append(discTotalStr);
@@ -464,12 +464,12 @@ public final class TagFieldInputDialogs {
       if (dialogButton == ButtonType.OK) {
         String trackStr = track.getText().trim();
         String trackTotalStr = trackTotal.getText().trim();
-        if (trackStr.length() > 0) {
+        if (!trackStr.isEmpty()) {
           trck.setTrackNo(trackStr);
         } else {
           trck.setTrackNo(0);
         }
-        if (trackTotalStr.length() > 0) {
+        if (!trackTotalStr.isEmpty()) {
           trck.setTrackTotal(trackTotalStr);
         } else {
           trck.setTrackTotal(0);
@@ -516,7 +516,7 @@ public final class TagFieldInputDialogs {
         StringBuilder sb = new StringBuilder();
         String trackStr = track.getText().trim();
         String trackTotalStr = trackTotal.getText().trim();
-        if (trackStr.length() > 0) {
+        if (!trackStr.isEmpty()) {
           trackField.setTrackNo(Integer.parseInt(trackStr));
           sb.append(trackStr);
         } else {
@@ -524,7 +524,7 @@ public final class TagFieldInputDialogs {
         }
         if (trackTotalStr.length() > 0) {
           trackField.setTrackTotal(Integer.parseInt(trackTotalStr));
-          if (sb.length() > 0) {
+          if (!sb.isEmpty()) {
             sb.append("/");
           }
           sb.append(trackTotalStr);

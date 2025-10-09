@@ -210,7 +210,7 @@ public final class FxUtil {
     dialog.getDialogPane().getScene().getStylesheets().addAll(parent.getScene().getStylesheets());
 
     // Logo Image
-    if (primaryStage != null && primaryStage.getIcons().size() > 0) {
+    if (primaryStage != null && !primaryStage.getIcons().isEmpty()) {
       Image choosen = null;
       for (Image icon : primaryStage.getIcons()) {
         if (choosen == null || icon.getWidth() > choosen.getWidth()) {
@@ -235,9 +235,9 @@ public final class FxUtil {
     versionLabel.setId("versionLabel");
     grid.add(versionLabel, 1, 0);
     // Lincence
-    if (licenceShortname != null && licenceShortname.length() > 0) {
+    if (licenceShortname != null && !licenceShortname.isEmpty()) {
       ButtonLink licenceLink = new ButtonLink();
-      if (licenceUrl != null && licenceUrl.length() > 0) {
+      if (licenceUrl != null && !licenceUrl.isEmpty()) {
         licenceLink.setOnAction((ActionEvent e) -> openURI(licenceUrl));
       }
       licenceLink.setText(licenceShortname);
@@ -245,7 +245,7 @@ public final class FxUtil {
       grid.add(licenceLink, 1, 1);
     }
     // Homepage
-    if (home != null && home.length() > 0) {
+    if (home != null && !home.isEmpty()) {
       grid.add(new Label("Home:"), 0, 2);
       ButtonLink homeLink = new ButtonLink();
       homeLink.setOnAction((ActionEvent e) -> openURI(home));
@@ -253,7 +253,7 @@ public final class FxUtil {
       grid.add(homeLink, 1, 2);
     }
     // Credits
-    if (credits != null && credits.length() > 0) {
+    if (credits != null && !credits.isEmpty()) {
       grid.add(new Label("Credits:"), 0, 3);
       TextArea ta = new TextArea(credits);
       ta.setEditable(false);

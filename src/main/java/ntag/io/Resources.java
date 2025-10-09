@@ -46,7 +46,7 @@ public class Resources {
     assert bundle != null : "bundle is null";
     assert key != null : "key is null";
     String res = getResourceBundle(bundle).getString(key);
-    assert res.length() > 0 : "Undefinied resource: " + key;
+    assert !res.isEmpty() : "Undefinied resource: " + key;
     return res;
   }
 

@@ -37,7 +37,7 @@ public class StringListConverter extends StringConverter<List<String>> {
   }
 
   public StringListConverter(String delim, boolean comparable) {
-    if (delim == null || delim.length() == 0) {
+    if (delim == null || delim.isEmpty()) {
       throw new IllegalArgumentException("delim cannot be null or empty");
     }
     this.delim = delim;
@@ -52,10 +52,10 @@ public class StringListConverter extends StringConverter<List<String>> {
     StringBuilder sb = new StringBuilder();
     for (String value : list) {
       value = value.trim();
-      if (value.length() == 0) {
+      if (value.isEmpty()) {
         continue;
       }
-      if (sb.length() > 0) {
+      if (!sb.isEmpty()) {
         sb.append(delim).append(' ');
       }
       sb.append(value);
@@ -75,13 +75,13 @@ public class StringListConverter extends StringConverter<List<String>> {
       return list;
     }
     value = value.trim();
-    if (value.length() == 0) {
+    if (value.isEmpty()) {
       return list;
     }
     StringTokenizer st = new StringTokenizer(value, delim);
     while (st.hasMoreTokens()) {
       String token = st.nextToken().trim();
-      if (token.length() > 0) {
+      if (!token.isEmpty()) {
         list.add(token);
       }
     }

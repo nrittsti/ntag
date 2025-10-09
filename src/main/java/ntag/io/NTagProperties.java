@@ -65,7 +65,7 @@ public class NTagProperties {
       homeDir = Path.of(System.getenv("APPDATA") + "\\ntag");
     } else {
       String xdgConfigHome = System.getenv("XDG_CONFIG_HOME");
-      if (xdgConfigHome != null && xdgConfigHome.length() > 0) {
+      if (xdgConfigHome != null && !xdgConfigHome.isEmpty()) {
         homeDir = Path.of(xdgConfigHome + "/ntag");
       } else {
         homeDir = Path.of(System.getProperty("user.home") + "/.config/ntag");
@@ -99,11 +99,11 @@ public class NTagProperties {
   // *** Attributes ***
 
   public String getTitle() {
-    return attributes.getValue("Implementation-Title");
+    return attributes == null ? "NTag" : attributes.getValue("Implementation-Title");
   }
 
   public String getVersion() {
-    return attributes.getValue("Implementation-Version");
+    return attributes == null ? "x.x.x" : attributes.getValue("Implementation-Version");
   }
 
   public Path getConfigFile() {
@@ -111,21 +111,23 @@ public class NTagProperties {
   }
 
   public static String getCredits() {
-    return "Nuvola Icon Theme\n" +
-            "Autor:\tDavid Vignoni\n" +
-            "Licence:\tLGPL\n" +
-            "\n" +
-            "JAudiotagger Library 2.2.5\n" +
-            "Autor:\thttp://www.jthink.net/jaudiotagger/\n" +
-            "Licence:\tLGPL\n" +
-            "\n" +
-            "OpenJDK\n" +
-            "Autor:\thttps://jdk.java.net/15/\n" +
-            "Licence:\tGPL v2 with the Classpath Exception\n" +
-            "\n" +
-            "OpenJFX\n" +
-            "Autor:\thttps://github.com/openjdk/jfx/\n" +
-            "Licence:\tGPL v2 with the Classpath Exception\n";
+    return """
+        Nuvola Icon Theme
+        Autor:\tDavid Vignoni
+        Licence:\tLGPL
+        
+        JAudiotagger Library 2.2.5
+        Autor:\thttps://www.jthink.net/jaudiotagger/
+        Licence:\tLGPL
+        
+        OpenJDK
+        Autor:\thttps://jdk.java.net/15/
+        Licence:\tGPL v2 with the Classpath Exception
+        
+        OpenJFX
+        Autor:\thttps://github.com/openjdk/jfx/
+        Licence:\tGPL v2 with the Classpath Exception
+        """;
   }
 
   // *** Preferences ***
@@ -263,11 +265,6 @@ public class NTagProperties {
     preferences.setValue("MP3", "POPM_EMail", value.trim());
   }
 
-  /**
-   * default: iTunes star rating values
-   *
-   * @return 5 Star Ratings
-   */
   public List<Integer> getID3RatingConversion() {
     return preferences.getIntegerValues("MP3", "POPM_Rating_Conversion", 13, 23, 54, 64, 118, 128, 186, 196, 242, 255);
   }
@@ -530,7 +527,7 @@ public class NTagProperties {
       // http://stackoverflow.com/a/15156651
       // there is still a SplitPane.setDividerPositions bug, a workaround
       // with runLater works fine:
-      Platform.runLater(() -> controller.setDividerPositions(deviderValues.get(0)));
+      Platform.runLater(() -> controller.setDividerPositions(deviderValues.getFirst()));
     }
   }
 

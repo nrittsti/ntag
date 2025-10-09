@@ -19,8 +19,11 @@
  */
 package ntag;
 
+import java.io.Serial;
+
 public class NTagException extends Exception {
 
+  @Serial
   private static final long serialVersionUID = -1;
 
   public NTagException(String message) {

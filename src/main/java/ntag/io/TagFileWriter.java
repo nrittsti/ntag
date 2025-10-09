@@ -326,7 +326,7 @@ public final class TagFileWriter {
         // die API benutzt bei manchen Feldern in Tag.getFirst(key) die
         // Methode String.valueOf(Object)
         // ist ein Object = null hat der String den Rückgabewert "null"
-        if ("null".equals(oldValue) || oldValue.length() == 0) {
+        if ("null".equals(oldValue) || oldValue.isEmpty()) {
           oldValue = null;
         }
       }
@@ -335,7 +335,7 @@ public final class TagFileWriter {
       // ignore
     }
     try {
-      if (value == null || value.length() == 0) {
+      if (value == null || value.isEmpty()) {
         if (oldValue != null) {
           tag.deleteField(key);
           addChange(key.toString(), value, oldValue);
@@ -389,7 +389,7 @@ public final class TagFileWriter {
         }
       }
       // GENRE : ID3v1
-      if (genre.length() == 0) {
+      if (genre.isEmpty()) {
         v1tag.setGenre("255");
       } else {
         v1tag.setGenre(genre);
@@ -517,7 +517,7 @@ public final class TagFileWriter {
       ID3v23Frame frame = null;
 
       if (tag.hasFrame("TYERTDAT")) {
-        TyerTdatAggregatedFrame tyerTdat = (TyerTdatAggregatedFrame) tag.getFrame("TYERTDAT").get(0);
+        TyerTdatAggregatedFrame tyerTdat = (TyerTdatAggregatedFrame) tag.getFrame("TYERTDAT").getFirst();
         for (AbstractID3v2Frame f : tyerTdat.getFrames()) {
           if ("TDAT".equals(f.getIdentifier())) {
             frame = (ID3v23Frame) f;
@@ -622,7 +622,7 @@ public final class TagFileWriter {
       return;
     }
     if (list != null && !list.isEmpty()) {
-      if (genre == null || genre.length() == 0) {
+      if (genre == null || genre.isEmpty()) {
         tag.removeFrame("TCON");
         addRemove("TCON");
         return;
@@ -630,12 +630,12 @@ public final class TagFileWriter {
       if (list.size() > 1) {
         tag.removeFrame("TCON");
       } else {
-        FrameBodyTCON frameBodyTCON = (FrameBodyTCON) ((AbstractID3v2Frame) list.get(0)).getBody();
+        FrameBodyTCON frameBodyTCON = (FrameBodyTCON) ((AbstractID3v2Frame) list.getFirst()).getBody();
         if (frameBodyTCON.getValues().size() > 1) {
           tag.removeFrame("TCON");
         } else {
           String textValue = frameBodyTCON.getFirstTextValue();
-          if (textValue == null || textValue.length() == 0) {
+          if (textValue == null || textValue.isEmpty()) {
             tag.removeFrame("TCON");
           } else {
             textValue = textValue.trim();
@@ -684,7 +684,7 @@ public final class TagFileWriter {
 
     // VORHANDENEN APIC FRAME LÖSCHEN
     if (artworkTag == null) {
-      if (coverartList.size() > 0) {
+      if (!coverartList.isEmpty()) {
         v2tag.deleteArtworkField();
         addChange("APIC", null, "yes");
       }
@@ -724,7 +724,7 @@ public final class TagFileWriter {
         }
       }
       // 3. Einfach den Ersten updaten
-      updateFrameBodyAPIC(artworkTag, (FrameBodyAPIC) ((AbstractID3v2Frame) coverartList.get(0)).getBody());
+      updateFrameBodyAPIC(artworkTag, (FrameBodyAPIC) ((AbstractID3v2Frame) coverartList.getFirst()).getBody());
     }
   }
 
@@ -765,7 +765,7 @@ public final class TagFileWriter {
 
     // VORHANDENE LÖSCHEN
     if (artworkTag == null) {
-      if (coverartList.size() > 0) {
+      if (!coverartList.isEmpty()) {
         tag.deleteArtworkField();
         addChange("Artwork", null, "yes");
       }
@@ -787,7 +787,7 @@ public final class TagFileWriter {
         addChange("Artwork", "yes", null);
       }
     } else {
-      Artwork artwork = coverartList.get(0);
+      Artwork artwork = coverartList.getFirst();
       final byte[] hash = HashUtil.createFromByteArray("MD5", artwork.getBinaryData());
       if (!Arrays.equals(hash, artworkTag.getImageHash())) {
         createGenericArtwork(tag, artworkTag, false);

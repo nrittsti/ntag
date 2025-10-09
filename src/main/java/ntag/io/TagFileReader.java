@@ -330,7 +330,7 @@ public class TagFileReader {
     } else {
       if (tag.hasFrame("TYERTDAT")) {
         List<TagField> tyertdat = tag.getFrame("TYERTDAT");
-        TyerTdatAggregatedFrame tyerTdatAggregatedFrame = (TyerTdatAggregatedFrame) tyertdat.get(0);
+        TyerTdatAggregatedFrame tyerTdatAggregatedFrame = (TyerTdatAggregatedFrame) tyertdat.getFirst();
         String tyer = null;
         String tdat = null;
         for (AbstractID3v2Frame f : tyerTdatAggregatedFrame.getFrames()) {
@@ -392,7 +392,7 @@ public class TagFileReader {
     if (LOGGER.isLoggable(Level.FINE)) {
       LOGGER.fine("read " + frame + " from file: " + tagFile.getPath());
     }
-    if (value != null && value.length() > 0) {
+    if (value != null && !value.isEmpty()) {
       try {
         for (DateTimeFormatter format : TDRL_FRAME_FORMATTERS) {
           try {
@@ -447,7 +447,7 @@ public class TagFileReader {
     if (LOGGER.isLoggable(Level.FINE)) {
       LOGGER.fine(tagFile.getPath() + "\nReading generic YEAR");
     }
-    if (year == null || year.length() == 0) {
+    if (year == null || year.isEmpty()) {
       infos.append("\nMissing Year");
       return;
     }

@@ -97,8 +97,8 @@ class CommandLineOption {
     if (shortName != 0) {
       sb.append('-').append(shortName);
     }
-    if (longName != null && longName.length() > 0) {
-      if (sb.length() > 0) {
+    if (longName != null && !longName.isEmpty()) {
+      if (!sb.isEmpty()) {
         sb.append(" ");
       }
       sb.append("--").append(longName);

@@ -30,7 +30,7 @@ public class IntegerListConverter extends StringConverter<List<Integer>> {
   private final String delim;
 
   public IntegerListConverter(String delim) {
-    if (delim == null || delim.length() == 0) {
+    if (delim == null || delim.isEmpty()) {
       throw new IllegalArgumentException("delim cannot be null or empty");
     }
     this.delim = delim;
@@ -43,7 +43,7 @@ public class IntegerListConverter extends StringConverter<List<Integer>> {
     }
     StringBuilder sb = new StringBuilder();
     for (Integer value : list) {
-      if (sb.length() > 0) {
+      if (!sb.isEmpty()) {
         sb.append(delim).append(' ');
       }
       sb.append(value);
@@ -58,13 +58,13 @@ public class IntegerListConverter extends StringConverter<List<Integer>> {
       return list;
     }
     value = value.trim();
-    if (value.length() == 0) {
+    if (value.isEmpty()) {
       return list;
     }
     StringTokenizer st = new StringTokenizer(value, delim);
     while (st.hasMoreTokens()) {
       String token = st.nextToken().trim();
-      if (token.length() > 0) {
+      if (!token.isEmpty()) {
         list.add(Integer.valueOf(token));
       }
     }

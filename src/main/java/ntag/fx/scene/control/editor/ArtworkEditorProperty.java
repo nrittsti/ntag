@@ -54,10 +54,10 @@ public class ArtworkEditorProperty extends EditorProperty<ArtworkTag> {
     if (getTooltip() == null) {
       setTooltip(new Tooltip());
     }
-    if (getValues().size() == 0) {
+    if (getValues().isEmpty()) {
       getTooltip().setText("");
     } else if (getValues().size() == 1) {
-      ArtworkTag artwork = getValues().get(0);
+      ArtworkTag artwork = getValues().getFirst();
       createTooltip(artwork);
     } else {
       getTooltip().setText(Resources.format("ntag", "differences", getValues().size()));

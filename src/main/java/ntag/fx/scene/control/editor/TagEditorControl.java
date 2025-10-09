@@ -295,7 +295,7 @@ public class TagEditorControl extends TabPane implements Initializable {
     this.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) -> {
       if (viewModel.getSelectedFileCount() == 1) {
         try {
-          tagTableView.getItems().setAll(viewModel.getSelectedFiles().get(0).getTags());
+          tagTableView.getItems().setAll(viewModel.getSelectedFiles().getFirst().getTags());
         } catch (Exception e) {
           LOGGER.log(Level.SEVERE, "Error on updating TagTable", e);
         }
@@ -367,7 +367,7 @@ public class TagEditorControl extends TabPane implements Initializable {
       lyricsVBox.getChildren().add(button);
     }
     // Tag TableView
-    tagTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    tagTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
     tagIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
     tagValueColumn.setCellValueFactory(new TagFieldCellFactory());
     removeTagMenuItem.disableProperty().bind(tagTableView.getSelectionModel().selectedItemProperty().isNull());
@@ -460,9 +460,9 @@ public class TagEditorControl extends TabPane implements Initializable {
     try {
       if (System.getProperty("os.name").toLowerCase().contains("win")) {
         Runtime.getRuntime().exec(String.format("explorer.exe /select,%s",
-                viewModel.getSelectedFiles().get(0).getPath().toString()));
+                viewModel.getSelectedFiles().getFirst().getPath().toString()));
       } else {
-        URI uri = viewModel.getSelectedFiles().get(0).getPath().getParent().toUri();
+        URI uri = viewModel.getSelectedFiles().getFirst().getPath().getParent().toUri();
         openURI(uri);
       }
     } catch (Exception e) {
@@ -488,7 +488,7 @@ public class TagEditorControl extends TabPane implements Initializable {
       if (vm.getSelection().isEmpty()) {
         genreEditorProperty.getClearEventHandler().handle(null);
       } else {
-        genreEditorProperty.setValue(vm.getSelection().get(0));
+        genreEditorProperty.setValue(vm.getSelection().getFirst());
       }
     }
   }
@@ -496,7 +496,7 @@ public class TagEditorControl extends TabPane implements Initializable {
   private void handleFindLyricsAction(final ActionEvent event) {
     ButtonLink button = (ButtonLink) event.getSource();
     String provider = button.getUserData().toString();
-    TagFile tagFile = this.viewModel.getSelectedFiles().get(0);
+    TagFile tagFile = this.viewModel.getSelectedFiles().getFirst();
     StringBuilder sb = new StringBuilder(80);
     if (tagFile.getTitle() != null && !tagFile.getTitle().isEmpty()) {
       sb.append(FileUtil.sanitizeFilename(tagFile.getTitle()));
@@ -519,7 +519,7 @@ public class TagEditorControl extends TabPane implements Initializable {
   @FXML
   @SuppressWarnings({"unused", "SameParameterValue"})
   private void handleRemoveTagAction(final ActionEvent event) {
-    TagFile selectedFile = viewModel.getSelectedFiles().get(0);
+    TagFile selectedFile = viewModel.getSelectedFiles().getFirst();
     TagField tagField = tagTableView.getSelectionModel().getSelectedItem();
     try {
       selectedFile.removeTag(tagField);
@@ -535,7 +535,7 @@ public class TagEditorControl extends TabPane implements Initializable {
   @FXML
   @SuppressWarnings({"unused", "SameParameterValue"})
   private void handleEditTagAction(final ActionEvent event) {
-    TagFile selectedFile = viewModel.getSelectedFiles().get(0);
+    TagFile selectedFile = viewModel.getSelectedFiles().getFirst();
     TagField tagField = tagTableView.getSelectionModel().getSelectedItem();
     try {
       if (!TagFieldInputDialogs.showTagFieldEditor(tagField)) {
@@ -565,7 +565,7 @@ public class TagEditorControl extends TabPane implements Initializable {
   @FXML
   @SuppressWarnings({"unused", "SameParameterValue"})
   private void handleNewTagAction(final ActionEvent event) {
-    TagFile selectedFile = viewModel.getSelectedFiles().get(0);
+    TagFile selectedFile = viewModel.getSelectedFiles().getFirst();
     try {
       if (!TagFieldInputDialogs.showNewTagFieldWizard(selectedFile.getAudioFile())) {
         return;
@@ -583,7 +583,7 @@ public class TagEditorControl extends TabPane implements Initializable {
   @FXML
   @SuppressWarnings("unused")
   private void handleChangeID3Version(final ActionEvent event) {
-    TagFile selectedFile = viewModel.getSelectedFiles().get(0);
+    TagFile selectedFile = viewModel.getSelectedFiles().getFirst();
     MP3File mp3 = (MP3File) selectedFile.getAudioFile();
     boolean changed = false;
     if (id3v23MenuItem.isSelected() && !selectedFile.getTaggingSystem().equals(ID3v23Tag.class.getSimpleName())) {
@@ -622,7 +622,7 @@ public class TagEditorControl extends TabPane implements Initializable {
     }
     editorTab.setDisable(viewModel.getSelectedFiles().isEmpty());
     if (viewModel.getSelectedFiles().size() == 1) {
-      TagFile selectedFile = viewModel.getSelectedFiles().get(0);
+      TagFile selectedFile = viewModel.getSelectedFiles().getFirst();
       headerTab.setDisable(false);
       tagTab.setDisable(false);
       lyricsTab.setDisable(false);
@@ -641,7 +641,7 @@ public class TagEditorControl extends TabPane implements Initializable {
       }
       filenameTextField.setDisable(false);
       showFileButton.setDisable(false);
-      filenameTextField.setText(viewModel.getSelectedFiles().get(0).getName());
+      filenameTextField.setText(viewModel.getSelectedFiles().getFirst().getName());
       fileInfoLabel.setText(selectedFile.isReadOnly() ? //
               String.format(" (%s)", Resources.get("ntag", "lbl_read_only")) : "");
       id3v23MenuItem.setVisible(selectedFile.getTaggingSystem().startsWith("ID3v2"));
@@ -665,7 +665,7 @@ public class TagEditorControl extends TabPane implements Initializable {
   }
 
   private void renameSelectedFile() {
-    TagFile tagFile = viewModel.getSelectedFiles().get(0);
+    TagFile tagFile = viewModel.getSelectedFiles().getFirst();
     String oldName = tagFile.getName();
     String fileName = filenameTextField.getText().trim();
     if (NTagProperties.instance().isFilenameStripUnsafeChars()) {

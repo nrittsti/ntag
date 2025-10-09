@@ -1,6 +1,8 @@
 package ntag.io;
 
 import ntag.Category;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +23,7 @@ class ResourcesTest {
 
   @Test
   void get() {
+    Resources.setLocale(Locale.ENGLISH);
     String expected = "identical";
     String actual = Resources.getResourceBundle("ntag").getString("identical");
     assertEquals(expected, actual);
@@ -28,6 +31,7 @@ class ResourcesTest {
 
   @Test
   void format() {
+    Resources.setLocale(Locale.ENGLISH);
     String expected = "Reading audiofile 1 of 2";
     String actual = Resources.format("ntag", "msg_reading_file", 1, 2);
     assertEquals(expected, actual);

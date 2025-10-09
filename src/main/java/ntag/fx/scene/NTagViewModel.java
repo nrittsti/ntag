@@ -229,7 +229,7 @@ public class NTagViewModel {
       case MissingArtwork -> !tagFile.isArtworkMissing();
       case ChangedFiles -> tagFile.isDirty();
       case MissingMetadata -> tagFile.isIncomplete();
-      case MissingLyrics -> tagFile.getLyrics() == null || tagFile.getLyrics().length() == 0;
+      case MissingLyrics -> tagFile.getLyrics() == null || tagFile.getLyrics().isEmpty();
       case MissingRating -> tagFile.getRating() == null || tagFile.getRating() <= 0;
       default -> true;
     });

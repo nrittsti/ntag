@@ -155,7 +155,7 @@ public class EditorProperty<T> {
 
   public EditorProperty(String name, EmptyCheck<T> emptyCheck) throws SecurityException {
     super();
-    if (name == null || name.length() == 0) {
+    if (name == null || name.isEmpty()) {
       throw new IllegalArgumentException("a valid property name is required");
     }
     this.name = name;
@@ -187,7 +187,7 @@ public class EditorProperty<T> {
     };
 
     changedObjects.addListener((Change<? extends TagFile> change) -> {
-      if (change.getList().size() == 0 && !cleared) {
+      if (change.getList().isEmpty() && !cleared) {
         setStyle(values.size() > 1 ? DIFF_STYLE : "");
       }
     });
@@ -219,7 +219,7 @@ public class EditorProperty<T> {
   public void setObjects(List<TagFile> objects) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     valueChangeListenerEnabled = false;
     this.objects = objects;
-    if (objects == null || objects.size() == 0) {
+    if (objects == null || objects.isEmpty()) {
       setValue(null);
       setDifferent(false);
       setStyle("");

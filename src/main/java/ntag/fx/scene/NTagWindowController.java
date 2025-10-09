@@ -113,7 +113,7 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
       }
     });
     ToggleSplitPane toggleSplitPane = new ToggleSplitPane(this);
-    stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN), () -> toggleSplitPane.hideOrShowEditor());
+    stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN), toggleSplitPane::hideOrShowEditor);
     stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN), () -> handleOpenDirectory(null));
     stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN), () -> handleSaveAction(null));
     stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN), () -> handleRenameAction(null));
@@ -492,7 +492,7 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
             getStage(),
             appProperties.getVersion(),
             "GNU General Public License",
-            "http://www.gnu.org/licenses/gpl-3.0.html",
+            "https://www.gnu.org/licenses/gpl-3.0.html",
             "https://github.com/nrittsti/ntag",
             NTagProperties.getCredits());
   }

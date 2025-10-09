@@ -37,7 +37,7 @@ public class RegexTextfield extends TextField {
     if (getSelection().getLength() != 0) {
       length -= getSelection().getLength();
     }
-    if (text.length() == 0 || (length < maxLength.getValue() && (text.matches(regex.getValue())))) {
+    if (text.isEmpty() || (length < maxLength.getValue() && (text.matches(regex.getValue())))) {
       super.replaceText(start, end, text);
     }
   }
@@ -73,7 +73,7 @@ public class RegexTextfield extends TextField {
   }
 
   public void setRegex(String regex) {
-    if (regex == null || regex.length() == 0) {
+    if (regex == null || regex.isEmpty()) {
       this.regex.setValue(".");
     } else {
       this.regex.setValue(regex);
