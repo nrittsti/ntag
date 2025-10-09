@@ -45,7 +45,6 @@ import ntag.io.util.ArtworkAdjuster;
 import ntag.io.util.ImageUtil.ImageType;
 import ntag.model.ArtworkTag;
 
-import java.awt.datatransfer.Transferable;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -239,19 +238,14 @@ public class ArtworkControl extends HBox implements Initializable {
     final Clipboard clipboard = Clipboard.getSystemClipboard();
     if (clipboard.hasFiles()) {
       try {
-        changeArtwork(new ArtworkTag(clipboard.getFiles().get(0)));
+        changeArtwork(new ArtworkTag(clipboard.getFiles().getFirst()));
       } catch (IOException e) {
         LOGGER.log(Level.SEVERE, "Invalid pasted image file", e);
         FxUtil.showException("Invalid pasted image file", e);
       }
     } else if (clipboard.hasImage()) {
       try {
-        // FX Clipboard Images causes color problems ...
-        // changeArtwork(new ArtworkTag(clipboard.getImage()));
-        // ... so java.awt must do the job
-        Transferable transfer = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
-        java.awt.Image image = (java.awt.Image) transfer.getTransferData(java.awt.datatransfer.DataFlavor.imageFlavor);
-        changeArtwork(new ArtworkTag(image));
+        changeArtwork(new ArtworkTag(clipboard.getImage()));
       } catch (Exception e) {
         LOGGER.log(Level.SEVERE, "Invalid pasted image data", e);
         FxUtil.showException("Invalid pasted image data", e);
