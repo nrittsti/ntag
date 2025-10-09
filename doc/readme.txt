@@ -52,14 +52,6 @@ Arch Linux AUR package:
 
 https://aur.archlinux.org/packages/ntag
 
-Winget Package Manager for Windows:
-
-See: https://github.com/microsoft/winget-cli
-
-```
-winget install NTag
-```
-
 Others:
 
 https://github.com/nrittsti/ntag/releases

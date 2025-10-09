@@ -212,6 +212,7 @@
                   <descriptors>
                     <descriptor>assembly/ntag_linux_bin.xml</descriptor>
                   </descriptors>
+                  <finalName>ntag-${project.version}-linux_bin</finalName>
                   <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
               </execution>
@@ -245,6 +246,7 @@
                   <descriptors>
                     <descriptor>assembly/ntag_windows_bin.xml</descriptor>
                   </descriptors>
+                  <finalName>ntag-${project.version}-win_bin</finalName>
                   <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
               </execution>

@@ -22,6 +22,7 @@
         <include>ntag.sh</include>
         <include>ntag.png</include>
         <include>ntag_logging.properties</include>
+        <include>com.github.nrittsti.NTag.metainfo.xml</include>
       </includes>
     </fileSet>
     <fileSet>

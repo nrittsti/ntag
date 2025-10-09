@@ -136,3 +136,9 @@ NTag Version History
 --------------------------
 - Upgrading to Java 21 LTS
 - Minor dependency updates
+
+1.2.16          2025-10-12
+--------------------------
+- Minor dependency updates
+- Switching back to maven builds
+- Fixed: Improve performance when pasting artwork from clipboard

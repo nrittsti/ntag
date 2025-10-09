@@ -19,6 +19,7 @@
       <outputDirectory>/</outputDirectory>
       <includes>
         <include>ntag.cmd</include>
+        <include>ntag.ico</include>
         <include>ntag_logging.properties</include>
       </includes>
     </fileSet>
