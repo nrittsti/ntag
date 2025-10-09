@@ -28,7 +28,7 @@ This distribution contains the following files:
 
 ```
    jre/                       - Java Runtime Enviroment
-   lib/                       - Third party libraries
+   libs/                      - Third party libraries
    *.metainfo.xml             - Appstream Flathub metadata
    history.txt                - History of NTag
    license.txt                - License information
@@ -43,11 +43,11 @@ This distribution contains the following files:
    tag_mapping.pdf            - Tag mapping documentation
 ```
 
-Build with Gradle:
+Build with Maven:
 -----------------
 
 ```
-./gradlew jre build run
+mvn clean package
 ```
 
 gradle.properties: platform=linux or platform=win
@@ -82,7 +82,7 @@ Launch from command line:
 --------------------------
 
 ```
-./jre/bin/java --module-path lib --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,jarkata.json -jar ntag.jar
+./jre/bin/java --module-path libs --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,jakarta.json -jar ntag.jar
 ```
 
 Options:
