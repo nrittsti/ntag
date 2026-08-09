@@ -223,8 +223,10 @@ public class AdjustArtworkViewModel {
   }
 
   public void fromJSON(String json) {
-    JsonReader jsonReader = Json.createReader(new StringReader(json));
-    JsonObject object = jsonReader.readObject();
+    JsonObject object;
+    try (JsonReader jsonReader = Json.createReader(new StringReader(json))) {
+      object = jsonReader.readObject();
+    }
 
     setProfile(object.getString("name"));
     setImageType(ImageType.getByFormat(object.getString("format")));
@@ -235,8 +237,6 @@ public class AdjustArtworkViewModel {
     }
     setMaxKilobytes(object.getInt("naxSize"));
     setEnforceSingle(object.getBoolean("forceSingle"));
-
-    jsonReader.close();
   }
 
   @Override

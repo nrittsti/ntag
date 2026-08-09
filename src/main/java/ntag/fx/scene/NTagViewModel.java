@@ -210,7 +210,7 @@ public class NTagViewModel {
     filteredFiles = new FilteredList<>(files);
     sortedFiles = new SortedList<>(filteredFiles);
     columns.addListener((Change<? extends TagFileTableColumn> change) -> {
-      List<ColumnType> columnList = new ArrayList<>();
+      var columnList = new ArrayList<ColumnType>();
       for (TagFileTableColumn tc : columns) {
         columnList.add(tc.getType());
       }

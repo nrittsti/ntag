@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag(Category.Unit)
 class FileUtilTest extends AbstractAudioFileTest {
@@ -30,6 +30,6 @@ class FileUtilTest extends AbstractAudioFileTest {
     // when
     String actual = FileUtil.sanitizeFilename(given);
     // then
-    assertEquals(expected, actual);
+    assertThat(actual).isEqualTo(expected);
   }
 }

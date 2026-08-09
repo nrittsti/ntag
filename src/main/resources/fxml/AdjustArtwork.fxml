@@ -33,31 +33,49 @@ Copyright 2016, Nico Rittstieg
         <ColumnConstraints hgrow="NEVER" maxWidth="50"/>
       </columnConstraints>
       <Label text="%lbl_format" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-      <ComboBox fx:id="imageFormatComboBox" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+      <ComboBox fx:id="imageFormatComboBox" GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <tooltip><Tooltip text="%tip_artwork_format" /></tooltip>
+      </ComboBox>
 
       <CheckBox fx:id="enforceImageTypeCheckBox" text="%lbl_enforce_image_format" GridPane.columnIndex="1"
-                GridPane.rowIndex="1"/>
+                GridPane.rowIndex="1">
+        <tooltip><Tooltip text="%tip_artwork_enforce_format" /></tooltip>
+      </CheckBox>
 
       <Label text="%lbl_quality" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
       <Slider fx:id="qualitySlider" GridPane.columnIndex="1" GridPane.rowIndex="2" showTickLabels="true"
-              showTickMarks="true" min="0.5" max="1.0" majorTickUnit="0.1" minorTickCount="5"/>
+              showTickMarks="true" min="0.5" max="1.0" majorTickUnit="0.1" minorTickCount="5">
+        <tooltip><Tooltip text="%tip_artwork_quality" /></tooltip>
+      </Slider>
       <RegexTextfield fx:id="qualityTextField" GridPane.columnIndex="2" GridPane.rowIndex="2" maxLength="4"
-                      regex="[.,0-9]"/>
+                      regex="[.,0-9]">
+        <tooltip><Tooltip text="%tip_artwork_quality" /></tooltip>
+      </RegexTextfield>
 
       <Label text="%lbl_max_size" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
       <Slider fx:id="kilobytesSlider" GridPane.columnIndex="1" GridPane.rowIndex="3" showTickLabels="true"
-              showTickMarks="true" min="32" max="512" majorTickUnit="96" minorTickCount="3"/>
+              showTickMarks="true" min="32" max="512" majorTickUnit="96" minorTickCount="3">
+        <tooltip><Tooltip text="%tip_artwork_max_kilobytes" /></tooltip>
+      </Slider>
       <RegexTextfield fx:id="kilobytesTextField" GridPane.columnIndex="2" GridPane.rowIndex="3" maxLength="3"
-                      regex="[0-9]"/>
+                      regex="[0-9]">
+        <tooltip><Tooltip text="%tip_artwork_max_kilobytes" /></tooltip>
+      </RegexTextfield>
 
       <Label text="%lbl_max_resolution" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
       <Slider fx:id="resolutionSlider" GridPane.columnIndex="1" GridPane.rowIndex="4" showTickLabels="true"
-              showTickMarks="true" min="200" max="1000" majorTickUnit="100" minorTickCount="1"/>
+              showTickMarks="true" min="200" max="1000" majorTickUnit="100" minorTickCount="1">
+        <tooltip><Tooltip text="%tip_artwork_max_resolution" /></tooltip>
+      </Slider>
       <RegexTextfield fx:id="resolutionTextField" GridPane.columnIndex="2" GridPane.rowIndex="4" maxLength="3"
-                      regex="[0-9]"/>
+                      regex="[0-9]">
+        <tooltip><Tooltip text="%tip_artwork_max_resolution" /></tooltip>
+      </RegexTextfield>
 
       <CheckBox fx:id="enforceSingleArtworkCheckBox" text="%lbl_enforce_single_artwork" GridPane.columnIndex="1"
-                GridPane.rowIndex="5"/>
+                GridPane.rowIndex="5">
+        <tooltip><Tooltip text="%tip_artwork_enforce_single" /></tooltip>
+      </CheckBox>
 
       <Label text="%lbl_profile" GridPane.columnIndex="0" GridPane.rowIndex="6">
         <GridPane.margin>
@@ -68,9 +86,15 @@ Copyright 2016, Nico Rittstieg
         <GridPane.margin>
           <Insets top="30" right="0" bottom="0" left="0"/>
         </GridPane.margin>
-        <ComboBox fx:id="profileComboBox" editable="true" maxWidth="200" onAction="#handleChangeProfileAction"/>
-        <Button fx:id="saveProfileButton" text="%btn_save" onAction="#handleSaveProfileAction"/>
-        <Button fx:id="removeProfileButton" text="%btn_remove" onAction="#handleRemoveProfileAction"/>
+        <ComboBox fx:id="profileComboBox" editable="true" maxWidth="200" onAction="#handleChangeProfileAction">
+          <tooltip><Tooltip text="%tip_profile" /></tooltip>
+        </ComboBox>
+        <Button fx:id="saveProfileButton" text="%btn_save" onAction="#handleSaveProfileAction">
+          <tooltip><Tooltip text="%tip_profile_save" /></tooltip>
+        </Button>
+        <Button fx:id="removeProfileButton" text="%btn_remove" onAction="#handleRemoveProfileAction">
+          <tooltip><Tooltip text="%tip_profile_remove" /></tooltip>
+        </Button>
       </HBox>
     </GridPane>
   </center>
@@ -78,8 +102,12 @@ Copyright 2016, Nico Rittstieg
     <VBox spacing="3">
       <Separator/>
       <HBox spacing="10" alignment="BOTTOM_CENTER">
-        <Button fx:id="allButton" defaultButton="true" text="%btn_all_files" onAction="#handleAllAction"/>
-        <Button fx:id="selectedButton" text="%btn_selected_files" onAction="#handleSelectionAction"/>
+        <Button fx:id="allButton" defaultButton="true" text="%btn_all_files" onAction="#handleAllAction">
+          <tooltip><Tooltip text="%tip_all_files" /></tooltip>
+        </Button>
+        <Button fx:id="selectedButton" text="%btn_selected_files" onAction="#handleSelectionAction">
+          <tooltip><Tooltip text="%tip_selected_files" /></tooltip>
+        </Button>
         <Button text="%btn_cancel" onAction="#handleCancelAction"/>
       </HBox>
     </VBox>

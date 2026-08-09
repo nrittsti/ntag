@@ -80,6 +80,11 @@
   -fx-graphic: url('icons/edit.png');
 }
 
+.tooltip {
+  -fx-wrap-text: true;
+  -fx-max-width: 500px;
+}
+
 /* Redefine base colors for dark theming */
 .root {
   -fx-base: #1B1D24;

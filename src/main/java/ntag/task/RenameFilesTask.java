@@ -67,7 +67,7 @@ public class RenameFilesTask extends Task<List<TagFile>> {
         updateMessage(Resources.format("ntag", "msg_rename_file", i, viewModel.getFiles().size()));
         rename(viewModel.getFiles().get(i), viewModel.getFormat());
       } catch (Exception e) {
-        errors.add(String.format("%s%n%s", viewModel.getFiles().get(i).getPath(), e.getMessage()));
+        errors.add("%s%n%s".formatted(viewModel.getFiles().get(i).getPath(), e.getMessage()));
       }
       updateProgress(i + 1, viewModel.getFiles().size());
     }
@@ -91,15 +91,15 @@ public class RenameFilesTask extends Task<List<TagFile>> {
     StringBuilderUtil.replace(sb, "%title", tagFile.getTitle());
     StringBuilderUtil.replace(sb, "%album", tagFile.getAlbum());
     StringBuilderUtil.replace(sb, "%artist", tagFile.getArtist());
-    StringBuilderUtil.replace(sb, "%year", tagFile.getYear() > 0 ? "" + tagFile.getYear() : "");
+    StringBuilderUtil.replace(sb, "%year", tagFile.getYear() > 0 ? String.valueOf(tagFile.getYear()) : "");
     String fileName;
     if (viewModel.isStripUnsafeChars()) {
       fileName = FileUtil.sanitizeFilename(sb.toString());
     } else {
       fileName = sb.toString();
     }
-    Path path = tagFile.getPath();
-    Path newPath = path.resolveSibling(fileName);
+    var path = tagFile.getPath();
+    var newPath = path.resolveSibling(fileName);
     Files.move(path, newPath);
     tagFile.setName(fileName);
     tagFile.setPath(newPath);

@@ -48,7 +48,10 @@
   </screenshots>
   <developer_name>Nico Rittstieg</developer_name> 
   <releases>
-    <release version="1.2.16" date="2024-10-12">
+    <release version="1.2.17" date="2026-08-07">
+      <url>https://github.com/nrittsti/ntag/releases/tag/v1.2.17</url>
+    </release>
+    <release version="1.2.16" date="2025-10-12">
       <url>https://github.com/nrittsti/ntag/releases/tag/v1.2.16</url>
     </release>
     <release version="1.2.15" date="2024-10-18">

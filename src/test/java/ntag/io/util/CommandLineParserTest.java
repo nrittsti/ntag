@@ -9,7 +9,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Tag(Category.Unit)
 class CommandLineParserTest extends AbstractAudioFileTest {
@@ -32,12 +33,12 @@ class CommandLineParserTest extends AbstractAudioFileTest {
     // when
     commandLineParser.parse(given);
     // then
-    assertTrue(commandLineParser.hasOption('h'));
-    assertTrue(commandLineParser.hasOption("home"));
-    assertFalse(commandLineParser.hasOption('a'));
-    assertFalse(commandLineParser.hasOption("abc"));
-    assertEquals("test", commandLineParser.getOptionValue('h'));
-    assertEquals("test", commandLineParser.getOptionValue("home"));
+    assertThat(commandLineParser.hasOption('h')).isTrue();
+    assertThat(commandLineParser.hasOption("home")).isTrue();
+    assertThat(commandLineParser.hasOption('a')).isFalse();
+    assertThat(commandLineParser.hasOption("abc")).isFalse();
+    assertThat(commandLineParser.getOptionValue('h')).isEqualTo("test");
+    assertThat(commandLineParser.getOptionValue("home")).isEqualTo("test");
   }
 
   @ParameterizedTest
@@ -48,8 +49,6 @@ class CommandLineParserTest extends AbstractAudioFileTest {
     commandLineParser.addOption('s', "silent", false);
     String[] given = new String[]{a, b, c};
     // when
-    assertThrows(IllegalArgumentException.class, () -> {
-      commandLineParser.parse(given);
-    });
+    assertThatThrownBy(() -> commandLineParser.parse(given)).isInstanceOf(IllegalArgumentException.class);
   }
 }

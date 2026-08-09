@@ -227,8 +227,8 @@ public final class TagFileWriter {
 
     // UPDATE METADATA FRAMES
     try {
-      if (audioFile instanceof MP3File) {
-        updateWithMP3Tag((MP3File) audioFile, tagFile);
+      if (audioFile instanceof MP3File mp3File) {
+        updateWithMP3Tag(mp3File, tagFile);
       } else {
         updateWithGenericTag(audioFile, tagFile);
       }
@@ -277,7 +277,7 @@ public final class TagFileWriter {
       // the date is be saved in ISO 8601 format
       updateTextField(tag, FieldKey.YEAR, tagFile.getDate().format(TagFileConst.ISO_DATE_FORMAT));
     } else {
-      updateTextField(tag, FieldKey.YEAR, (tagFile.getYear() != null && tagFile.getYear() > 0) ? "" + tagFile.getYear() : "");
+      updateTextField(tag, FieldKey.YEAR, (tagFile.getYear() != null && tagFile.getYear() > 0) ? String.valueOf(tagFile.getYear()) : "");
     }
     // COMMENT
     updateTextField(tag, FieldKey.COMMENT, tagFile.getComment());
@@ -309,7 +309,7 @@ public final class TagFileWriter {
 
     // RATING
     if (tagFile.getRating() > -1) {
-      updateTextField(tag, FieldKey.RATING, "" + RatingConverter.halfStarsToInternal(tagFile.getAudioFormat(), tagFile.getRating()));
+      updateTextField(tag, FieldKey.RATING, String.valueOf(RatingConverter.halfStarsToInternal(tagFile.getAudioFormat(), tagFile.getRating())));
     }
 
     // ARTWORK
@@ -448,9 +448,9 @@ public final class TagFileWriter {
     updateTCON(v2tag, genre);
 
     // DATE OF RELEASE
-    if (v2tag instanceof ID3v23Tag) {
+    if (v2tag instanceof ID3v23Tag v23Tag) {
       // TDAT
-      updateID3v23ReleaseDate(tagFile, (ID3v23Tag) v2tag);
+      updateID3v23ReleaseDate(tagFile, v23Tag);
     } else {
       if (useTDOR) {
         updateID3v24ReleaseDate("TDOR", tagFile, (ID3v24Tag) v2tag);
@@ -489,7 +489,7 @@ public final class TagFileWriter {
       if (frame != null) {
         AbstractFrameBodyTextInfo body = ((AbstractFrameBodyTextInfo) frame.getBody());
         if (!text.equals(body.getObjectValue(DataTypes.OBJ_TEXT))) {
-          addChange(frameName, text, "" + body.getObjectValue(DataTypes.OBJ_TEXT));
+          addChange(frameName, text, String.valueOf(body.getObjectValue(DataTypes.OBJ_TEXT)));
           body.setObjectValue(DataTypes.OBJ_TEXT, text);
         }
       } else {
@@ -529,7 +529,7 @@ public final class TagFileWriter {
       if (frame != null) {
         FrameBodyTDAT tdat = ((FrameBodyTDAT) frame.getBody());
         if (!text.equals(tdat.getObjectValue(DataTypes.OBJ_TEXT))) {
-          addChange("TDAT", text, "" + tdat.getObjectValue(DataTypes.OBJ_TEXT));
+          addChange("TDAT", text, String.valueOf(tdat.getObjectValue(DataTypes.OBJ_TEXT)));
           tdat.setObjectValue(DataTypes.OBJ_TEXT, text);
         }
       } else {
@@ -580,14 +580,13 @@ public final class TagFileWriter {
     if (list != null && !list.isEmpty()) {
       // Zuerst schauen ob es schon einen rating frame gibt
       for (TagField tagField : list) {
-        if (tagField instanceof AbstractID3v2Frame) {
-          AbstractID3v2Frame tmpFrame = (AbstractID3v2Frame) tagField;
+        if (tagField instanceof AbstractID3v2Frame tmpFrame) {
           FrameBodyPOPM frameBodyPOPM = (FrameBodyPOPM) tmpFrame.getBody();
           if (email.equalsIgnoreCase(frameBodyPOPM.getEmailToUser())) {
             framePOPM = tmpFrame;
             if (frameBodyPOPM.getRating() != convertedRating) {
               frameBodyPOPM.setRating(convertedRating);
-              addChange("POPM", "" + convertedRating, "" + frameBodyPOPM.getRating());
+              addChange("POPM", String.valueOf(convertedRating), String.valueOf(frameBodyPOPM.getRating()));
               if (isRatingEnforceSingleFrame()) {
                 addFrameFlag = true;
               }
@@ -603,13 +602,13 @@ public final class TagFileWriter {
       frameBodyPOPM.setRating(convertedRating);
       frameBodyPOPM.setEmailToUser(email);
       addFrameFlag = true;
-      addChange("RATING", "" + convertedRating, null);
+      addChange("RATING", String.valueOf(convertedRating), null);
     }
     if (addFrameFlag) {
       try {
         tag.addField(framePOPM);
       } catch (FieldDataInvalidException e) {
-        addError("RATING", "" + convertedRating, e.getMessage());
+        addError("RATING", String.valueOf(convertedRating), e.getMessage());
       }
     }
   }
@@ -738,14 +737,12 @@ public final class TagFileWriter {
   }
 
   private boolean createFrameBodyAPIC(final AbstractID3v2Tag v2tag, final ArtworkTag artworkTag) {
-    TagField artworkField;
-    if (v2tag instanceof ID3v24Tag) {
-      artworkField = ((ID3v24Tag) v2tag).createArtworkField(artworkTag.getImageData(), artworkTag.getImageType().getMimeTypes()[0]);
-    } else if (v2tag instanceof ID3v23Tag) {
-      artworkField = ((ID3v23Tag) v2tag).createArtworkField(artworkTag.getImageData(), artworkTag.getImageType().getMimeTypes()[0]);
-    } else {
-      artworkField = ((ID3v22Tag) v2tag).createArtworkField(artworkTag.getImageData(), artworkTag.getImageType().getMimeTypes()[0]);
-    }
+    final TagField artworkField = switch (v2tag) {
+      case ID3v24Tag tag -> tag.createArtworkField(artworkTag.getImageData(), artworkTag.getImageType().getMimeTypes()[0]);
+      case ID3v23Tag tag -> tag.createArtworkField(artworkTag.getImageData(), artworkTag.getImageType().getMimeTypes()[0]);
+      case ID3v22Tag tag -> tag.createArtworkField(artworkTag.getImageData(), artworkTag.getImageType().getMimeTypes()[0]);
+      default -> throw new IllegalStateException("Unsupported ID3 tag version: " + v2tag.getClass().getName());
+    };
     try {
       v2tag.addField(artworkField);
       return true;

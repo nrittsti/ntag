@@ -82,7 +82,7 @@ public class ArtworkTag implements Comparable<ArtworkTag> {
     setImageType(ImageType.getByMimeType(artwork.getMimeType()));
     this.dimension = new Dimension(artwork.getWidth(), artwork.getHeight());
     if (getImageType() == null) {
-      throw new IOException(String.format("MIME '%s' is not supported", artwork.getMimeType()));
+      throw new IOException("MIME '%s' is not supported".formatted(artwork.getMimeType()));
     }
   }
 
@@ -109,7 +109,7 @@ public class ArtworkTag implements Comparable<ArtworkTag> {
     final int maxSize = NTagProperties.instance().getArtworkMaxResolution();
     BufferedImage image = ImageIO.read(file);
     if (image.getWidth() > maxSize || image.getHeight() > maxSize) {
-      LOGGER.info(String.format("Image '%s' must be scalled to %d x %d Pixel", file.getAbsolutePath(), maxSize, maxSize));
+      LOGGER.info("Image '%s' must be scalled to %d x %d Pixel".formatted(file.getAbsolutePath(), maxSize, maxSize));
       initFromBufferedImage(image, null);
     } else {
       final String extension = file.getName().substring(file.getName().lastIndexOf('.'));

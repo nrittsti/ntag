@@ -59,7 +59,7 @@ public class IniFile {
         if (index != -1) {
           setValue(currentSection, line.substring(0, index), line.substring(index + 1).trim(), true);
         } else {
-          throw new IOException(String.format("Line %d in INI-File '%s' contains no valid content!", currentLine, path));
+          throw new IOException("Line %d in INI-File '%s' contains no valid content!".formatted(currentLine, path));
         }
       }
     }
@@ -77,7 +77,7 @@ public class IniFile {
         writer.newLine();
         writer.newLine();
 
-        List<String> keyList = new ArrayList<>(section.getValue().keySet());
+        var keyList = new ArrayList<String>(section.getValue().keySet());
         Collections.sort(keyList);
         for (String key : keyList) {
           for (String value : section.getValue().get(key)) {
@@ -209,7 +209,7 @@ public class IniFile {
 
   public List<Double> getDoubleValues(String name, String key) {
     List<String> values = getValues(name, key);
-    List<Double> doubleValues = new ArrayList<>();
+    var doubleValues = new ArrayList<Double>();
     for (String value : values) {
       doubleValues.add(Double.valueOf(value));
     }
@@ -218,7 +218,7 @@ public class IniFile {
 
   public List<Integer> getIntegerValues(String name, String key, Integer... defaultValues) {
     List<String> values = getValues(name, key);
-    List<Integer> integerValues = new ArrayList<>();
+    var integerValues = new ArrayList<Integer>();
     for (String value : values) {
       integerValues.add(Integer.valueOf(value));
     }

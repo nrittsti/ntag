@@ -36,10 +36,10 @@ public class CommandLineParser {
     for (String arg : args) {
       if (arg.startsWith("-")) {
         if (option != null && option.isValueAttachment() && option.getValue() == null) {
-          throw new IllegalArgumentException(String.format("Missing value for option [%s]", option));
+          throw new IllegalArgumentException("Missing value for option [%s]".formatted(option));
         }
         if (!arg.matches(OPTION_PATTERN)) {
-          throw new IllegalArgumentException(String.format("Invalid option argument [%s]", arg));
+          throw new IllegalArgumentException("Invalid option argument [%s]".formatted(arg));
         }
         boolean foundFlag = false;
         final boolean longOptionFlag = arg.charAt(1) == '-';
@@ -47,22 +47,22 @@ public class CommandLineParser {
           if ((longOptionFlag && o.getLongName().equals(arg.substring(2))) || (o.getShortName() == arg.charAt(1))) {
             option = o;
             if (option.isActivated()) {
-              throw new IllegalArgumentException(String.format("Duplicate Option [%s]", option));
+              throw new IllegalArgumentException("Duplicate Option [%s]".formatted(option));
             }
             option.setActivated(true);
             foundFlag = true;
           }
         }
         if (!foundFlag) {
-          throw new IllegalArgumentException(String.format("Unknown Option [%s]", option));
+          throw new IllegalArgumentException("Unknown Option [%s]".formatted(option));
         }
       } else {
         if (option == null) {
-          throw new IllegalArgumentException(String.format("Invalid Argument [%s]", arg));
+          throw new IllegalArgumentException("Invalid Argument [%s]".formatted(arg));
         } else if (!option.isValueAttachment()) {
-          throw new IllegalArgumentException(String.format("Option [%s] expects no value [%s]", option.toString(), arg));
+          throw new IllegalArgumentException("Option [%s] expects no value [%s]".formatted(option.toString(), arg));
         } else if (option.getValue() != null) {
-          throw new IllegalArgumentException(String.format("Option [%s] expects a single value [%s]", option.toString(), arg));
+          throw new IllegalArgumentException("Option [%s] expects a single value [%s]".formatted(option.toString(), arg));
         } else {
           if (arg.length() > 2 && arg.startsWith("'") && arg.endsWith("'")) {
             arg = arg.substring(1, arg.length() - 1);
@@ -76,7 +76,7 @@ public class CommandLineParser {
   public void addOption(char shortName, String longName, boolean hasValue) {
     CommandLineOption option = new CommandLineOption(shortName, longName, hasValue);
     if (options.contains(option)) {
-      throw new IllegalArgumentException(String.format("Duplicate Option [%s]", option));
+      throw new IllegalArgumentException("Duplicate Option [%s]".formatted(option));
     }
     options.add(option);
   }

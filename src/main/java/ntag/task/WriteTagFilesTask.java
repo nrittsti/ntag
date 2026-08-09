@@ -54,7 +54,7 @@ public class WriteTagFilesTask extends Task<Integer> {
         writer.update(files.get(i));
         updatedFiles.add(files.get(i));
       } catch (Exception e) {
-        errors.add(String.format("%s%n%s: %s", files.get(i).toString(), e.getClass().getName(), e.getMessage()));
+        errors.add("%s%n%s: %s".formatted(files.get(i).toString(), e.getClass().getName(), e.getMessage()));
       }
       updateProgress(i + 1, files.size());
     }

@@ -5,6 +5,7 @@
 /.classpath
 /.gitignore
 /.project
+/.settings
 /home/
 /release/
 /target/
@@ -12,6 +13,11 @@
 /ntag.ini
 /.gradle/
 /wiki/
+/tools/icon/build/
+/tools/icon/ntag.iconset/
+
+# macOS AppleDouble resource-fork files (created on non-HFS volumes)
+._*
 
 # Ignore Gradle project-specific cache directory
 .gradle

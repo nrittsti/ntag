@@ -1,0 +1,185 @@
+name: "Release Windows"
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag to attach the built assets to (e.g. v1.2.17). The tag must exist in the repository.'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  windows_release:
+    runs-on: windows-latest
+    env:
+      RELEASE_TAG: ${{ github.ref_type == 'tag' && github.ref_name || inputs.release_tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Resolve Release Tag
+        shell: pwsh
+        run: |
+          $RELEASE_TAG = $env:RELEASE_TAG.Trim()
+          if (-not $RELEASE_TAG) { throw "No release tag provided" }
+          echo "RELEASE_TAG=$RELEASE_TAG" >> $env:GITHUB_ENV
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'zulu'
+          java-version: '25'
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.16
+      - name: Build Windows Version with Maven
+        run: mvn clean package
+      - name: Get NTag version
+        id: get_ntag_version
+        shell: pwsh
+        run: |
+          [xml]$pom = Get-Content -Raw pom.xml
+          $VERSION = $pom.project.version
+          if (-not $VERSION) { throw "Could not determine version from pom.xml" }
+          echo "VERSION=$VERSION" >> $env:GITHUB_ENV
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup -y --no-progress
+      - name: Build Installer with ISCC
+        shell: pwsh
+        run: |
+          $iscc = Get-ChildItem "C:\Program Files*\Inno Setup*\ISCC.exe" | Select-Object -First 1 -ExpandProperty FullName
+          if (-not $iscc) { throw "ISCC.exe not found" }
+          Expand-Archive -Path "target\ntag-$env:VERSION-win_bin.zip" -DestinationPath "target\win-install" -Force
+          $sourceDir = (Resolve-Path "target\win-install\ntag-$env:VERSION-win_bin").Path
+          $outputDir = (Resolve-Path "target").Path
+          & $iscc "etc/win/ntag.iss" "/DAppVersion=$env:VERSION" "/DSourceDir=$sourceDir" "/DOutputDir=$outputDir"
+          if ($LASTEXITCODE -ne 0) { throw "ISCC failed with exit code $LASTEXITCODE" }
+          if (-not (Test-Path "target\ntag-$env:VERSION-win_setup.exe")) { throw "Installer not produced" }
+      - name: Silent Install to C:\NTagTest
+        shell: pwsh
+        run: |
+          $p = Start-Process -FilePath "target\ntag-$env:VERSION-win_setup.exe" `
+            -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/DIR=C:\NTagTest","/LOG=C:\NTagTest_install.log" `
+            -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "Install failed with exit code $($p.ExitCode)" }
+      - name: Verify Installed Files
+        shell: pwsh
+        run: |
+          @("C:\NTagTest\ntag.cmd","C:\NTagTest\ntag.ico","C:\NTagTest\ntag.jar","C:\NTagTest\jre\bin\java.exe","C:\NTagTest\ntag_logging.properties") |
+            ForEach-Object { if (-not (Test-Path $_)) { throw "Missing: $_" } }
+          $libs = Get-ChildItem "C:\NTagTest\libs" -Filter "*.jar" -ErrorAction Stop
+          if (-not ($libs | Where-Object { $_.Name -like "jaudiotagger*" })) { throw "jaudiotagger library missing" }
+      - name: Verify Start Menu Entries
+        shell: pwsh
+        run: |
+          $menu = "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\NTag"
+          if (-not (Test-Path "$menu\NTag.lnk")) { throw "Start menu shortcut missing" }
+          if (-not (Test-Path "$menu\Uninstall NTag.lnk")) { throw "Uninstall menu entry missing" }
+      - name: Verify Uninstall Registry Entry
+        shell: pwsh
+        run: |
+          $roots = @(
+            "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+            "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
+          )
+          $found = @()
+          foreach ($root in $roots) {
+            if (Test-Path $root) {
+              $found += Get-ChildItem $root -ErrorAction SilentlyContinue |
+                Where-Object { (Get-ItemProperty $_.PSPath -ErrorAction SilentlyContinue).DisplayName -eq "NTag" }
+            }
+          }
+          if (-not $found) { throw "Uninstall registry entry missing" }
+      - name: Headless Smoke Test
+        shell: pwsh
+        run: |
+          $work = "C:\NTagSmoke"
+          New-Item -ItemType Directory -Path $work -Force | Out-Null
+          Push-Location $work
+          & "C:\NTagTest\jre\bin\java.exe" `
+            --module-path "C:\NTagTest\libs" `
+            --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,jakarta.json `
+            -cp "C:\NTagTest\ntag.jar" ntag.Batch
+          $code = $LASTEXITCODE
+          Pop-Location
+          Remove-Item $work -Recurse -Force
+          if ($code -ne 0) { throw "Smoke test failed with exit code $code" }
+      - name: Silent Uninstall
+        shell: pwsh
+        run: |
+          $p = Start-Process -FilePath "C:\NTagTest\unins000.exe" `
+            -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART" `
+            -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "Uninstall failed with exit code $($p.ExitCode)" }
+      - name: Verify Uninstall Cleanup
+        shell: pwsh
+        run: |
+          $menu = "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\NTag"
+          if (Test-Path "C:\NTagTest") { throw "App directory not removed" }
+          if (Test-Path "$menu\NTag.lnk") { throw "Start menu shortcut still present" }
+          if (Test-Path "$menu\Uninstall NTag.lnk") { throw "Uninstall menu entry still present" }
+      - name: Create SHA256 Checksums
+        shell: pwsh
+        run: |
+          (Get-FileHash "target\ntag-$env:VERSION-win_bin.zip" -Algorithm SHA256).Hash | Set-Content "target\ntag-$env:VERSION-win_bin_sha256.txt"
+          (Get-FileHash "target\ntag-$env:VERSION-win_setup.exe" -Algorithm SHA256).Hash | Set-Content "target\ntag-$env:VERSION-win_setup_sha256.txt"
+      - name: Upload Windows ZIP Release Asset
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./target/ntag-${{ env.VERSION }}-win_bin.zip
+          name: ntag-${{ env.VERSION }}-win_bin.zip
+          retention-days: 7
+      - name: Upload Windows ZIP SHA256 Asset
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./target/ntag-${{ env.VERSION }}-win_bin_sha256.txt
+          name: ntag-${{ env.VERSION }}-win_bin_sha256.txt
+          retention-days: 7
+      - name: Upload Windows Installer Asset
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./target/ntag-${{ env.VERSION }}-win_setup.exe
+          name: ntag-${{ env.VERSION }}-win_setup.exe
+          retention-days: 7
+      - name: Upload Windows Installer SHA256 Asset
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./target/ntag-${{ env.VERSION }}-win_setup_sha256.txt
+          name: ntag-${{ env.VERSION }}-win_setup_sha256.txt
+          retention-days: 7
+      - name: Create Draft Release
+        shell: pwsh
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $false
+          gh release create "$env:RELEASE_TAG" --draft --title "Release $env:RELEASE_TAG" 2>$null
+          if ($LASTEXITCODE -ne 0) { Write-Host "Release already exists, continuing" }
+          exit 0
+      - name: Attach Windows Assets to Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: pwsh
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $false
+          for ($i = 1; $i -le 12; $i++) {
+            gh release upload "$env:RELEASE_TAG" `
+              "target\ntag-$env:VERSION-win_bin.zip" `
+              "target\ntag-$env:VERSION-win_bin_sha256.txt" `
+              "target\ntag-$env:VERSION-win_setup.exe" `
+              "target\ntag-$env:VERSION-win_setup_sha256.txt" `
+              --clobber
+            if ($LASTEXITCODE -eq 0) {
+              Write-Host "Assets uploaded successfully"
+              exit 0
+            }
+            Write-Host "gh release upload failed (attempt $i/12), ensuring release exists and retrying in 10s..."
+            gh release create "$env:RELEASE_TAG" --draft --title "Release $env:RELEASE_TAG" 2>$null | Out-Null
+            Start-Sleep -Seconds 10
+          }
+          Write-Error "Failed to upload assets after 12 attempts"
+          exit 1

@@ -35,44 +35,48 @@ public class TagFieldCellFactory implements Callback<TableColumn.CellDataFeature
   @Override
   public ObservableValue<String> call(CellDataFeatures<TagField, String> p) {
     TagField tagField = p.getValue();
-    if (tagField instanceof AbstractID3v2Frame) {
-      AbstractTagFrameBody body = ((AbstractID3v2Frame) tagField).getBody();
-      if ("USLT".equals(body.getIdentifier())) {
-        return new SimpleStringProperty(String.format("%d Characters", body.getUserFriendlyValue().length()));
-      } else if ("TXXX".equals(body.getIdentifier())) {
-        FrameBodyTXXX txxx = (FrameBodyTXXX) body;
-        return new SimpleStringProperty(String.format("%s: %s", txxx.getDescription(), txxx.getText()));
-      } else if ("PCNT".equals(body.getIdentifier())) {
-        FrameBodyPCNT pcnt = (FrameBodyPCNT) body;
-        return new SimpleStringProperty(String.format("%d", pcnt.getCounter()));
-      } else if ("TPOS".equals(body.getIdentifier())) {
-        FrameBodyTPOS tpos = (FrameBodyTPOS) body;
-        if (tpos.getDiscTotal() != null && tpos.getDiscTotal() > 0) {
-          return new SimpleStringProperty(String.format("%d/%d", tpos.getDiscNo(), tpos.getDiscTotal()));
-        } else {
-          return new SimpleStringProperty(String.format("%d", tpos.getDiscNo()));
+    if (tagField instanceof AbstractID3v2Frame frame) {
+      AbstractTagFrameBody body = frame.getBody();
+      return switch (body.getIdentifier()) {
+        case "USLT" -> new SimpleStringProperty("%d Characters".formatted(body.getUserFriendlyValue().length()));
+        case "TXXX" -> {
+          FrameBodyTXXX txxx = (FrameBodyTXXX) body;
+          yield new SimpleStringProperty("%s: %s".formatted(txxx.getDescription(), txxx.getText()));
         }
-      } else if ("TRCK".equals(body.getIdentifier())) {
-        FrameBodyTRCK tpos = (FrameBodyTRCK) body;
-        if (tpos.getTrackTotal() != null && tpos.getTrackTotal() > 0) {
-          return new SimpleStringProperty(String.format("%d/%d", tpos.getTrackNo(), tpos.getTrackTotal()));
-        } else {
-          return new SimpleStringProperty(String.format("%d", tpos.getTrackNo()));
+        case "PCNT" -> {
+          FrameBodyPCNT pcnt = (FrameBodyPCNT) body;
+          yield new SimpleStringProperty("%d".formatted(pcnt.getCounter()));
         }
-      } else if (body instanceof AbstractFrameBodyTextInfo) {
-        AbstractFrameBodyTextInfo text = (AbstractFrameBodyTextInfo) body;
-        if (text.getNumberOfValues() > 1) {
-          return new SimpleStringProperty(String.format("%s [+%d more strings]", text.getFirstTextValue(), text.getNumberOfValues()));
-        } else {
-          return new SimpleStringProperty(text.getFirstTextValue());
+        case "TPOS" -> {
+          FrameBodyTPOS tpos = (FrameBodyTPOS) body;
+          if (tpos.getDiscTotal() != null && tpos.getDiscTotal() > 0) {
+            yield new SimpleStringProperty("%d/%d".formatted(tpos.getDiscNo(), tpos.getDiscTotal()));
+          } else {
+            yield new SimpleStringProperty("%d".formatted(tpos.getDiscNo()));
+          }
         }
-      } else {
-        return new SimpleStringProperty(body.getUserFriendlyValue());
-      }
-    } else if (tagField instanceof TyerTdatAggregatedFrame) {
-      TyerTdatAggregatedFrame body = (TyerTdatAggregatedFrame) tagField;
+        case "TRCK" -> {
+          FrameBodyTRCK trck = (FrameBodyTRCK) body;
+          if (trck.getTrackTotal() != null && trck.getTrackTotal() > 0) {
+            yield new SimpleStringProperty("%d/%d".formatted(trck.getTrackNo(), trck.getTrackTotal()));
+          } else {
+            yield new SimpleStringProperty("%d".formatted(trck.getTrackNo()));
+          }
+        }
+        default -> {
+          if (body instanceof AbstractFrameBodyTextInfo text) {
+            if (text.getNumberOfValues() > 1) {
+              yield new SimpleStringProperty("%s [+%d more strings]".formatted(text.getFirstTextValue(), text.getNumberOfValues()));
+            } else {
+              yield new SimpleStringProperty(text.getFirstTextValue());
+            }
+          }
+          yield new SimpleStringProperty(body.getUserFriendlyValue());
+        }
+      };
+    } else if (tagField instanceof TyerTdatAggregatedFrame aggregated) {
       AbstractID3v2Frame[] frames = new AbstractID3v2Frame[2];
-      frames = body.getFrames().toArray(frames);
+      frames = aggregated.getFrames().toArray(frames);
       return new SimpleStringProperty(frames[0].getContent() + " / " + frames[1].getContent());
     } else if ("METADATA_BLOCK_PICTURE".equalsIgnoreCase(tagField.getId())) {
       return new SimpleStringProperty("Artwork image");

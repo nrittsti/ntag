@@ -28,8 +28,7 @@ import org.junit.jupiter.api.Test;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag(Category.Unit)
 class StringPropertyHandlerTest {
@@ -45,7 +44,7 @@ class StringPropertyHandlerTest {
   void publish() throws Exception {
     handler.publish(new LogRecord(Level.SEVERE, "Test123"));
     Thread.sleep(50);
-    assertTrue(handler.getText().contains("Test123"));
+    assertThat(handler.getText()).contains("Test123");
   }
 
   @Test
@@ -53,7 +52,7 @@ class StringPropertyHandlerTest {
     handler.publish(new LogRecord(Level.SEVERE, "Test123"));
     Thread.sleep(50);
     handler.clear();
-    assertEquals("", handler.getText());
+    assertThat(handler.getText()).isEmpty();
   }
 
   @Test

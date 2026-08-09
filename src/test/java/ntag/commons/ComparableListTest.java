@@ -6,11 +6,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.util.Arrays;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag(Category.Unit)
 class ComparableListTest {
@@ -18,7 +16,7 @@ class ComparableListTest {
   ComparableList<String> comparableList;
 
   @BeforeEach
-  protected void setUp() throws IOException {
+  protected void setUp() {
     comparableList = new ComparableList<>();
     comparableList.add("a");
     comparableList.add("b");
@@ -29,51 +27,47 @@ class ComparableListTest {
   @DisplayName("both list are equals")
   void compareTo1() {
     // given
-    ComparableList<String> given = new ComparableList<>(Arrays.asList("a", "b", "c"));
-    ;
+    ComparableList<String> given = new ComparableList<>(List.of("a", "b", "c"));
     int expected = 0;
     // when
     int actual = comparableList.compareTo(given);
     // then
-    assertEquals(expected, actual);
+    assertThat(actual).isEqualTo(expected);
   }
 
   @Test
   @DisplayName("right list is smaller")
   void compareTo2() {
     // given
-    ComparableList<String> given = new ComparableList<>(Arrays.asList("a", "b"));
-    ;
+    ComparableList<String> given = new ComparableList<>(List.of("a", "b"));
     int expected = 1;
     // when
     int actual = comparableList.compareTo(given);
     // then
-    assertEquals(expected, actual);
+    assertThat(actual).isEqualTo(expected);
   }
 
   @Test
   @DisplayName("right list is larger")
   void compareTo3() {
     // given
-    ComparableList<String> given = new ComparableList<>(Arrays.asList("a", "b", "c", "d"));
-    ;
+    ComparableList<String> given = new ComparableList<>(List.of("a", "b", "c", "d"));
     int expected = -1;
     // when
     int actual = comparableList.compareTo(given);
     // then
-    assertEquals(expected, actual);
+    assertThat(actual).isEqualTo(expected);
   }
 
   @Test
   @DisplayName("different list elements")
   void compareTo4() {
     // given
-    ComparableList<String> given = new ComparableList<>(Arrays.asList("a", "y", "c"));
-    ;
+    ComparableList<String> given = new ComparableList<>(List.of("a", "y", "c"));
     int unexpected = 0;
     // when
     int actual = comparableList.compareTo(given);
     // then
-    assertNotEquals(unexpected, actual);
+    assertThat(actual).isNotEqualTo(unexpected);
   }
 }

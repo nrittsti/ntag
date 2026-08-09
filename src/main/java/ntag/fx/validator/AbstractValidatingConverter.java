@@ -62,7 +62,7 @@ public abstract class AbstractValidatingConverter<T> extends StringConverter<T> 
 
   protected void validateTextLength(String value) {
     if (value.length() > maxLength) {
-      throw new StringIndexOutOfBoundsException(String.format("TextField length limit %d is exceeded", maxLength));
+      throw new StringIndexOutOfBoundsException("TextField length limit %d is exceeded".formatted(maxLength));
     }
   }
 

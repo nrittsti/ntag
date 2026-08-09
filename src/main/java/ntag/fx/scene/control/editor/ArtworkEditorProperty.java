@@ -72,7 +72,7 @@ public class ArtworkEditorProperty extends EditorProperty<ArtworkTag> {
     boolean binaryUnit = NTagProperties.instance().isBinaryUnit();
     final long unit = binaryUnit ? 1024 : 1000;
     try {
-      getTooltip().setText(String.format("%s%n%d x %d Pixel%n%d %s", artwork.getImageType().getFormat(), //
+      getTooltip().setText("%s%n%d x %d Pixel%n%d %s".formatted(artwork.getImageType().getFormat(), //
               artwork.getWidth(), //
               artwork.getHeight(), //
               artwork.getImageData().length / unit, //

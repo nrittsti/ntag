@@ -459,7 +459,7 @@ public class TagEditorControl extends TabPane implements Initializable {
     }
     try {
       if (System.getProperty("os.name").toLowerCase().contains("win")) {
-        Runtime.getRuntime().exec(String.format("explorer.exe /select,%s",
+        Runtime.getRuntime().exec("explorer.exe /select,%s".formatted(
                 viewModel.getSelectedFiles().getFirst().getPath().toString()));
       } else {
         URI uri = viewModel.getSelectedFiles().getFirst().getPath().getParent().toUri();
@@ -484,7 +484,7 @@ public class TagEditorControl extends TabPane implements Initializable {
     }
     DialogResult<ItemChoiceViewModel<String>> result;
     result = FxUtil.showItemChoiceDialog(Resources.get("ntag", "lbl_select_genre"), null, vm);
-    if (result.getRespone() == DialogResponse.OK) {
+    if (result.response() == DialogResponse.OK) {
       if (vm.getSelection().isEmpty()) {
         genreEditorProperty.getClearEventHandler().handle(null);
       } else {
@@ -554,7 +554,7 @@ public class TagEditorControl extends TabPane implements Initializable {
       viewModel.getSelectedFiles().clear();
       viewModel.getSelectedFiles().add(selectedFile);
       if (LOGGER.isLoggable(Level.INFO)) {
-        LOGGER.info(String.format("Updated %s Tag from file '%s'", tagField.getId(), selectedFile.getName()));
+        LOGGER.info("Updated %s Tag from file '%s'".formatted(tagField.getId(), selectedFile.getName()));
       }
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, "Edit Tag has failed", e);
@@ -643,7 +643,7 @@ public class TagEditorControl extends TabPane implements Initializable {
       showFileButton.setDisable(false);
       filenameTextField.setText(viewModel.getSelectedFiles().getFirst().getName());
       fileInfoLabel.setText(selectedFile.isReadOnly() ? //
-              String.format(" (%s)", Resources.get("ntag", "lbl_read_only")) : "");
+              " (%s)".formatted(Resources.get("ntag", "lbl_read_only")) : "");
       id3v23MenuItem.setVisible(selectedFile.getTaggingSystem().startsWith("ID3v2"));
       id3v24MenuItem.setVisible(selectedFile.getTaggingSystem().startsWith("ID3v2"));
       if (selectedFile.getTaggingSystem().startsWith(ID3v23Tag.class.getSimpleName())) {

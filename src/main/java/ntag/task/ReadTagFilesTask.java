@@ -29,8 +29,8 @@ import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,14 +56,13 @@ public class ReadTagFilesTask extends Task<List<TagFile>> {
   protected List<TagFile> call() throws Exception {
     errors.clear();
 
-    List<TagFile> resultList = new ArrayList<>();
+    var resultList = new ArrayList<TagFile>();
 
     updateMessage(Resources.get("ntag", "msg_creating_filelist"));
 
     AudioFileVisitor visitor = new AudioFileVisitor(maxFiles);
 
-    HashSet<FileVisitOption> options = new HashSet<>();
-    options.add(FileVisitOption.FOLLOW_LINKS);
+    var options = Set.of(FileVisitOption.FOLLOW_LINKS);
     for (Path path : pathList) {
       Files.walkFileTree(path, options, maxDepth, visitor);
     }
@@ -80,8 +79,8 @@ public class ReadTagFilesTask extends Task<List<TagFile>> {
       try {
         resultList.add(reader.createTagFile(files.get(i)));
       } catch (Exception e) {
-        LOGGER.log(Level.SEVERE, String.format("%s%n%s", files.get(i).toString(), e.getClass().getName()), e);
-        errors.add(String.format("%s%n%s: %s", files.get(i).toString(), e.getClass().getName(), e.getMessage()));
+        LOGGER.log(Level.SEVERE, "%s%n%s".formatted(files.get(i).toString(), e.getClass().getName()), e);
+        errors.add("%s%n%s: %s".formatted(files.get(i).toString(), e.getClass().getName(), e.getMessage()));
       }
       updateProgress(i + 1, files.size());
     }

@@ -15,6 +15,7 @@ Copyright 2016, Nico Rittstieg
 -->
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -26,13 +27,21 @@ Copyright 2016, Nico Rittstieg
   <ImageView fx:id="imageView"/>
   <VBox alignment="CENTER_LEFT">
     <ButtonLink fx:id="openImageButtonLink" text="%btn_open" onAction="#handleOpenImageAction" focusTraversable="false"
-                minWidth="60"/>
+                minWidth="60">
+      <tooltip><Tooltip text="%tip_open_image" /></tooltip>
+    </ButtonLink>
     <ButtonLink fx:id="pasteImageButtonLink" text="%btn_paste" onAction="#handlePasteImageAction"
-                focusTraversable="false"/>
+                focusTraversable="false">
+      <tooltip><Tooltip text="%tip_paste_image" /></tooltip>
+    </ButtonLink>
     <ButtonLink fx:id="saveImageButtonLink" text="%btn_save" onAction="#handleSaveImageAction"
-                focusTraversable="false"/>
+                focusTraversable="false">
+      <tooltip><Tooltip text="%tip_save_image" /></tooltip>
+    </ButtonLink>
     <ButtonLink fx:id="removeImageButtonLink" text="%btn_remove" onAction="#handleRemoveImageAction"
-                focusTraversable="false"/>
+                focusTraversable="false">
+      <tooltip><Tooltip text="%tip_remove_image" /></tooltip>
+    </ButtonLink>
   </VBox>
 </fx:root>
 

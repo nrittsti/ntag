@@ -66,7 +66,7 @@ public enum AudioFormat {
    * @return Set<String>
    */
   public static Set<String> getFileExtensions() {
-    Set<String> list = new HashSet<>();
+    var list = new HashSet<String>();
     for (AudioFormat type : AudioFormat.values()) {
       list.addAll(Arrays.asList(type.extensions));
     }

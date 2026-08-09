@@ -195,8 +195,7 @@ public class TagFileReader {
       audioFile = tagFile.getAudioFile();
     }
     fillFileInformation(tagFile);
-    if (audioFile instanceof MP3File) {
-      MP3File mp3File = (MP3File) audioFile;
+    if (audioFile instanceof MP3File mp3File) {
       // header
       fillHeaderInformation(tagFile, mp3File);
       // metadata
@@ -325,7 +324,7 @@ public class TagFileReader {
       if (frame != null) {
         createDateFromISOString(tagFile,//
                 frame.getIdentifier(), //
-                "" + frame.getBody().getObjectValue(DataTypes.OBJ_TEXT));
+                String.valueOf(frame.getBody().getObjectValue(DataTypes.OBJ_TEXT)));
       }
     } else {
       if (tag.hasFrame("TYERTDAT")) {
@@ -352,12 +351,12 @@ public class TagFileReader {
         frame = tag.getFirstField("TYER");
         if (frame != null) {
           createYear(tagFile, //
-                  "" + frame.getBody().getObjectValue(DataTypes.OBJ_TEXT));
+                  String.valueOf(frame.getBody().getObjectValue(DataTypes.OBJ_TEXT)));
         }
         frame = tag.getFirstField("TDAT");
         if (frame != null) {
           createID3v23ReleaseDate(tagFile, //
-                  "" + frame.getBody().getObjectValue(DataTypes.OBJ_TEXT));
+                  String.valueOf(frame.getBody().getObjectValue(DataTypes.OBJ_TEXT)));
         }
       }
     }
@@ -489,8 +488,8 @@ public class TagFileReader {
     if (list != null && !list.isEmpty()) {
       long ratingSum = 0;
       for (TagField tagField : list) {
-        if (tagField instanceof AbstractID3v2Frame) {
-          FrameBodyPOPM framePOPM = (FrameBodyPOPM) ((AbstractID3v2Frame) tagField).getBody();
+        if (tagField instanceof AbstractID3v2Frame frame) {
+          FrameBodyPOPM framePOPM = (FrameBodyPOPM) frame.getBody();
           infos.append("\nFound Rating from '").append(framePOPM.getEmailToUser()).append("' with Rating Score '").append(framePOPM.getRating()).append("'");
           if (email.equalsIgnoreCase(framePOPM.getEmailToUser())) {
             createRating(tagFile, (int) framePOPM.getRating());
@@ -538,7 +537,7 @@ public class TagFileReader {
           tagFile.setArtwork(new ArtworkTag(frontCover));
           tagFile.setSingleArtwork(tagArtList.size() == 1);
         } catch (IOException e) {
-          LOGGER.log(Level.SEVERE, String.format("Error on processing artwork from file: %s", tagFile.getPath()), e);
+          LOGGER.log(Level.SEVERE, "Error on processing artwork from file: %s".formatted(tagFile.getPath()), e);
         }
       }
     }
@@ -548,67 +547,67 @@ public class TagFileReader {
   }
 
   private StringBuilder createInfoString(AudioFile audioFile) {
-    StringBuilder sb = new StringBuilder();
+    var sb = new StringBuilder();
     Tag tag = audioFile.getTag();
     AudioHeader header = audioFile.getAudioHeader();
     if (tag == null) {
       return sb;
     }
-    sb.append(String.format("%s%n-----------------------------------%n", header.getClass().getSimpleName()));
-    sb.append(String.format("%n%-14s%s", "Encoding", header.getEncodingType()));
-    sb.append(String.format("%n%-14s%6s Hz", "Samplerate", header.getSampleRate().trim()));
-    sb.append(String.format("%n%-14s%6s kbps", "Bitrate", header.getBitRate().trim()));
+    sb.append("%s%n-----------------------------------%n".formatted(header.getClass().getSimpleName()));
+    sb.append("%n%-14s%s".formatted("Encoding", header.getEncodingType()));
+    sb.append("%n%-14s%6s Hz".formatted("Samplerate", header.getSampleRate().trim()));
+    sb.append("%n%-14s%6s kbps".formatted("Bitrate", header.getBitRate().trim()));
     if (header.isVariableBitRate()) {
       sb.append(" (VBR)");
     }
     if (header.isLossless()) {
       sb.append(" (Lossless)");
     }
-    sb.append(String.format("%n%-14s%6s", "Channels", header.getChannels().trim()));
-    sb.append(String.format("%n%-14s%6s seconds", "Lengths", header.getTrackLength()));
-    sb.append(String.format("%n%n%s%n-----------------------------------%n", tag.getClass().getSimpleName()));
+    sb.append("%n%-14s%6s".formatted("Channels", header.getChannels().trim()));
+    sb.append("%n%-14s%6s seconds".formatted("Lengths", header.getTrackLength()));
+    sb.append("%n%n%s%n-----------------------------------%n".formatted(tag.getClass().getSimpleName()));
     return sb;
   }
 
   private StringBuilder createInfoString(MP3File audioFile) {
     MP3AudioHeader header = audioFile.getMP3AudioHeader();
 
-    StringBuilder sb = new StringBuilder();
+    var sb = new StringBuilder();
 
-    sb.append(String.format("%s%n-----------------------------------%n", header.getClass().getSimpleName()));
-    sb.append(String.format("%n%-14s%s", "Encoding", header.getEncodingType()));
-    sb.append(String.format("%n%-14s%6s Hz", "Samplerate", header.getSampleRate()));
-    sb.append(String.format("%n%-14s%6s kbps", "Bitrate", header.getBitRate()));
+    sb.append("%s%n-----------------------------------%n".formatted(header.getClass().getSimpleName()));
+    sb.append("%n%-14s%s".formatted("Encoding", header.getEncodingType()));
+    sb.append("%n%-14s%6s Hz".formatted("Samplerate", header.getSampleRate()));
+    sb.append("%n%-14s%6s kbps".formatted("Bitrate", header.getBitRate()));
     if (header.isVariableBitRate()) {
       sb.append(" (VBR)");
     }
-    sb.append(String.format("%n%-14s%6s", "Channels", header.getChannels()));
-    sb.append(String.format("%n%-14s%6s seconds", "Lengths", header.getTrackLength()));
-    sb.append(String.format("%n%-14s%s", "Encoder", header.getEncoder()));
-    sb.append(String.format("%n%-14s%s %s", "MPEG Version", header.getMpegVersion(), header.getMpegLayer()));
+    sb.append("%n%-14s%6s".formatted("Channels", header.getChannels()));
+    sb.append("%n%-14s%6s seconds".formatted("Lengths", header.getTrackLength()));
+    sb.append("%n%-14s%s".formatted("Encoder", header.getEncoder()));
+    sb.append("%n%-14s%s %s".formatted("MPEG Version", header.getMpegVersion(), header.getMpegLayer()));
 
     if (audioFile.getID3v1Tag() == null) {
-      sb.append(String.format("%n%n%s%n-----------------------------------%n", ID3v1Tag.class.getSimpleName()));
+      sb.append("%n%n%s%n-----------------------------------%n".formatted(ID3v1Tag.class.getSimpleName()));
       sb.append("not provided");
     } else {
       ID3v1Tag v1Tag = audioFile.getID3v1Tag();
-      sb.append(String.format("%n%n%s%n-----------------------------------%n", audioFile.getID3v1Tag().getClass().getSimpleName()));
-      sb.append(String.format("%n%-10s%s", "Title", v1Tag.getFirstTitle()));
-      sb.append(String.format("%n%-10s%s", "Interpret", v1Tag.getFirstArtist()));
-      sb.append(String.format("%n%-10s%s", "Album", v1Tag.getFirstAlbum()));
-      sb.append(String.format("%n%-10s%s", "Genre", v1Tag.getFirstGenre()));
-      sb.append(String.format("%n%-10s%s", "Year", v1Tag.getFirstYear()));
-      sb.append(String.format("%n%-10s%s", "Comment", v1Tag.getFirstComment()));
+      sb.append("%n%n%s%n-----------------------------------%n".formatted(audioFile.getID3v1Tag().getClass().getSimpleName()));
+      sb.append("%n%-10s%s".formatted("Title", v1Tag.getFirstTitle()));
+      sb.append("%n%-10s%s".formatted("Interpret", v1Tag.getFirstArtist()));
+      sb.append("%n%-10s%s".formatted("Album", v1Tag.getFirstAlbum()));
+      sb.append("%n%-10s%s".formatted("Genre", v1Tag.getFirstGenre()));
+      sb.append("%n%-10s%s".formatted("Year", v1Tag.getFirstYear()));
+      sb.append("%n%-10s%s".formatted("Comment", v1Tag.getFirstComment()));
       try {
-        sb.append(String.format("%n%-10s%s", "Track", v1Tag.getFirstTrack()));
+        sb.append("%n%-10s%s".formatted("Track", v1Tag.getFirstTrack()));
       } catch (Exception ignore) {
       }
     }
     if (audioFile.getID3v2Tag() == null) {
-      sb.append(String.format("%n%n%s%n-----------------------------------%n", "ID3v2Tag"));
+      sb.append("%n%n%s%n-----------------------------------%n".formatted("ID3v2Tag"));
       sb.append("not provided");
     } else {
-      sb.append(String.format("%n%n%s%d%s%n-----------------------------------%n", "ID3v", audioFile.getID3v2Tag().getMajorVersion(), "Tag"));
+      sb.append("%n%n%s%d%s%n-----------------------------------%n".formatted("ID3v", audioFile.getID3v2Tag().getMajorVersion(), "Tag"));
       sb.append("provided");
     }
     return sb;

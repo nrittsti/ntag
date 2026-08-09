@@ -27,7 +27,9 @@ Copyright 2016, Nico Rittstieg
       <Button id="open-button" fx:id="openButton" onAction="#handleOpenAction" text="%mnu_open">
         <tooltip><Tooltip text="%mnu_open_tooltip" /></tooltip>
       </Button>  
-      <CheckBox fx:id="scanSubfoldersCheckBox" text="%lbl_scan_subfolders"/>
+      <CheckBox fx:id="scanSubfoldersCheckBox" text="%lbl_scan_subfolders">
+        <tooltip><Tooltip text="%tip_scan_subfolders" /></tooltip>
+      </CheckBox>
       <Button id="save-button" fx:id="saveButton" onAction="#handleSaveAction" text="%mnu_save" disable="true">
         <tooltip><Tooltip text="%mnu_save_tooltip" /></tooltip>
       </Button>
@@ -48,7 +50,9 @@ Copyright 2016, Nico Rittstieg
       <Button id="settings-button" fx:id="settingsButton" onAction="#handleSettingsAction" text="%mnu_settings">
         <tooltip><Tooltip text="%mnu_settings_tooltip" /></tooltip>
       </Button>
-      <Button id="info-button" onAction="#handleAboutAction"/>
+      <Button id="info-button" onAction="#handleAboutAction">
+        <tooltip><Tooltip text="%tip_about" /></tooltip>
+      </Button>
     </ToolBar>
   </top>
   <center>
@@ -62,21 +66,43 @@ Copyright 2016, Nico Rittstieg
       <padding>
         <Insets top="0" right="5" bottom="0" left="5"/>
       </padding>
-      <ButtonLink styleClass="statusbar-label" minWidth="50" text="%tb_filter" onAction="#handleRefreshFilter"/>
-      <ButtonLink styleClass="statusbar-label" fx:id="filterLink" text="All" focusTraversable="false" minWidth="100"/>
+      <ButtonLink styleClass="statusbar-label" minWidth="50" text="%tb_filter" onAction="#handleRefreshFilter">
+        <tooltip><Tooltip text="%tip_filter" /></tooltip>
+      </ButtonLink>
+      <ButtonLink styleClass="statusbar-label" fx:id="filterLink" text="All" focusTraversable="false" minWidth="100">
+        <tooltip><Tooltip text="%tip_filter" /></tooltip>
+      </ButtonLink>
       <Label styleClass="statusbar-label" text="|"/>
-      <Label styleClass="statusbar-label" text="%tb_files" minWidth="60"/>
-      <Label styleClass="statusbar-label" fx:id="fileCountToolbar" minWidth="40"/>
-      <Label styleClass="statusbar-label" fx:id="playtimeToolbar" minWidth="60"/>
-      <Label styleClass="statusbar-label" fx:id="fileSizeToolbar" minWidth="60"/>
+      <Label styleClass="statusbar-label" text="%tb_files" minWidth="60">
+        <tooltip><Tooltip text="%tip_file_count" /></tooltip>
+      </Label>
+      <Label styleClass="statusbar-label" fx:id="fileCountToolbar" minWidth="40">
+        <tooltip><Tooltip text="%tip_file_count" /></tooltip>
+      </Label>
+      <Label styleClass="statusbar-label" fx:id="playtimeToolbar" minWidth="60">
+        <tooltip><Tooltip text="%tip_playtime" /></tooltip>
+      </Label>
+      <Label styleClass="statusbar-label" fx:id="fileSizeToolbar" minWidth="60">
+        <tooltip><Tooltip text="%tip_file_size" /></tooltip>
+      </Label>
       <Label styleClass="statusbar-label" text="|"/>
-      <Label styleClass="statusbar-label" text="%tb_selection" minWidth="60"/>
-      <Label styleClass="statusbar-label" fx:id="selFileCountToolbar" minWidth="40"/>
-      <Label styleClass="statusbar-label" fx:id="selPlaytimeToolbar" minWidth="60"/>
-      <Label styleClass="statusbar-label" fx:id="selFileSizeToolbar" minWidth="60"/>
+      <Label styleClass="statusbar-label" text="%tb_selection" minWidth="60">
+        <tooltip><Tooltip text="%tip_selection_count" /></tooltip>
+      </Label>
+      <Label styleClass="statusbar-label" fx:id="selFileCountToolbar" minWidth="40">
+        <tooltip><Tooltip text="%tip_selection_count" /></tooltip>
+      </Label>
+      <Label styleClass="statusbar-label" fx:id="selPlaytimeToolbar" minWidth="60">
+        <tooltip><Tooltip text="%tip_selection_playtime" /></tooltip>
+      </Label>
+      <Label styleClass="statusbar-label" fx:id="selFileSizeToolbar" minWidth="60">
+        <tooltip><Tooltip text="%tip_selection_size" /></tooltip>
+      </Label>
       <Label styleClass="statusbar-label" text="|"/>
       <ButtonLink styleClass="statusbar-label" fx:id="directoryLink" onAction="#handleOpenDirectory"
-                  focusTraversable="false"/>
+                  focusTraversable="false">
+        <tooltip><Tooltip text="%tip_directory" /></tooltip>
+      </ButtonLink>
     </HBox>
   </bottom>
 </BorderPane>

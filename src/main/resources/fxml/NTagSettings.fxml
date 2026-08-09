@@ -59,7 +59,9 @@
                   <left>15</left>
                 </Insets>
               </VBox.margin>
-              <ComboBox fx:id="themeComboBox" minWidth="200"/>
+              <ComboBox fx:id="themeComboBox" minWidth="200">
+                <tooltip><Tooltip text="%tip_theme" /></tooltip>
+              </ComboBox>
               <Label text="%lbl_requires_restart"/>
             </HBox>
             <!--
@@ -82,7 +84,9 @@
                   <left>15</left>
                 </Insets>
               </VBox.margin>
-              <ComboBox fx:id="languageComboBox" minWidth="200"/>
+              <ComboBox fx:id="languageComboBox" minWidth="200">
+                <tooltip><Tooltip text="%tip_language" /></tooltip>
+              </ComboBox>
               <Label text="%lbl_requires_restart"/>
             </HBox>
             <!--
@@ -108,8 +112,12 @@
               <fx:define>
                 <ToggleGroup fx:id="sizeToggleGroup"/>
               </fx:define>
-              <RadioButton fx:id="binaryRadioButton" toggleGroup="$sizeToggleGroup" text="%lbl_binary"/>
-              <RadioButton fx:id="decimalRadioButton" toggleGroup="$sizeToggleGroup" text="%lbl_decimal"/>
+              <RadioButton fx:id="binaryRadioButton" toggleGroup="$sizeToggleGroup" text="%lbl_binary">
+                <tooltip><Tooltip text="%tip_file_size_units" /></tooltip>
+              </RadioButton>
+              <RadioButton fx:id="decimalRadioButton" toggleGroup="$sizeToggleGroup" text="%lbl_decimal">
+                <tooltip><Tooltip text="%tip_file_size_units" /></tooltip>
+              </RadioButton>
             </HBox>
             <!--
             *
@@ -131,6 +139,7 @@
                   <left>15</left>
                 </Insets>
               </VBox.margin>
+              <tooltip><Tooltip text="%tip_filename_format" /></tooltip>
             </RegexTextfield>
             <CheckBox fx:id="filenameStripUnsafeCharsCheckBox" text="%lbl_strip_unsafe_chars">
               <VBox.margin>
@@ -139,6 +148,7 @@
                   <left>15</left>
                 </Insets>
               </VBox.margin>
+              <tooltip><Tooltip text="%tip_strip_unsafe_chars" /></tooltip>
             </CheckBox>
             <!--
             *
@@ -160,6 +170,7 @@
                   <left>15</left>
                 </Insets>
               </VBox.margin>
+              <tooltip><Tooltip text="%tip_genre_favorites" /></tooltip>
             </TextField>
             <!--
             *
@@ -181,7 +192,9 @@
                   <left>15</left>
                 </Insets>
               </VBox.margin>
-              <ComboBox fx:id="dateFormatComboBox" minWidth="200"/>
+              <ComboBox fx:id="dateFormatComboBox" minWidth="200">
+                <tooltip><Tooltip text="%tip_date_format" /></tooltip>
+              </ComboBox>
               <Label text="%lbl_requires_restart"/>
             </HBox>
           </VBox>
@@ -198,6 +211,7 @@
                   <left>15</left>
                 </Insets>
               </VBox.margin>
+              <tooltip><Tooltip text="%tip_show_directory_scan_errors" /></tooltip>
             </CheckBox>
             <CheckBox fx:id="scanSubfoldersCheckBox" text="%lbl_scan_subfolders">
               <VBox.margin>
@@ -206,6 +220,7 @@
                   <left>15</left>
                 </Insets>
               </VBox.margin>
+              <tooltip><Tooltip text="%tip_scan_subfolders" /></tooltip>
             </CheckBox>
               <Label text="%lbl_show_warnings">
                   <VBox.margin>
@@ -222,6 +237,7 @@
                           <left>15</left>
                       </Insets>
                   </VBox.margin>
+                  <tooltip><Tooltip text="%tip_warn_artwork" /></tooltip>
               </CheckBox>
               <CheckBox fx:id="warnIfLyricsIsMissing" text="%tip_missing_lyrics">
                   <VBox.margin>
@@ -230,6 +246,7 @@
                           <left>15</left>
                       </Insets>
                   </VBox.margin>
+                  <tooltip><Tooltip text="%tip_warn_lyrics" /></tooltip>
               </CheckBox>
               <CheckBox fx:id="warnIfRatingIsMissing" text="%tip_missing_rating">
                   <VBox.margin>
@@ -238,6 +255,7 @@
                           <left>15</left>
                       </Insets>
                   </VBox.margin>
+                  <tooltip><Tooltip text="%tip_warn_rating" /></tooltip>
               </CheckBox>
               <CheckBox fx:id="warnIfMetadataIsIncomplete" text="%tip_metadata_is_incomplete">
                   <VBox.margin>
@@ -246,6 +264,7 @@
                           <left>15</left>
                       </Insets>
                   </VBox.margin>
+                  <tooltip><Tooltip text="%tip_warn_metadata" /></tooltip>
               </CheckBox>
           </VBox>
         </Tab>
@@ -271,15 +290,20 @@
               <fx:define>
                 <ToggleGroup fx:id="id3ToggleGroup"/>
               </fx:define>
-              <CheckBox fx:id="id3v1CheckBox" text="ID3v1.1"/>
+              <CheckBox fx:id="id3v1CheckBox" text="ID3v1.1">
+                <tooltip><Tooltip text="%tip_id3v1" /></tooltip>
+              </CheckBox>
               <RadioButton fx:id="id3v23RadioButton" toggleGroup="$id3ToggleGroup" text="ID3v2.3">
                 <HBox.margin>
                   <Insets>
                     <left>20</left>
                   </Insets>
                 </HBox.margin>
+                <tooltip><Tooltip text="%tip_id3v23" /></tooltip>
               </RadioButton>
-              <RadioButton fx:id="id3v24RadioButton" toggleGroup="$id3ToggleGroup" text="ID3v2.4"/>
+              <RadioButton fx:id="id3v24RadioButton" toggleGroup="$id3ToggleGroup" text="ID3v2.4">
+                <tooltip><Tooltip text="%tip_id3v24" /></tooltip>
+              </RadioButton>
             </HBox>
             <!--
             *
@@ -304,8 +328,12 @@
                 </Insets>
               </VBox.margin>
               <Label text="EMail" minWidth="80"/>
-              <RegexTextfield maxLength="30" fx:id="id3RatingMailTextField" minWidth="200"/>
-              <CheckBox fx:id="id3RatingEnforceSingleFrameCheckBox" text="%lbl_enforce_single_frame"/>
+              <RegexTextfield maxLength="30" fx:id="id3RatingMailTextField" minWidth="200">
+                <tooltip><Tooltip text="%tip_rating_mail" /></tooltip>
+              </RegexTextfield>
+              <CheckBox fx:id="id3RatingEnforceSingleFrameCheckBox" text="%lbl_enforce_single_frame">
+                <tooltip><Tooltip text="%tip_rating_enforce_single_frame" /></tooltip>
+              </CheckBox>
             </HBox>
             <HBox spacing="5" alignment="CENTER_LEFT">
               <VBox.margin>
@@ -315,7 +343,9 @@
                 </Insets>
               </VBox.margin>
               <Label text="%lbl_conversion" minWidth="80"/>
-              <RegexTextfield maxLength="50" regex="[ ,0-9]" fx:id="id3RatingConversionTextField" minWidth="350"/>
+              <RegexTextfield maxLength="50" regex="[ ,0-9]" fx:id="id3RatingConversionTextField" minWidth="350">
+                <tooltip><Tooltip text="%tip_rating_conversion" /></tooltip>
+              </RegexTextfield>
               <Label text="(1-10)"/>
             </HBox>
             <!--
@@ -337,6 +367,7 @@
                   <top>5</top>
                 </Insets>
               </VBox.margin>
+              <tooltip><Tooltip text="%tip_frame_blacklist" /></tooltip>
             </TextField>
             <!--
             *
@@ -383,6 +414,7 @@
                   <left>30</left>
                 </Insets>
               </VBox.margin>
+              <tooltip><Tooltip text="%tip_tdrl" /></tooltip>
             </CheckBox>
             <CheckBox fx:id="tdorCheckBox" text="TDOR (Original release time)">
               <VBox.margin>
@@ -391,6 +423,7 @@
                   <left>30</left>
                 </Insets>
               </VBox.margin>
+              <tooltip><Tooltip text="%tip_tdor" /></tooltip>
             </CheckBox>
             <CheckBox fx:id="tdrcCheckBox" text="TDRC (Recording time)">
               <VBox.margin>
@@ -399,6 +432,7 @@
                   <left>30</left>
                 </Insets>
               </VBox.margin>
+              <tooltip><Tooltip text="%tip_tdrc" /></tooltip>
             </CheckBox>
           </VBox>
         </Tab>
@@ -424,7 +458,9 @@
                 </Insets>
               </VBox.margin>
               <Label text="%lbl_conversion" minWidth="80"/>
-              <RegexTextfield maxLength="50" regex="[ ,0-9]" fx:id="mp4RatingConversionTextField" minWidth="300"/>
+              <RegexTextfield maxLength="50" regex="[ ,0-9]" fx:id="mp4RatingConversionTextField" minWidth="300">
+                <tooltip><Tooltip text="%tip_rating_conversion" /></tooltip>
+              </RegexTextfield>
               <Label text="(1-10)"/>
             </HBox>
           </VBox>
@@ -451,7 +487,9 @@
                 </Insets>
               </VBox.margin>
               <Label text="%lbl_conversion" minWidth="80"/>
-              <RegexTextfield maxLength="50" regex="[ ,0-9]" fx:id="flacRatingConversionTextField" minWidth="300"/>
+              <RegexTextfield maxLength="50" regex="[ ,0-9]" fx:id="flacRatingConversionTextField" minWidth="300">
+                <tooltip><Tooltip text="%tip_rating_conversion" /></tooltip>
+              </RegexTextfield>
               <Label text="(1-10)"/>
             </HBox>
           </VBox>
@@ -478,7 +516,9 @@
                 </Insets>
               </VBox.margin>
               <Label text="%lbl_conversion" minWidth="80"/>
-              <RegexTextfield maxLength="50" regex="[ ,0-9]" fx:id="oggRatingConversionTextField" minWidth="300"/>
+              <RegexTextfield maxLength="50" regex="[ ,0-9]" fx:id="oggRatingConversionTextField" minWidth="300">
+                <tooltip><Tooltip text="%tip_rating_conversion" /></tooltip>
+              </RegexTextfield>
               <Label text="(1-10)"/>
             </HBox>
           </VBox>
@@ -505,7 +545,9 @@
                 </Insets>
               </VBox.margin>
               <Label text="%lbl_conversion" minWidth="80"/>
-              <RegexTextfield maxLength="50" regex="[ ,0-9]" fx:id="wmaRatingConversionTextField" minWidth="300"/>
+              <RegexTextfield maxLength="50" regex="[ ,0-9]" fx:id="wmaRatingConversionTextField" minWidth="300">
+                <tooltip><Tooltip text="%tip_rating_conversion" /></tooltip>
+              </RegexTextfield>
               <Label text="(1-10)"/>
             </HBox>
           </VBox>
@@ -521,31 +563,49 @@
               <ColumnConstraints hgrow="NEVER" maxWidth="50"/>
             </columnConstraints>
             <Label text="%lbl_format" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <ComboBox fx:id="artworkImageFormatComboBox" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <ComboBox fx:id="artworkImageFormatComboBox" GridPane.columnIndex="1" GridPane.rowIndex="0">
+              <tooltip><Tooltip text="%tip_artwork_format" /></tooltip>
+            </ComboBox>
 
             <CheckBox fx:id="artworkEnforceImageTypeCheckBox" text="%lbl_enforce_image_format" GridPane.columnIndex="1"
-                      GridPane.rowIndex="1"/>
+                      GridPane.rowIndex="1">
+              <tooltip><Tooltip text="%tip_artwork_enforce_format" /></tooltip>
+            </CheckBox>
 
             <Label text="%lbl_quality" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
             <Slider fx:id="artworkQualitySlider" GridPane.columnIndex="1" GridPane.rowIndex="2" showTickLabels="true"
-                    showTickMarks="true" min="0.5" max="1.0" majorTickUnit="0.1" minorTickCount="5"/>
+                    showTickMarks="true" min="0.5" max="1.0" majorTickUnit="0.1" minorTickCount="5">
+              <tooltip><Tooltip text="%tip_artwork_quality" /></tooltip>
+            </Slider>
             <RegexTextfield fx:id="artworkQualityTextField" GridPane.columnIndex="2" GridPane.rowIndex="2" maxLength="4"
-                            regex="[.,0-9]"/>
+                            regex="[.,0-9]">
+              <tooltip><Tooltip text="%tip_artwork_quality" /></tooltip>
+            </RegexTextfield>
 
             <Label text="%lbl_max_size" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
             <Slider fx:id="artworkKilobytesSlider" GridPane.columnIndex="1" GridPane.rowIndex="3" showTickLabels="true"
-                    showTickMarks="true" min="32" max="512" majorTickUnit="96" minorTickCount="3"/>
+                    showTickMarks="true" min="32" max="512" majorTickUnit="96" minorTickCount="3">
+              <tooltip><Tooltip text="%tip_artwork_max_kilobytes" /></tooltip>
+            </Slider>
             <RegexTextfield fx:id="artworkKilobytesTextField" GridPane.columnIndex="2" GridPane.rowIndex="3"
-                            maxLength="3" regex="[0-9]"/>
+                            maxLength="3" regex="[0-9]">
+              <tooltip><Tooltip text="%tip_artwork_max_kilobytes" /></tooltip>
+            </RegexTextfield>
 
             <Label text="%lbl_max_resolution" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
             <Slider fx:id="artworkResolutionSlider" GridPane.columnIndex="1" GridPane.rowIndex="4" showTickLabels="true"
-                    showTickMarks="true" min="200" max="1000" majorTickUnit="100" minorTickCount="1"/>
+                    showTickMarks="true" min="200" max="1000" majorTickUnit="100" minorTickCount="1">
+              <tooltip><Tooltip text="%tip_artwork_max_resolution" /></tooltip>
+            </Slider>
             <RegexTextfield fx:id="artworkResolutionTextField" GridPane.columnIndex="2" GridPane.rowIndex="4"
-                            maxLength="3" regex="[0-9]"/>
+                            maxLength="3" regex="[0-9]">
+              <tooltip><Tooltip text="%tip_artwork_max_resolution" /></tooltip>
+            </RegexTextfield>
 
             <CheckBox fx:id="artworkEnforceSingleArtworkCheckBox" text="%lbl_enforce_single_artwork"
-                      GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                      GridPane.columnIndex="1" GridPane.rowIndex="5">
+              <tooltip><Tooltip text="%tip_artwork_enforce_single" /></tooltip>
+            </CheckBox>
           </GridPane>
         </Tab>
         <Tab text="%lbl_lyrics" closable="false">
@@ -554,7 +614,9 @@
               <Insets top="10" right="5" bottom="5" left="5"/>
             </padding>
             <Label text="Provider"/>
-            <TextArea fx:id="lyricProviderTextArea"/>
+            <TextArea fx:id="lyricProviderTextArea">
+              <tooltip><Tooltip text="%tip_lyrics_provider" /></tooltip>
+            </TextArea>
             <Label text="%lbl_help_lyrics_provider"/>
           </VBox>
         </Tab>

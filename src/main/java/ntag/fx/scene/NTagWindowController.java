@@ -25,7 +25,6 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -262,8 +261,8 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
       if (appProperties.isShowDirectoryScanErrors()) {
         FxUtil.showErrors("Directory scanning errors", task.getErrors());        
       } else {
-        FxUtil.showNotification(String.format(
-          "%d errors occurred while scanning this directory, please check the logging tab.", 
+        FxUtil.showNotification(
+          "%d errors occurred while scanning this directory, please check the logging tab.".formatted(
           task.getErrors().size()), stage, 5000);
       }      
     } 
@@ -310,7 +309,7 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
   @SuppressWarnings("unused")
   @FXML
   private void handleOpenDirectory(final ActionEvent event) {
-    URI uri = Paths.get(appProperties.getLastDirectory()).toUri();
+    URI uri = Path.of(appProperties.getLastDirectory()).toUri();
     openURI(uri);
   }
 
@@ -369,9 +368,9 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
 
     DialogResult<AdjustArtworkViewModel> dresult = FxUtil.showDialog("ntag", "Adjust Artwork", //
             adjArtworkViewModel, getClass().getResource("/fxml/AdjustArtwork.fxml"), getStage(), 550, 380);
-    if (dresult.getRespone() == DialogResponse.SELECTION) {
+    if (dresult.response() == DialogResponse.SELECTION) {
       adjArtworkViewModel.getFiles().addAll(viewModel.getSortedFiles());
-    } else if (dresult.getRespone() == DialogResponse.ALL) {
+    } else if (dresult.response() == DialogResponse.ALL) {
       adjArtworkViewModel.getFiles().addAll(viewModel.getFiles());
     } else {
       return;
@@ -403,6 +402,7 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
     }
     Alert alert = new Alert(AlertType.CONFIRMATION, null, buttons);
     alert.setHeaderText(Resources.get("ntag", "mnu_number_Tracks"));
+    alert.setContentText(Resources.get("ntag", "msg_number_tracks_text"));
     alert.getDialogPane().getStylesheets().addAll(FxUtil.getPrimaryStage().getScene().getStylesheets());
     Optional<ButtonType> result = alert.showAndWait();
     List<TagFile> files = new ArrayList<>();
@@ -447,9 +447,9 @@ public class NTagWindowController extends AbstractDialogController<NTagViewModel
     renameFilesViewModel.setUpdatedFiles(viewModel.getUpdatedFiles());
     DialogResult<RenameFilesViewModel> dresult = FxUtil.showDialog("ntag", Resources.get("ntag", "lbl_renaming_files"), //
             renameFilesViewModel, getClass().getResource("/fxml/RenameFiles.fxml"), getStage(), 380, 250);
-    if (dresult.getRespone() == DialogResponse.SELECTION) {
+    if (dresult.response() == DialogResponse.SELECTION) {
       renameFilesViewModel.getFiles().addAll(viewModel.getSelectedFiles());
-    } else if (dresult.getRespone() == DialogResponse.ALL) {
+    } else if (dresult.response() == DialogResponse.ALL) {
       renameFilesViewModel.getFiles().addAll(viewModel.getSortedFiles());
     } else {
       return;

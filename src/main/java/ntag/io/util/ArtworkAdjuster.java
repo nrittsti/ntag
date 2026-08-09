@@ -79,7 +79,7 @@ public class ArtworkAdjuster {
     }
     // (4): check max fileSize
     if ((artwork.getImageData().length / 1000) > getMaxKilobytes()) {
-      throw new IOException(String.format("Cannot shrink artwork to %d KB!", getMaxKilobytes()));
+      throw new IOException("Cannot shrink artwork to %d KB!".formatted(getMaxKilobytes()));
     }
     return artwork;
   }

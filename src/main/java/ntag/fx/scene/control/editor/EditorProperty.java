@@ -176,7 +176,7 @@ public class EditorProperty<T> {
           commit(newValue);
         }
       } catch (Exception e) {
-        LOGGER.log(Level.SEVERE, String.format("Cannot set new value to field %s", getName()), e);
+        LOGGER.log(Level.SEVERE, "Cannot set new value to field %s".formatted(getName()), e);
       }
     });
 

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +22,7 @@ class StringListConverterTest {
   @Test
   void testToString() {
     // given
-    List<String> given = Arrays.asList("a", "b", "c");
+    List<String> given = List.of("a", "b", "c");
     String expected = "a, b, c";
     // when
     String result = this.converter.toString(given);
@@ -35,7 +34,7 @@ class StringListConverterTest {
   void fromString() {
     // given
     String given = "a, b,c";
-    List<String> expected = Arrays.asList("a", "b", "c");
+    List<String> expected = List.of("a", "b", "c");
     // when
     List<String> result = this.converter.fromString(given);
     // then

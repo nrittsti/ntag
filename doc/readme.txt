@@ -26,19 +26,26 @@ This distribution contains the following files:
    history.txt                - History of NTag
    license.txt                - License information
    ntag.cmd                   - Windows Launcher
-   ntag.exe                   - Windows exe (optional)
    ntag.sh                    - Linux CLI Launcher
    ntag.desktop               - Linux Desktop Launcher
    ntag.jar                   - Executable Java program
-   ntag.desktop               - Linux Launcher
    ntag_logging.properties    - Logging and Debug settings
    readme.txt                 - This file
    tag_mapping.pdf            - Tag mapping documentation
 
+Available release archives:
+
+   Linux:   ntag-<ver>-linux_bin.tar.gz
+   Windows: ntag-<ver>-win_bin.zip (portable) and ntag-<ver>-win_setup.exe (Inno Setup installer with Start Menu shortcuts)
+   macOS:   ntag-<ver>-macos_bin.tar.gz (contains a self-contained NTag.app bundle)
+
 Build with Maven:
--------------------
+------------------
 
 mvn clean package
+
+The build emits the release archive for the operating system you build on
+(linux-dist, windows-dist or macos-dist Maven profile). Requires a JDK 25 toolchain.
 
 Download & Installation:
 --------------------------
@@ -67,10 +74,10 @@ Options:
 -p --portable     use working directory as home
 
 Linux Wayland Support:
---------------------------
+-------------------------
 
-Java 21 LTS does not have wayland support.
-NTag works with xorg-xwayland as a compatibility layer.
+Java 25 LTS supports Wayland natively.
+If you encounter issues, NTag works with xorg-xwayland as a compatibility layer.
 https://wiki.archlinux.org/title/Wayland#Xwayland
 
 Linux HiDPI Settings:
@@ -138,8 +145,8 @@ JAudiotagger Library 3.0.1
 Autor:   https://www.jthink.net/jaudiotagger/
 Licence: LGPL
 
-Open JDK 21
-Autor:   https://openjdk.org/projects/jdk/21/
+Open JDK 25
+Autor:   https://openjdk.org/projects/jdk/25/
 Licence: GPL v2 with the Classpath Exception
 
 OpenJFX

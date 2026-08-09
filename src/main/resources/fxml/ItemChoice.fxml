@@ -35,31 +35,41 @@ Copyright 2016, Nico Rittstieg
       <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="0">
         <Label text="%lbl_filter"/>
         <HBox spacing="5">
-          <TextField fx:id="filterTextField"/>
-          <Button text="..." onAction="#handleFilterAction"/>
+          <TextField fx:id="filterTextField">
+            <tooltip><Tooltip text="%tip_filter_items" /></tooltip>
+          </TextField>
+          <Button text="..." onAction="#handleFilterAction">
+            <tooltip><Tooltip text="%tip_filter_items" /></tooltip>
+          </Button>
         </HBox>
         <Label text="%lbl_choices"/>
         <ListView fx:id="itemsListView"/>
       </VBox>
       <!-- Center: Button Bar -->
       <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="5" alignment="TOP_CENTER">
-        <Button fx:id="addItemButton" text="Add" onAction="#handleAddItemAction" prefWidth="60" disable="true">
+        <Button fx:id="addItemButton" text="%btn_add" onAction="#handleAddItemAction" prefWidth="60" disable="true">
           <VBox.margin>
             <Insets>
               <top>160</top>
             </Insets>
           </VBox.margin>
+          <tooltip><Tooltip text="%tip_add_item" /></tooltip>
         </Button>
-        <Button fx:id="removeItemButton" text="Del" onAction="#handleRemoveItemAction" prefWidth="60" disable="true"/>
-        <Button fx:id="moveUpItemButton" text="Up" onAction="#handleMoveUpItemAction" prefWidth="60" disable="true">
+        <Button fx:id="removeItemButton" text="%btn_delete" onAction="#handleRemoveItemAction" prefWidth="60" disable="true">
+          <tooltip><Tooltip text="%tip_remove_item" /></tooltip>
+        </Button>
+        <Button fx:id="moveUpItemButton" text="%btn_up" onAction="#handleMoveUpItemAction" prefWidth="60" disable="true">
           <VBox.margin>
             <Insets>
               <top>10</top>
             </Insets>
           </VBox.margin>
+          <tooltip><Tooltip text="%tip_move_up" /></tooltip>
         </Button>
-        <Button fx:id="moveDownItemButton" text="Down" onAction="#handleMoveDownItemAction" prefWidth="60"
-                disable="true"/>
+        <Button fx:id="moveDownItemButton" text="%btn_down" onAction="#handleMoveDownItemAction" prefWidth="60"
+                disable="true">
+          <tooltip><Tooltip text="%tip_move_down" /></tooltip>
+        </Button>
       </VBox>
       <!-- Right : Selection List -->
       <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" spacing="0">
@@ -67,8 +77,12 @@ Copyright 2016, Nico Rittstieg
         <ListView fx:id="favListView" minHeight="80" maxHeight="80"/>
         <Label text="%lbl_input"/>
         <HBox spacing="5">
-          <TextField fx:id="createItemTextField"/>
-          <Button fx:id="createItemButton" text="Add" onAction="#handleCreateItemAction" minWidth="50"/>
+          <TextField fx:id="createItemTextField">
+            <tooltip><Tooltip text="%tip_create_item" /></tooltip>
+          </TextField>
+          <Button fx:id="createItemButton" text="%btn_add" onAction="#handleCreateItemAction" minWidth="50">
+            <tooltip><Tooltip text="%tip_create_item" /></tooltip>
+          </Button>
         </HBox>
         <Label text="%lbl_selection"/>
         <ListView fx:id="selectionListView"/>

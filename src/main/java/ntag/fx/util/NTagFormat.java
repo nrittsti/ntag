@@ -39,7 +39,7 @@ public final class NTagFormat {
   }
 
   public static String bitrate(final long bitrate) {
-    return String.format("%d kbit/s", bitrate);
+    return "%d kbit/s".formatted(bitrate);
   }
 
   /**
@@ -51,11 +51,11 @@ public final class NTagFormat {
   public static String playtime(final long playtime) {
     Date date = new Date((playtime * 1000) - TimeZone.getDefault().getRawOffset());
     if (playtime < 3600) {
-      return String.format("%1$TM:%1$TS", date);
+      return "%1$TM:%1$TS".formatted(date);
     } else if (playtime < 86400) {
-      return String.format("%1$TH:%1$TM:%1$TS", date);
+      return "%1$TH:%1$TM:%1$TS".formatted(date);
     } else {
-      return String.format("%1$td:%1$TH:%1$TM:%1$TS", date);
+      return "%1$td:%1$TH:%1$TM:%1$TS".formatted(date);
     }
   }
 

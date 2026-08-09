@@ -53,7 +53,7 @@ public final class JAudiotaggerUtil {
   public static AudioFile readAudioFile(final Path filePath) throws NTagException {
 
     if (!Files.exists(filePath)) {
-      String msg = String.format("The file '%s' does not exists.", filePath.toString());
+      String msg = "The file '%s' does not exists.".formatted(filePath.toString());
       TagFileReader.LOGGER.severe(msg);
       throw new NTagException(msg);
     }

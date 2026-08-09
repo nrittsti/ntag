@@ -207,7 +207,7 @@ public enum Genre {
   }
 
   public static List<Genre> getAllGenre() {
-    List<Genre> list = new ArrayList<>();
+    var list = new ArrayList<Genre>();
     for (Genre gt : Genre.values()) {
       if (gt != UNKNOWN) {
         list.add(gt);
@@ -219,7 +219,7 @@ public enum Genre {
 
   public static List<String> getAllGenreAsString() {
     List<Genre> genreList = getAllGenre();
-    List<String> resultList = new ArrayList<>();
+    var resultList = new ArrayList<String>();
     for (Genre genre : genreList) {
       resultList.add(genre.getFirstLabel());
     }

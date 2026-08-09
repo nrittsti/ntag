@@ -147,7 +147,7 @@ public final class FxUtil {
 
       return new DialogResult<>(controller.getDialogResponse(), controller.getViewModel());
     } catch (Exception e) {
-      LOGGER.log(Level.SEVERE, String.format("Loading FXML '%s' failed:", fxml), e);
+      LOGGER.log(Level.SEVERE, "Loading FXML '%s' failed:".formatted(fxml), e);
     }
     return new DialogResult<>(DialogResponse.NONE, null);
   }
@@ -160,7 +160,7 @@ public final class FxUtil {
       loader.setController(controller);
       loader.load();
     } catch (Exception e) {
-      LOGGER.log(Level.SEVERE, String.format("Loading FXML '%s' failed:", fxml), e);
+      LOGGER.log(Level.SEVERE, "Loading FXML '%s' failed:".formatted(fxml), e);
     }
   }
 
@@ -217,7 +217,12 @@ public final class FxUtil {
           choosen = icon;
         }
       }
-      dialog.setGraphic(new ImageView(choosen));
+      ImageView imageView = new ImageView(choosen);
+      imageView.setFitWidth(64);
+      imageView.setFitHeight(64);
+      imageView.setPreserveRatio(true);
+      imageView.setSmooth(true);
+      dialog.setGraphic(imageView);
     }
 
     // Set the button types.
@@ -270,8 +275,8 @@ public final class FxUtil {
     try {
       openURI(new URI(uri));
     } catch (URISyntaxException e) {
-      LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", uri), e);
-      FxUtil.showException(String.format("Failed to launch this URI='%s'", uri), e);
+      LOGGER.log(Level.SEVERE, "Failed to launch this URI='%s'".formatted(uri), e);
+      FxUtil.showException("Failed to launch this URI='%s'".formatted(uri), e);
     }
   }
 
@@ -284,8 +289,8 @@ public final class FxUtil {
           Runtime.getRuntime().exec(new String[] {"xdg-open", uri.toString()});
         }
       } catch (Exception e) {
-        LOGGER.log(Level.SEVERE, String.format("Failed to launch this URI='%s'", uri), e);
-        FxUtil.showException(String.format("Failed to launch this URI='%s'", uri), e);
+        LOGGER.log(Level.SEVERE, "Failed to launch this URI='%s'".formatted(uri), e);
+        FxUtil.showException("Failed to launch this URI='%s'".formatted(uri), e);
       }
     }).start();
   }

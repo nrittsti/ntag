@@ -215,22 +215,22 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
         try {
             List<Integer> list = integerListConverter.fromString(text);
             if (list.size() != 10) {
-                errorLabel.setText(String.format("%s Rating Conversion: invalid item size %d", format, list.size()));
+                errorLabel.setText("%s Rating Conversion: invalid item size %d".formatted(format, list.size()));
                 return false;
             }
             for (int i = 0; i < list.size(); i++) {
                 int value = list.get(i);
                 if (value < 0 || value > 255) {
-                    errorLabel.setText(String.format("%s Rating Conversion: invalid item %d=%d", format, i + 1, value));
+                    errorLabel.setText("%s Rating Conversion: invalid item %d=%d".formatted(format, i + 1, value));
                     return false;
                 }
                 if (i > 0 && value < list.get(i - 1)) {
-                    errorLabel.setText(String.format("%s Rating Conversion: invalid item %d=%d", format, i + 1, value));
+                    errorLabel.setText("%s Rating Conversion: invalid item %d=%d".formatted(format, i + 1, value));
                     return false;
                 }
             }
         } catch (Exception e) {
-            errorLabel.setText(String.format("%s Rating Conversion: %s", format, e.getMessage()));
+            errorLabel.setText("%s Rating Conversion: %s".formatted(format, e.getMessage()));
             return false;
         }
         return true;
@@ -372,11 +372,7 @@ public class NTagSettingsController extends AbstractDialogController<NTagPropert
     // ***
 
     private String toText(List<String> list) {
-        StringBuilder sb = new StringBuilder();
-        for (String value : list) {
-            sb.append(value).append("\n");
-        }
-        return sb.toString();
+        return String.join("\n", list);
     }
 
     private List<String> toList(String value) {

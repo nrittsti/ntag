@@ -46,7 +46,6 @@ import org.jaudiotagger.tag.asf.AsfFieldKey;
 import org.jaudiotagger.tag.asf.AsfTag;
 import org.jaudiotagger.tag.id3.AbstractID3v2Frame;
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
-import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
 import org.jaudiotagger.tag.id3.TyerTdatAggregatedFrame;
 import org.jaudiotagger.tag.id3.framebody.*;
 import org.jaudiotagger.tag.mp4.Mp4FieldKey;
@@ -74,25 +73,25 @@ public final class TagFieldInputDialogs {
       if (e.isCommon()) {
         commonFields.add(e.name());
       }
-      fieldDescMap.put(e.name(), String.format("%s (%s)", e.name(), e.getLabel()));
+      fieldDescMap.put(e.name(), "%s (%s)".formatted(e.name(), e.getLabel()));
     }
     for (VorbisComments e : VorbisComments.values()) {
       if (e.isCommon()) {
         commonFields.add(e.name());
       }
-      fieldDescMap.put(e.name(), String.format("%s (%s)", e.name(), e.getLabel()));
+      fieldDescMap.put(e.name(), "%s (%s)".formatted(e.name(), e.getLabel()));
     }
     for (ASF e : ASF.values()) {
       if (e.isCommon()) {
         commonFields.add(e.name());
       }
-      fieldDescMap.put(e.getCode(), String.format("%s (%s)", e.getCode(), e.getLabel()));
+      fieldDescMap.put(e.getCode(), "%s (%s)".formatted(e.getCode(), e.getLabel()));
     }
     for (Atoms e : Atoms.values()) {
       if (e.isCommon()) {
         commonFields.add(e.name());
       }
-      fieldDescMap.put(e.getCode(), String.format("%s (%s)", e.getCode(), e.getLabel()));
+      fieldDescMap.put(e.getCode(), "%s (%s)".formatted(e.getCode(), e.getLabel()));
     }
   }
 
@@ -111,9 +110,11 @@ public final class TagFieldInputDialogs {
 
     CheckBox showCommonTagsCheckBox = new CheckBox(Resources.get("ntag", "lbl_common_tags"));
     showCommonTagsCheckBox.setMinWidth(200);
+    showCommonTagsCheckBox.setTooltip(new Tooltip(Resources.get("ntag", "tip_common_tags")));
 
     TextField quickFilterTextField = new TextField();
-    quickFilterTextField.setPromptText("Quick Filter");
+    quickFilterTextField.setPromptText(Resources.get("ntag", "lbl_quick_filter"));
+    quickFilterTextField.setTooltip(new Tooltip(Resources.get("ntag", "tip_quick_filter")));
 
     quickFilterTextField.textProperty().addListener(obs ->
             filterTagList(quickFilterTextField, filteredTagList, showCommonTagsCheckBox)
@@ -151,15 +152,14 @@ public final class TagFieldInputDialogs {
       try {
         audioFile.getTagOrCreateAndSetDefault().addField(tagField);
         if (LOGGER.isLoggable(Level.INFO)) {
-          LOGGER.info(String.format("Created new %s Tag in file '%s'", tagField.getId(), audioFile.getFile().getName()));
+          LOGGER.info("Created new %s Tag in file '%s'".formatted(tagField.getId(), audioFile.getFile().getName()));
         }
       } catch (FieldDataInvalidException e) {
         throw new NTagException("Can't create TagField  " + tagField.getId(), e);
       }
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   private static void filterTagList(TextField quickFilterTextField, FilteredList<TagField> filteredTagList, CheckBox showCommonTagsCheckBox) {
@@ -173,80 +173,88 @@ public final class TagFieldInputDialogs {
   }
 
   public static boolean showTagFieldEditor(final TagField tagField) throws NTagException {
-    if (tagField instanceof TyerTdatAggregatedFrame) {
-      return showTyerTdatInputDialog((TyerTdatAggregatedFrame) tagField);
-    } else if (tagField instanceof AbstractID3v2Frame) {
-      AbstractTagFrameBody body = ((AbstractID3v2Frame) tagField).getBody();
-      if (body instanceof FrameBodyTXXX) {
-        FrameBodyTXXX txxxBody = (FrameBodyTXXX) body;
-        return showTxxxInputDialog(txxxBody);
-      } else if (body instanceof FrameBodyCOMM) {
-        FrameBodyCOMM comm = (FrameBodyCOMM) body;
-        Optional<String> result = showSimpleTextInputDialog(tagField.getId(), comm.getFirstTextValue());
-        if (result.isPresent()) {
-          comm.setText(result.get().trim());
-          return true;
-        } else {
-          return false;
-        }
-      } else if (body instanceof AbstractFrameBodyTextInfo) {
-        AbstractFrameBodyTextInfo textBody = (AbstractFrameBodyTextInfo) body;
-        Optional<String> result = showSimpleTextInputDialog(tagField.getId(), textBody.getFirstTextValue());
-        if (result.isPresent()) {
-          textBody.setText(result.get().trim());
-          return true;
-        } else {
-          return false;
-        }
-      } else if (body instanceof FrameBodyPOPM) {
-        return showPopmInputDialog((FrameBodyPOPM) body);
-      } else if (body instanceof FrameBodyUSLT) {
-        FrameBodyUSLT textBody = (FrameBodyUSLT) body;
-        Optional<String> result = showTextAreaDialog(tagField.getId(), textBody.getLyric());
-        if (result.isPresent()) {
-          textBody.setLyric(result.get());
-          return true;
-        } else {
-          return false;
-        }
-      } else if (body instanceof FrameBodyPCNT) {
-        FrameBodyPCNT pcnt = (FrameBodyPCNT) body;
-        Optional<String> result = showSimpleTextInputDialog(tagField.getId(), Long.toString(pcnt.getCounter()), "[0-9]*");
-        if (result.isPresent()) {
-          pcnt.setCounter(Long.parseLong(result.get()));
-          return true;
-        } else {
-          return false;
-        }
-      } else if (body instanceof FrameBodyTPOS) {
-        FrameBodyTPOS tpos = (FrameBodyTPOS) body;
-        return showDiscInputDialog(tpos);
-      } else if (body instanceof FrameBodyTRCK) {
-        FrameBodyTRCK tpos = (FrameBodyTRCK) body;
-        return showTrackInputDialog(tpos);
-      }
-    } else if (tagField instanceof Mp4DiscNoField) {
-      Mp4DiscNoField disc = (Mp4DiscNoField) tagField;
-      return showDiscInputDialog(disc);
-    } else if (tagField instanceof Mp4TrackField) {
-      Mp4TrackField track = (Mp4TrackField) tagField;
-      return showTrackInputDialog(track);
-    } else if (tagField instanceof TagTextField) {
-      TagTextField textField = (TagTextField) tagField;
-      Optional<String> result;
-      if (tagField.getId().toLowerCase().contains("lyr")) {
-        result = showTextAreaDialog(tagField.getId(), textField.getContent());
-      } else {
-        result = showSimpleTextInputDialog(tagField.getId(), textField.getContent());
-      }
-      if (result.isPresent()) {
-        textField.setContent(result.get().trim());
-        return true;
-      } else {
-        return false;
-      }
+    return switch (resolveEditor(tagField)) {
+      case TYER_TDAT -> showTyerTdatInputDialog((TyerTdatAggregatedFrame) tagField);
+      case TXXX -> showTxxxInputDialog((FrameBodyTXXX) ((AbstractID3v2Frame) tagField).getBody());
+      case COMM -> editWithTextDialog(tagField.getId(),
+              ((FrameBodyCOMM) ((AbstractID3v2Frame) tagField).getBody()).getFirstTextValue(), null,
+              ((FrameBodyCOMM) ((AbstractID3v2Frame) tagField).getBody())::setText);
+      case TEXT_INFO -> editWithTextDialog(tagField.getId(),
+              ((AbstractFrameBodyTextInfo) ((AbstractID3v2Frame) tagField).getBody()).getFirstTextValue(), null,
+              ((AbstractFrameBodyTextInfo) ((AbstractID3v2Frame) tagField).getBody())::setText);
+      case POPM -> showPopmInputDialog((FrameBodyPOPM) ((AbstractID3v2Frame) tagField).getBody());
+      case USLT -> editWithTextAreaDialog(tagField.getId(),
+              ((FrameBodyUSLT) ((AbstractID3v2Frame) tagField).getBody()).getLyric(),
+              ((FrameBodyUSLT) ((AbstractID3v2Frame) tagField).getBody())::setLyric);
+      case PCNT -> editWithTextDialog(tagField.getId(),
+              Long.toString(((FrameBodyPCNT) ((AbstractID3v2Frame) tagField).getBody()).getCounter()),
+              "[0-9]*", value -> ((FrameBodyPCNT) ((AbstractID3v2Frame) tagField).getBody()).setCounter(Long.parseLong(value)));
+      case DISC -> showDiscEditor(tagField);
+      case TRACK -> showTrackEditor(tagField);
+      case TEXT_FIELD -> editWithTextDialog(tagField.getId(), ((TagTextField) tagField).getContent(), null,
+              ((TagTextField) tagField)::setContent);
+      case TEXT_AREA -> editWithTextAreaDialog(tagField.getId(), ((TagTextField) tagField).getContent(),
+              ((TagTextField) tagField)::setContent);
+    };
+  }
+
+  enum EditorType {
+    TYER_TDAT, TXXX, COMM, TEXT_INFO, POPM, USLT, PCNT, DISC, TRACK, TEXT_FIELD, TEXT_AREA
+  }
+
+  static EditorType resolveEditor(final TagField tagField) throws NTagException {
+    return switch (tagField) {
+      case TyerTdatAggregatedFrame ignored -> EditorType.TYER_TDAT;
+      case AbstractID3v2Frame frame -> switch (frame.getBody()) {
+        case FrameBodyTXXX ignored -> EditorType.TXXX;
+        case FrameBodyCOMM ignored -> EditorType.COMM;
+        case AbstractFrameBodyTextInfo ignored -> EditorType.TEXT_INFO;
+        case FrameBodyPOPM ignored -> EditorType.POPM;
+        case FrameBodyUSLT ignored -> EditorType.USLT;
+        case FrameBodyPCNT ignored -> EditorType.PCNT;
+        case FrameBodyTPOS ignored -> EditorType.DISC;
+        case FrameBodyTRCK ignored -> EditorType.TRACK;
+        default -> throw new NTagException("Unsupported TagField: " + tagField.getId());
+      };
+      case Mp4DiscNoField ignored -> EditorType.DISC;
+      case Mp4TrackField ignored -> EditorType.TRACK;
+      case TagTextField ignored -> tagField.getId().toLowerCase().contains("lyr")
+              ? EditorType.TEXT_AREA
+              : EditorType.TEXT_FIELD;
+      default -> throw new NTagException("Unsupported TagField: " + tagField.getId());
+    };
+  }
+
+  private static boolean showDiscEditor(TagField tagField) {
+    if (tagField instanceof FrameBodyTPOS tpos) {
+      return showDiscInputDialog(tpos);
     }
-    throw new NTagException("Unsupported TagField: " + tagField.getId());
+    return showDiscInputDialog((Mp4DiscNoField) tagField);
+  }
+
+  private static boolean showTrackEditor(TagField tagField) {
+    if (tagField instanceof FrameBodyTRCK trck) {
+      return showTrackInputDialog(trck);
+    }
+    return showTrackInputDialog((Mp4TrackField) tagField);
+  }
+
+  private static boolean editWithTextDialog(String id, String value, String regex, java.util.function.Consumer<String> applier) {
+    Optional<String> result = showSimpleTextInputDialog(id, value, regex);
+    if (result.isPresent()) {
+      applier.accept(result.get().trim());
+      return true;
+    }
+    return false;
+  }
+
+  private static boolean editWithTextAreaDialog(String id, String value, java.util.function.Consumer<String> applier) {
+    Optional<String> result = showTextAreaDialog(id, value);
+    if (result.isPresent()) {
+      applier.accept(result.get().trim());
+      return true;
+    }
+    return false;
   }
 
   private static Optional<String> showSimpleTextInputDialog(String id, String value) {
@@ -302,8 +310,10 @@ public final class TagFieldInputDialogs {
     gridPane.add(new Label("EMail"), 0, 0);
     gridPane.add(email, 1, 0);
     gridPane.add(new Label("Rating"), 0, 1);
+    rating.setTooltip(new Tooltip(Resources.get("ntag", "tip_rating_value")));
     gridPane.add(rating, 1, 1);
     gridPane.add(new Label("Counter"), 0, 2);
+    counter.setTooltip(new Tooltip(Resources.get("ntag", "tip_counter")));
     gridPane.add(counter, 1, 2);
 
     Platform.runLater(rating::requestFocus);
@@ -587,8 +597,10 @@ public final class TagFieldInputDialogs {
     tdatField.setMaxLength(4);
 
     gridPane.add(new Label("TYER"), 0, 0);
+    tyerField.setTooltip(new Tooltip(Resources.get("ntag", "tip_tyer")));
     gridPane.add(tyerField, 1, 0);
     gridPane.add(new Label("TDAT"), 0, 1);
+    tdatField.setTooltip(new Tooltip(Resources.get("ntag", "tip_tdat")));
     gridPane.add(tdatField, 1, 1);
 
     Platform.runLater(tyerField::requestFocus);
@@ -641,32 +653,28 @@ public final class TagFieldInputDialogs {
     return result.isPresent();
   }
 
-  private static String createDescription(String id) {
+  static String createDescription(String id) {
     String result = fieldDescMap.get(id);
     return result == null ? id : result;
   }
 
   private static ObservableList<TagField> createTagFieldList(Tag tag) {
     ObservableList<TagField> tagFields = FXCollections.observableArrayList();
-    if (tag instanceof AbstractID3v2Tag) {
-      AbstractID3v2Tag id3Tag = (AbstractID3v2Tag) tag;
+    if (tag instanceof AbstractID3v2Tag id3Tag) {
       for (ID3v2Frames id3 : ID3v2Frames.values()) {
         if (id3.isSupportedByVersion(id3Tag.getMajorVersion())) {
           tagFields.add(id3Tag.createFrame(id3.name()));
         }
       }
-    } else if (tag instanceof VorbisCommentTag) {
-      VorbisCommentTag vorbisTag = (VorbisCommentTag) tag;
+    } else if (tag instanceof VorbisCommentTag vorbisTag) {
       for (VorbisComments vorbis : VorbisComments.values()) {
         tagFields.add(vorbisTag.createField(vorbis.name(), ""));
       }
-    } else if (tag instanceof AsfTag) {
-      AsfTag asfTag = (AsfTag) tag;
+    } else if (tag instanceof AsfTag asfTag) {
       for (ASF asf : ASF.values()) {
         tagFields.add(asfTag.createField(AsfFieldKey.getAsfFieldKey(asf.getCode()), ""));
       }
-    } else if (tag instanceof Mp4Tag) {
-      Mp4Tag mp4Tag = (Mp4Tag) tag;
+    } else if (tag instanceof Mp4Tag mp4Tag) {
       for (Atoms atom : Atoms.values()) {
         if (atom == Atoms.Genre) {
           tagFields.add(new Mp4GenreField("1"));

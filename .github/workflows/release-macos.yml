@@ -1,0 +1,105 @@
+name: "Release macOS"
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag to attach the built assets to (e.g. v1.2.17). The tag must exist in the repository.'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  macos_release:
+    runs-on: macos-latest
+    env:
+      RELEASE_TAG: ${{ github.ref_type == 'tag' && github.ref_name || inputs.release_tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Resolve Release Tag
+        run: |
+          RELEASE_TAG="$(echo "$RELEASE_TAG" | xargs)"
+          if [ -z "$RELEASE_TAG" ]; then
+            echo "No release tag provided" >&2
+            exit 1
+          fi
+          echo "RELEASE_TAG=$RELEASE_TAG" >> "$GITHUB_ENV"
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'zulu'
+          java-version: '25'
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.16
+      - name: Build macOS Version with Maven
+        run: mvn clean package
+      - name: Get NTag version
+        id: get_ntag_version
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+      - name: Extract Distribution
+        run: |
+          mkdir -p dist
+          tar -xzf ./target/ntag-${{ env.VERSION }}-macos_bin.tar.gz -C dist
+          echo "APP=$PWD/dist/ntag-${{ env.VERSION }}-macos_bin/NTag.app" >> "$GITHUB_ENV"
+      - name: Verify Info.plist
+        run: plutil -lint "$APP/Contents/Info.plist"
+      - name: Verify Launcher Is Executable
+        run: test -x "$APP/Contents/MacOS/ntag"
+      - name: Verify Bundled Files
+        run: |
+          test -f "$APP/Contents/Resources/ntag.jar"
+          test -f "$APP/Contents/Resources/NTag.icns"
+          test -f "$APP/Contents/Resources/jre/bin/java"
+          ls "$APP/Contents/Resources/libs"/*.jar >/dev/null
+      - name: Headless Smoke Test
+        run: |
+          TMP="$(mktemp -d)"
+          (cd "$TMP" && "$APP/Contents/Resources/jre/bin/java" \
+            --module-path "$APP/Contents/Resources/libs" \
+            --add-modules=javafx.controls,javafx.fxml,javafx.swing,java.logging,jaudiotagger,java.desktop,jakarta.json \
+            -cp "$APP/Contents/Resources/ntag.jar" ntag.Batch)
+      - name: Create SHA256 Checksum
+        run: shasum -a 256 ./target/ntag-${{ env.VERSION }}-macos_bin.tar.gz > ./target/ntag-${{ env.VERSION }}-macos_bin_sha256.txt
+      - name: Upload macOS Release Asset
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./target/ntag-${{ env.VERSION }}-macos_bin.tar.gz
+          name: ntag-${{ env.VERSION }}-macos_bin.tar.gz
+          retention-days: 7
+      - name: Upload macOS Checksum SHA256 Asset
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./target/ntag-${{ env.VERSION }}-macos_bin_sha256.txt
+          name: ntag-${{ env.VERSION }}-macos_bin_sha256.txt
+          retention-days: 7
+      - name: Create Draft Release
+        run: |
+          gh release create "$RELEASE_TAG" --draft --title "Release $RELEASE_TAG" || true
+      - name: Attach macOS Assets to Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for i in $(seq 1 12); do
+            if gh release upload "$RELEASE_TAG" \
+              ./target/ntag-${{ env.VERSION }}-macos_bin.tar.gz \
+              ./target/ntag-${{ env.VERSION }}-macos_bin_sha256.txt \
+              --clobber; then
+              echo "Assets uploaded successfully"
+              exit 0
+            fi
+            echo "gh release upload failed (attempt $i/12), ensuring release exists and retrying in 10s..."
+            gh release create "$RELEASE_TAG" --draft --title "Release $RELEASE_TAG" || true
+            sleep 10
+          done
+          echo "Failed to upload assets after 12 attempts"
+          exit 1

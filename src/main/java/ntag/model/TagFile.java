@@ -32,7 +32,6 @@ import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -121,7 +120,7 @@ public class TagFile {
    */
   public Path getPath() {
     if (path != null) {
-      return Paths.get(path);
+      return Path.of(path);
     } else {
       return null;
     }
@@ -775,8 +774,7 @@ public class TagFile {
   public List<TagField> getTags() {
     final AudioFile audioFile = getAudioFile();
     Iterator<TagField> iterator = null;
-    if (audioFile instanceof MP3File) {
-      MP3File mp3File = (MP3File) audioFile;
+    if (audioFile instanceof MP3File mp3File) {
       if (mp3File.hasID3v2Tag()) {
         AbstractID3v2Tag tag = mp3File.getID3v2Tag();
         if (tag != null) {
@@ -816,7 +814,7 @@ public class TagFile {
       throw new NTagException("cannot write to audiofile", e);
     }
     if (LOGGER.isLoggable(Level.INFO)) {
-      LOGGER.info(String.format("Deleted %s Tag from file '%s'", tagField.getId(), name));
+      LOGGER.info("Deleted %s Tag from file '%s'".formatted(tagField.getId(), name));
     }
   }
 

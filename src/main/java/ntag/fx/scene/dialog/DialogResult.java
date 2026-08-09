@@ -19,21 +19,5 @@
  */
 package ntag.fx.scene.dialog;
 
-public class DialogResult<T> {
-  private final DialogResponse respone;
-  private final T model;
-
-  public DialogResult(DialogResponse respone, T model) {
-    super();
-    this.respone = respone;
-    this.model = model;
-  }
-
-  public DialogResponse getRespone() {
-    return respone;
-  }
-
-  public T getModel() {
-    return model;
-  }
+public record DialogResult<T>(DialogResponse response, T model) {
 }

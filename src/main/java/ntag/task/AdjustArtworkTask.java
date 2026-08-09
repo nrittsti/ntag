@@ -77,7 +77,7 @@ public class AdjustArtworkTask extends Task<List<TagFile>> {
         updateMessage(Resources.format("ntag", "msg_writing_file", i, viewModel.getFiles().size()));
         writer.update(tagFile);
       } catch (Exception e) {
-        errors.add(String.format("%s%n%s", viewModel.getFiles().get(i).getPath(), e.getMessage()));
+        errors.add("%s%n%s".formatted(viewModel.getFiles().get(i).getPath(), e.getMessage()));
       }
       updateProgress(i + 1, viewModel.getFiles().size());
     }

@@ -29,22 +29,20 @@ import org.jaudiotagger.tag.id3.ID3v23Tag;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 
 public class Batch {
 
   public static void main(String[] args) {
-    Path path = Paths.get("");
+    Path path = Path.of("");
     AudioFileVisitor visitor = new AudioFileVisitor(10000);
     try {
       Files.walkFileTree(path, new HashSet<FileVisitOption>(), 100, visitor);
       List<Path> files = visitor.getAudioFiles();
       for (Path filePath : files) {
         final AudioFile audioFile = JAudiotaggerUtil.readAudioFile(filePath);
-        if (audioFile instanceof MP3File) {
-          MP3File mp3File = (MP3File) audioFile;
+        if (audioFile instanceof MP3File mp3File) {
           if (mp3File.hasID3v2Tag()) {
             AbstractID3v2Tag tag = mp3File.getID3v2Tag();
             if (tag instanceof ID3v23Tag) {

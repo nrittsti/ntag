@@ -12,7 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag(Category.Unit)
 class ImageUtilTest extends AbstractAudioFileTest {
@@ -45,7 +45,7 @@ class ImageUtilTest extends AbstractAudioFileTest {
     // when
     BufferedImage actualImage = ImageUtil.scale(bufferedImage, expectedSize, expectedSize);
     // then
-    assertEquals(expectedSize, actualImage.getWidth());
-    assertEquals(expectedSize, actualImage.getHeight());
+    assertThat(actualImage.getWidth()).isEqualTo(expectedSize);
+    assertThat(actualImage.getHeight()).isEqualTo(expectedSize);
   }
 }

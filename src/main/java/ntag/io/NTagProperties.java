@@ -116,7 +116,7 @@ public class NTagProperties {
         Autor:\tDavid Vignoni
         Licence:\tLGPL
         
-        JAudiotagger Library 2.2.5
+        JAudiotagger Library 3.0.1
         Autor:\thttps://www.jthink.net/jaudiotagger/
         Licence:\tLGPL
         
@@ -152,7 +152,7 @@ public class NTagProperties {
     try {
       return NTagThemeEnum.valueOf(themeStr);
     } catch (Exception e) {
-      LOGGER.log(Level.SEVERE, String.format("Can't convert %s to NTagThemeEnum, using default theme!", themeStr), e);
+      LOGGER.log(Level.SEVERE, "Can't convert %s to NTagThemeEnum, using default theme!".formatted(themeStr), e);
       return NTagThemeEnum.ModenaLight;
     }
   }
@@ -428,7 +428,7 @@ public class NTagProperties {
   }
 
   public void setVisibleColumns(List<ColumnType> values) {
-    List<String> strList = new ArrayList<>();
+    var strList = new ArrayList<String>();
     if (values != null) {
       for (ColumnType ct : values) {
         strList.add(ct.name());
@@ -438,7 +438,7 @@ public class NTagProperties {
   }
 
   public List<ColumnType> getVisibleColumns() {
-    List<ColumnType> columnList = new ArrayList<>();
+    var columnList = new ArrayList<ColumnType>();
     List<String> strList = preferences.getValues("GUI", "Visible_Columns", ColumnType.STATUS.name(), ColumnType.FILENAME.name());
     for (String value : strList) {
       columnList.add(ColumnType.valueOf(value));
@@ -451,7 +451,7 @@ public class NTagProperties {
   }
 
   public void setAdjustArtworkProfiles(List<AdjustArtworkViewModel> profiles) {
-    List<String> jsonList = new ArrayList<>();
+    var jsonList = new ArrayList<String>();
     for (AdjustArtworkViewModel profile : profiles) {
       jsonList.add(profile.toJSON());
     }
@@ -460,12 +460,12 @@ public class NTagProperties {
 
   public List<AdjustArtworkViewModel> getAdjustArtworkProfiles() {
     List<String> strList = preferences.getValues("Artwork", "Profile");
-    List<AdjustArtworkViewModel> result = new ArrayList<>();
+    var result = new ArrayList<AdjustArtworkViewModel>();
     for (String json : strList) {
       try {
         result.add(new AdjustArtworkViewModel(json));
       } catch (Exception e) {
-        LOGGER.log(Level.SEVERE, String.format("Could not load Artwork profile: %s", json), e);
+        LOGGER.log(Level.SEVERE, "Could not load Artwork profile: %s".formatted(json), e);
       }
     }
     return result;
@@ -496,7 +496,7 @@ public class NTagProperties {
     preferences.setValue("window", "maximized", stage.isMaximized());
     preferences.setValue("window", "iconified", stage.isIconified());
 
-    List<Double> deviderPosList = new ArrayList<>();
+    var deviderPosList = new ArrayList<Double>();
     for (double pos : controller.getDividerPositions()) {
       deviderPosList.add(pos);
     }
@@ -569,7 +569,7 @@ public class NTagProperties {
       if (Files.exists(configPath)) {
         preferences.read(getConfigFile());
       } else {
-        List<String> provider = new ArrayList<>();
+        var provider = new ArrayList<String>();
         provider.add("https://www.songtexte.com/search?q=input&c=all");
         provider.add("https://www.magistrix.de/search/query?utf8=%E2%9C%93&q=input");
         setLyricProvider(provider);

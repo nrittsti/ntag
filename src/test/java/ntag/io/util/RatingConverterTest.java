@@ -2,17 +2,16 @@ package ntag.io.util;
 
 import ntag.Category;
 import ntag.model.AudioFormat;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Tag(Category.Unit)
 class RatingConverterTest {
@@ -20,7 +19,7 @@ class RatingConverterTest {
     @BeforeAll
     public static void setUpClass() {
         Integer[] convertionList = {13, 23, 54, 64, 118, 128, 186, 196, 242, 255};
-        RatingConverter.setConversion(AudioFormat.MP3, Arrays.asList(convertionList));
+        RatingConverter.setConversion(AudioFormat.MP3, List.of(convertionList));
     }
 
     @ParameterizedTest
@@ -30,7 +29,7 @@ class RatingConverterTest {
         // when
         int actual = RatingConverter.internalToHalfStars(AudioFormat.MP3, input);
         // then
-        assertEquals(actual, expected);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @ParameterizedTest
@@ -40,13 +39,13 @@ class RatingConverterTest {
         // when
         int actual = RatingConverter.halfStarsToInternal(AudioFormat.MP3, input);
         // then
-        assertEquals(actual, expected);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test()
     public void setConversionWithIllegalArgumentException() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> RatingConverter.setConversion(null, null));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> RatingConverter.setConversion(AudioFormat.MP3, null));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> RatingConverter.setConversion(AudioFormat.MP3, new ArrayList<>()));
+        assertThatThrownBy(() -> RatingConverter.setConversion(null, null)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> RatingConverter.setConversion(AudioFormat.MP3, null)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> RatingConverter.setConversion(AudioFormat.MP3, List.of())).isInstanceOf(IllegalArgumentException.class);
     }
 }

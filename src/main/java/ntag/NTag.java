@@ -132,7 +132,7 @@ public class NTag extends Application {
     }
     LoggingUtil.setup("ntag_logging.properties");
     // read app propperties
-    NTagProperties appProps = NTagProperties.instance();
+    var appProps = NTagProperties.instance();
     // register logging handler
     LoggingUtil.registerHandler(TagFileWriter.LOGGER, appProps.getActionLogHandler());
     LoggingUtil.registerHandler(TagFileReader.LOGGER, appProps.getActionLogHandler());
@@ -141,8 +141,8 @@ public class NTag extends Application {
     // change app language
     Resources.setLocale(appProps.getLanguage());
     // log hello world
-    LOGGER.log(Level.INFO, String.format("Starting %s Version %s ...", appProps.getTitle(), appProps.getVersion()));
-    LOGGER.log(Level.INFO, String.format("Using home directory %s", NTagProperties.instance().getHomeDir()));
+    LOGGER.log(Level.INFO, "Starting %s Version %s ...".formatted(appProps.getTitle(), appProps.getVersion()));
+    LOGGER.log(Level.INFO, "Using home directory %s".formatted(NTagProperties.instance().getHomeDir()));
     // configure ImageIO
     ImageIO.setUseCache(false);
     launch(args);

@@ -65,7 +65,7 @@ public final class RatingConverter {
             throw new IllegalArgumentException("conversion values are not given");
         }
         if (values.size() != 10) {
-            throw new IllegalArgumentException(String.format("invalid conversion values length: %d", values.size()));
+            throw new IllegalArgumentException("invalid conversion values length: %d".formatted(values.size()));
         }
         switch (fileFormat) {
             case FLAC -> flacConversion = values;
@@ -73,7 +73,7 @@ public final class RatingConverter {
             case MP4 -> mp4Conversion = values;
             case OGG -> oggConversion = values;
             case WMA -> wmaConversion = values;
-            default -> throw new IllegalArgumentException(String.format("Format %s is not supported ", fileFormat));
+            default -> throw new IllegalArgumentException("Format %s is not supported ".formatted(fileFormat));
         }
     }
 

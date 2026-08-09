@@ -25,29 +25,49 @@ Copyright 2016, Nico Rittstieg
     <VBox spacing="3">
       <GridPane alignment="CENTER" hgap="10" vgap="5">
         <Button fx:id="disc" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="90"
-                text="%lbl_disc" onAction="#handleAddPlaceHolderAction"/>
+                text="%lbl_disc" onAction="#handleAddPlaceHolderAction">
+          <tooltip><Tooltip text="%tip_placeholder" /></tooltip>
+        </Button>
         <Button fx:id="track" focusTraversable="false" GridPane.columnIndex="0" GridPane.rowIndex="0" prefWidth="90"
-                text="%lbl_track" onAction="#handleAddPlaceHolderAction"/>
+                text="%lbl_track" onAction="#handleAddPlaceHolderAction">
+          <tooltip><Tooltip text="%tip_placeholder" /></tooltip>
+        </Button>
         <Button fx:id="title" focusTraversable="false" GridPane.columnIndex="2" GridPane.rowIndex="0" prefWidth="90"
-                text="%lbl_title" onAction="#handleAddPlaceHolderAction"/>
+                text="%lbl_title" onAction="#handleAddPlaceHolderAction">
+          <tooltip><Tooltip text="%tip_placeholder" /></tooltip>
+        </Button>
         <Button fx:id="album" focusTraversable="false" GridPane.columnIndex="0" GridPane.rowIndex="1" prefWidth="90"
-                text="%lbl_album" onAction="#handleAddPlaceHolderAction"/>
+                text="%lbl_album" onAction="#handleAddPlaceHolderAction">
+          <tooltip><Tooltip text="%tip_placeholder" /></tooltip>
+        </Button>
         <Button fx:id="artist" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="90"
-                text="%lbl_artist" onAction="#handleAddPlaceHolderAction"/>
+                text="%lbl_artist" onAction="#handleAddPlaceHolderAction">
+          <tooltip><Tooltip text="%tip_placeholder" /></tooltip>
+        </Button>
         <Button fx:id="year" focusTraversable="false" GridPane.columnIndex="2" GridPane.rowIndex="1" prefWidth="90"
-                text="%lbl_year" onAction="#handleAddPlaceHolderAction"/>
+                text="%lbl_year" onAction="#handleAddPlaceHolderAction">
+          <tooltip><Tooltip text="%tip_placeholder" /></tooltip>
+        </Button>
       </GridPane>
       <Label text="%lbl_format"/>
-      <TextField fx:id="formatTextField"/>
-      <CheckBox fx:id="filenameStripUnsafeCharsCheckBox" text="%lbl_strip_unsafe_chars"/>
+      <TextField fx:id="formatTextField">
+        <tooltip><Tooltip text="%tip_rename_format" /></tooltip>
+      </TextField>
+      <CheckBox fx:id="filenameStripUnsafeCharsCheckBox" text="%lbl_strip_unsafe_chars">
+        <tooltip><Tooltip text="%tip_strip_unsafe_chars" /></tooltip>
+      </CheckBox>
     </VBox>
   </center>
   <bottom>
     <VBox spacing="3">
       <Separator/>
       <HBox spacing="10" alignment="BOTTOM_CENTER">
-        <Button fx:id="allButton" defaultButton="true" text="%btn_all_files" onAction="#handleAllAction"/>
-        <Button fx:id="selectedButton" text="%btn_selected_files" onAction="#handleSelectionAction"/>
+        <Button fx:id="allButton" defaultButton="true" text="%btn_all_files" onAction="#handleAllAction">
+          <tooltip><Tooltip text="%tip_all_files" /></tooltip>
+        </Button>
+        <Button fx:id="selectedButton" text="%btn_selected_files" onAction="#handleSelectionAction">
+          <tooltip><Tooltip text="%tip_selected_files" /></tooltip>
+        </Button>
         <Button text="%btn_cancel" onAction="#handleCancelAction"/>
       </HBox>
     </VBox>

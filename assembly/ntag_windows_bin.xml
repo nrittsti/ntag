@@ -27,6 +27,9 @@
       <directory>${project.build.directory}/jlink/jre</directory>
       <outputDirectory>/jre</outputDirectory>
       <useDefaultExcludes>false</useDefaultExcludes>
+      <excludes>
+        <exclude>**/._*</exclude>
+      </excludes>
     </fileSet>
   </fileSets>
   <files>

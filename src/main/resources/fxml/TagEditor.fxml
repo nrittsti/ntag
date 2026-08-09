@@ -28,6 +28,7 @@
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="javafx.scene.control.TabPane">
   <tabs>
     <Tab fx:id="editorTab" text="%lbl_editor" closable="false">
+      <tooltip><Tooltip text="%tip_tab_editor" /></tooltip>
       <ScrollPane fx:id="editorScrollPane">
         <GridPane hgap="10" vgap="1">
           <padding>
@@ -51,8 +52,12 @@
             <Label id="file-info-label" fx:id="fileInfoLabel"/>
           </HBox>
           <HBox GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2" spacing="3">
-            <TextField fx:id="filenameTextField" HBox.hgrow="ALWAYS"/>
-            <Button fx:id="showFileButton" text="..." onAction="#handleShowFileAction"/>
+            <TextField fx:id="filenameTextField" HBox.hgrow="ALWAYS">
+              <tooltip><Tooltip text="%tip_show_file" /></tooltip>
+            </TextField>
+            <Button fx:id="showFileButton" text="..." onAction="#handleShowFileAction">
+              <tooltip><Tooltip text="%tip_show_file" /></tooltip>
+            </Button>
           </HBox>
           <Label text="%lbl_title" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2"/>
           <ETextField fx:id="titleTextField" GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="2"/>
@@ -103,7 +108,9 @@
 
           <HBox GridPane.columnIndex="0" GridPane.rowIndex="19" spacing="3" GridPane.columnSpan="2">
             <Button styleClass="edit-button" fx:id="selectGenreButton" onAction="#handleSelectGenreButton"
-                    focusTraversable="false"/>
+                    focusTraversable="false">
+              <tooltip><Tooltip text="%tip_select_genre" /></tooltip>
+            </Button>
             <EComboBox fx:id="genreComboBox" HBox.hgrow="ALWAYS"/>
           </HBox>
 
@@ -113,11 +120,13 @@
       </ScrollPane>
     </Tab>
     <Tab fx:id="lyricsTab" text="%lbl_lyrics" closable="false">
+      <tooltip><Tooltip text="%tip_tab_lyrics" /></tooltip>
       <VBox fx:id="lyricsVBox">
         <TextArea fx:id="lyricsTextArea" prefHeight="10000"/>
       </VBox>
     </Tab>
     <Tab fx:id="tagTab" text="%lbl_tags" closable="false">
+      <tooltip><Tooltip text="%tip_tab_tags" /></tooltip>
       <TableView fx:id="tagTableView" VBox.vgrow="ALWAYS">
         <columns>
           <TableColumn fx:id="tagIdColumn" editable="false" minWidth="100.0" maxWidth="200.0" text="ID"/>
@@ -145,9 +154,11 @@
       </TableView>
     </Tab>
     <Tab fx:id="headerTab" text="%lbl_header" closable="false">
+      <tooltip><Tooltip text="%tip_tab_header" /></tooltip>
       <TextArea fx:id="infosTextArea" styleClass="textarea-infos" editable="false"/>
     </Tab>
     <Tab fx:id="logTab" text="%lbl_logging" closable="false">
+      <tooltip><Tooltip text="%tip_tab_logging" /></tooltip>
       <TextArea fx:id="loggingTextArea" styleClass="textarea-infos" editable="false"/>
     </Tab>
   </tabs>

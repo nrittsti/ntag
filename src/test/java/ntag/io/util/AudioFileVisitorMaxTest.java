@@ -13,8 +13,7 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag(Category.Unit)
 class AudioFileVisitorMaxTest extends AbstractAudioFileTest {
@@ -39,7 +38,7 @@ class AudioFileVisitorMaxTest extends AbstractAudioFileTest {
         Files.walkFileTree(getTempDir(), new HashSet<>(), 100, audioFileVisitor);
         List<Path> actual = audioFileVisitor.getAudioFiles();
         // then
-        assertNotNull(actual);
-        assertEquals(expected, actual.size());
+        assertThat(actual).isNotNull();
+        assertThat((long) actual.size()).isEqualTo(expected);
     }
 }

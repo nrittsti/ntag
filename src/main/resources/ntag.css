@@ -79,3 +79,8 @@
 .edit-button {
   -fx-graphic: url('icons/edit.png');
 }
+
+.tooltip {
+  -fx-wrap-text: true;
+  -fx-max-width: 500px;
+}

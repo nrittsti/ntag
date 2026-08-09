@@ -8,10 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag(Category.Unit)
 class IniFileTest extends AbstractAudioFileTest {
@@ -30,10 +29,10 @@ class IniFileTest extends AbstractAudioFileTest {
     // when
     iniFile.read(tempDirPath.resolve(SAMPLE_INI));
     // then
-    assertEquals(1, iniFile.getSection("gui").size());
-    assertEquals(1, iniFile.getSection("mp3").size());
-    assertEquals("en", iniFile.getValue("gui", "language", null));
-    assertEquals(10, iniFile.getValues("mp3", "rating_conversion").size());
+    assertThat(iniFile.getSection("gui").size()).isEqualTo(1);
+    assertThat(iniFile.getSection("mp3").size()).isEqualTo(1);
+    assertThat(iniFile.getValue("gui", "language", null)).isEqualTo("en");
+    assertThat(iniFile.getValues("mp3", "rating_conversion").size()).isEqualTo(10);
   }
 
   @Test
@@ -49,54 +48,54 @@ class IniFileTest extends AbstractAudioFileTest {
     iniFile.setValue("gui", "language", expected);
     String actual = iniFile.getValue("gui", "language", null);
     // then
-    assertEquals(expected, actual);
+    assertThat(actual).isEqualTo(expected);
   }
 
   @Test
   void setAndGetValues() {
     // given
-    List<String> expected = Arrays.asList("a", "b", "c");
+    List<String> expected = List.of("a", "b", "c");
     // when
     iniFile.setValues("gui", "misc", expected, false);
     List<String> actual = iniFile.getValues("gui", "misc");
     // then
-    assertEquals(expected, actual);
+    assertThat(actual).isEqualTo(expected);
   }
 
   @Test
   void appendValues() {
     // given
-    List<String> given = Arrays.asList("a", "b", "c");
-    List<String> append = Arrays.asList("d", "e");
-    List<String> expected = Arrays.asList("a", "b", "c", "d", "e");
+    List<String> given = List.of("a", "b", "c");
+    List<String> append = List.of("d", "e");
+    List<String> expected = List.of("a", "b", "c", "d", "e");
     // when
     iniFile.setValues("gui", "misc", given, false);
     iniFile.setValues("gui", "misc", append, true);
     List<String> actual = iniFile.getValues("gui", "misc");
     // then
-    assertEquals(expected, actual);
+    assertThat(actual).isEqualTo(expected);
   }
 
   @Test
   void setAndGetDoubleValues() {
     // given
-    List<Double> expected = Arrays.asList(1.1, 2.3, 3.4);
+    List<Double> expected = List.of(1.1, 2.3, 3.4);
     // when
     iniFile.setDoubleValues("gui", "misc", expected, false);
     List<Double> actual = iniFile.getDoubleValues("gui", "misc");
     // then
-    assertEquals(expected, actual);
+    assertThat(actual).isEqualTo(expected);
   }
 
   @Test
   void setAndGetIntegerValues() {
     // given
-    List<Integer> expected = Arrays.asList(1, 2, 3);
+    List<Integer> expected = List.of(1, 2, 3);
     // when
     iniFile.setIntegerValues("gui", "misc", expected, false);
     List<Integer> actual = iniFile.getIntegerValues("gui", "misc");
     // then
-    assertEquals(expected, actual);
+    assertThat(actual).isEqualTo(expected);
   }
 
   @Test
@@ -107,7 +106,7 @@ class IniFileTest extends AbstractAudioFileTest {
     iniFile.setValue("gui", "misc", expected);
     int actual = iniFile.getInteger("gui", "misc", null);
     // then
-    assertEquals(expected, actual);
+    assertThat(actual).isEqualTo(expected);
   }
 
   @Test
@@ -118,7 +117,7 @@ class IniFileTest extends AbstractAudioFileTest {
     iniFile.setValue("gui", "misc", expected);
     float actual = iniFile.getFloat("gui", "misc", null);
     // then
-    assertEquals(expected, actual);
+    assertThat(actual).isEqualTo(expected);
   }
 
   @Test
@@ -129,7 +128,7 @@ class IniFileTest extends AbstractAudioFileTest {
     iniFile.setValue("gui", "misc", expected);
     double actual = iniFile.getDouble("gui", "misc", null);
     // then
-    assertEquals(expected, actual);
+    assertThat(actual).isEqualTo(expected);
   }
 
   @Test
@@ -140,6 +139,6 @@ class IniFileTest extends AbstractAudioFileTest {
     iniFile.setValue("gui", "misc", expected);
     boolean actual = iniFile.getBoolean("gui", "misc", null);
     // then
-    assertEquals(expected, actual);
+    assertThat(actual).isEqualTo(expected);
   }
 }

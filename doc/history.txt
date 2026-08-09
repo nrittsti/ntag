@@ -1,6 +1,16 @@
 NTag Version History
 -------------------------
 
+1.2.17          2026-08-07
+--------------------------
+- Upgrading to Java 25 LTS
+- New application icon (music note in a price tag)
+- New separate GitHub release workflows for Linux, Windows and macOS
+- New macOS distribution with a self-contained NTag.app bundle
+- New Windows Inno Setup installer with Start Menu shortcuts
+- New automated Flathub release workflow
+- Fixed: ignore macOS AppleDouble files in surefire tests
+
 0.9.1          2016-01-12
 -------------------------
 - initial release

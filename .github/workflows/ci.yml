@@ -11,15 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
-      - name: Set up JDK 21
+        uses: actions/checkout@v7
+      - name: Set up JDK 25
         uses: actions/setup-java@v5
         with:         
           distribution: 'zulu'
-          java-version: '21'
+          java-version: '25'
       - name: Set up Maven
         uses: stCarolas/setup-maven@v5
         with:
-          maven-version: 3.9.11
+          maven-version: 3.9.16
       - name: Test with Surefire
         run: mvn test
